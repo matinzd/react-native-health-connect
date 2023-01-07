@@ -84,6 +84,8 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation 'androidx.activity:activity-ktx:1.7.0-alpha02'
+  implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
   implementation "androidx.health.connect:connect-client:1.0.0-alpha08"
 }
 

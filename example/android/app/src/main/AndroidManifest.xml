@@ -20,6 +20,10 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
+        <intent-filter>
+          <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+        </intent-filter>
+        <meta-data android:name="health_permissions" android:resource="@array/health_permissions" />
       </activity>
     </application>
 </manifest>
