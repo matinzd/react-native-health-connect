@@ -1,9 +1,13 @@
-![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEipY6Yw77rmZLyC0qKpbNslH1Apc3QhLOl5vx54TBJ5SzGzKFLish7H7Ayq4h_qukNk_KsNb6yN4cnygL3NowDa4QE3pFQFyYuEjJZg1xgcnpoGVbYQ7yX2rduEBPCIlf3u2p0TveNw4L19eF3KKs7utd0tw01aBijNOY6sgwydiHLMwnJihD36pbnM/s1600/Android_HealthConnectLaunch2022_4209x1253.jpg)
+<p align="center">
+  <a href="https://developer.android.com/guide/health-and-fitness/health-connect">
+    <img width="160px" src="https://developer.android.com/static/guide/health-and-fitness/health-connect/images/health_connect_logo_192pxnew.png"><br/>
+  </a>
+  <h2 align="center">React Native Health Connect</h2>
+</p>
 
-# React Native Health Connect
+---
 
-Health Connect is a platform and API for Android app developers. With user permission, developers can use a single set of APIs to securely access and share health and fitness data across Android devices.
-
+Health Connect is an Android API and platform. It unifies data from multiple devices and apps into an ecosystem. For Android developers, it provides a single interface for reading and writing a user’s health and fitness data. For Android users, it offers a place for control over which apps have read and/or write access to different types of data. Health Connect also provides on-device storage.
 
 ## Installation
 
