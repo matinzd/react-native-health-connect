@@ -11,23 +11,32 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
+const PLATFORM_NOT_SUPPORTED_ERROR = `Platform not supported. This package only supports Android.`;
+
 // @ts-expect-error
 const isTurboModuleEnabled = global.__turboModuleProxy != null;
 
-const HealthConnectModule = isTurboModuleEnabled
-  ? require('./NativeHealthConnect').default
-  : NativeModules.HealthConnect;
+const moduleProxy = (message: string) =>
+  new Proxy(
+    {},
+    {
+      get() {
+        throw new Error(message);
+      },
+    }
+  );
+
+const HealthConnectModule = Platform.select({
+  android: isTurboModuleEnabled
+    ? require('./NativeHealthConnect').default
+    : NativeModules.HealthConnect,
+  ios: moduleProxy(PLATFORM_NOT_SUPPORTED_ERROR),
+  default: moduleProxy(PLATFORM_NOT_SUPPORTED_ERROR),
+});
 
 const HealthConnect = HealthConnectModule
   ? HealthConnectModule
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
+  : moduleProxy(LINKING_ERROR);
 
 export function isAvailable(): Promise<boolean> {
   return HealthConnect.isAvailable();
