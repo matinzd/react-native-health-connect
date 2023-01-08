@@ -13,14 +13,10 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   override fun getName(): String {
     return NAME
   }
-
-  private fun isProviderAvailable(): Boolean {
-    return manager.isAvailable()
-  }
-
+  
   @ReactMethod
   override fun isAvailable(promise: Promise) {
-    promise.resolve(isProviderAvailable())
+    return promise.resolve(manager.isAvailable())
   }
 
   @ReactMethod
