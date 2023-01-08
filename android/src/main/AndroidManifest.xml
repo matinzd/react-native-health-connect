@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.healthconnect">
+  package="dev.matinzd.healthconnect">
 
   <queries>
     <package android:name="com.google.android.apps.healthdata" />

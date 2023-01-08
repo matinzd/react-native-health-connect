@@ -93,6 +93,6 @@ if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
     libraryName = "HealthConnect"
-    codegenJavaPackageName = "com.healthconnect"
+    codegenJavaPackageName = "dev.matinzd.healthconnect"
   }
 }

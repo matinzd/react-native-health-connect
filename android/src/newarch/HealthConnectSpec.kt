@@ -1,4 +1,4 @@
-package com.healthconnect
+package dev.matinzd.healthconnect
 
 import com.facebook.react.bridge.ReactApplicationContext
 
