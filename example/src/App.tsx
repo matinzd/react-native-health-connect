@@ -5,6 +5,7 @@ import {
   initialize,
   insertRecords,
   isAvailable,
+  readRecords,
   requestPermission,
   revokeAllPermissions,
 } from 'react-native-health-connect';
@@ -29,6 +30,15 @@ export default function App() {
       },
     ]).then((ids) => {
       console.log('Records inserted ', { ids });
+    });
+  };
+
+  const readSampleData = () => {
+    readRecords('activeCaloriesBurned', {
+      startTime: '2021-08-01T00:00:00.000Z',
+      endTime: '2021-08-01T23:00:00.000Z',
+    }).then((result) => {
+      console.log('Retrieved records: ', { result });
     });
   };
 
@@ -61,6 +71,8 @@ export default function App() {
       <Button title="Revoke all permissions" onPress={revokeAllPermissions} />
       <View style={styles.spacer} />
       <Button title="Insert sample data" onPress={insertSampleData} />
+      <View style={styles.spacer} />
+      <Button title="Read sample data" onPress={readSampleData} />
     </View>
   );
 }

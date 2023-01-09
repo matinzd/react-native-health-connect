@@ -2,6 +2,8 @@ import { NativeModules, Platform } from 'react-native';
 import type {
   HealthConnectRecord,
   Permission,
+  ReadRecordsOptions,
+  RecordType,
 } from './NativeHealthConnect.types';
 import { HealthConnectError } from './errors';
 
@@ -59,6 +61,13 @@ export function requestPermission(
 
 export function revokeAllPermissions(): void {
   return HealthConnect.revokeAllPermissions();
+}
+
+export function readRecords(
+  recordType: RecordType,
+  options: ReadRecordsOptions
+): Promise<string[]> {
+  return HealthConnect.readRecords(recordType, options);
 }
 
 export function insertRecords(

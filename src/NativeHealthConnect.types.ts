@@ -69,14 +69,24 @@ interface BloodGlucoseRecord extends InstantaneousRecord {
   relationToMeal: number;
 }
 
+export type RecordType = HealthConnectRecord['recordType'];
+
+export interface Permission {
+  accessType: 'read' | 'write';
+  recordType: RecordType;
+}
+
+export interface ReadRecordsOptions {
+  startTime: string;
+  endTime: string;
+  dataOriginFilter?: string[];
+  ascendingOrder?: boolean;
+  pageSize?: number;
+  pageToken?: string;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
   | BasalMetabolicRateRecord
   | BloodGlucoseRecord;
-
-type RecordTypes = HealthConnectRecord['recordType'];
-export interface Permission {
-  accessType: 'read' | 'write';
-  recordType: RecordTypes;
-}
