@@ -25,7 +25,7 @@ class ReactHealthRecord {
       metadata.putString("id", meta.id)
       metadata.putString("clientRecordId", meta.clientRecordId)
       metadata.putDouble("clientRecordVersion", meta.clientRecordVersion.toDouble())
-      metadata.putString("dataOrigin", meta.dataOrigin.toString())
+      metadata.putString("dataOrigin", meta.dataOrigin.packageName)
       metadata.putString("lastModifiedTime", meta.lastModifiedTime.toString())
       metadata.putInt("device", meta.device?.type ?: 0)
       return metadata

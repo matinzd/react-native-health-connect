@@ -22,7 +22,7 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun requestPermission(readableArray: ReadableArray, promise: Promise){
+  override fun requestPermission(readableArray: ReadableArray, promise: Promise) {
     return manager.requestPermission(readableArray, promise)
   }
 

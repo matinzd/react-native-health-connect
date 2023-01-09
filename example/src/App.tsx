@@ -25,8 +25,8 @@ export default function App() {
       {
         recordType: 'activeCaloriesBurned',
         energy: { unit: 'kilocalories', value: 15000 },
-        startTime: '2021-08-01T10:00:00.000Z',
-        endTime: '2021-08-01T12:00:00.000Z',
+        startTime: '2023-01-09T12:00:00.405Z',
+        endTime: '2023-01-09T23:53:15.405Z',
       },
     ]).then((ids) => {
       console.log('Records inserted ', { ids });
@@ -35,10 +35,10 @@ export default function App() {
 
   const readSampleData = () => {
     readRecords('activeCaloriesBurned', {
-      startTime: '2021-08-01T00:00:00.000Z',
-      endTime: '2021-08-01T23:00:00.000Z',
+      startTime: '2023-01-09T12:00:00.405Z',
+      endTime: '2023-01-09T23:53:15.405Z',
     }).then((result) => {
-      console.log('Retrieved records: ', { result });
+      console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
     });
   };
 

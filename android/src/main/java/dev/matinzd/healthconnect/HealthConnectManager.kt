@@ -4,11 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.permission.HealthPermission
-import com.facebook.react.bridge.ActivityEventListener
-import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.*
 import dev.matinzd.healthconnect.permissions.HCPermissionManager
 import dev.matinzd.healthconnect.records.ReactHealthRecord
 import kotlinx.coroutines.CoroutineScope
@@ -33,10 +29,10 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
 
   private inline fun throwUnlessClientIsAvailable(promise: Promise, block: () -> Unit) {
     if (!this.isAvailable()) {
-      return promise.reject(ClientNotAvailable())
+      return HealthConnectException.rejectPromiseWithException(promise, ClientNotAvailable())
     }
     if (this.healthConnectClient == null) {
-      return promise.reject(ClientNotInitialized())
+      return HealthConnectException.rejectPromiseWithException(promise, ClientNotInitialized())
     }
     block()
   }
@@ -108,10 +104,13 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
   fun insertRecords(reactRecords: ReadableArray, promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
       CoroutineScope(Dispatchers.IO).launch {
-        val response =
-          healthConnectClient?.insertRecords(ReactHealthRecord.parseWriteRecords(reactRecords))
-
-        promise.resolve(ReactHealthRecord.parseWriteResponse(response))
+        try {
+          val records = ReactHealthRecord.parseWriteRecords(reactRecords)
+          val response = healthConnectClient?.insertRecords(records)
+          promise.resolve(ReactHealthRecord.parseWriteResponse(response))
+        } catch (e: Exception) {
+          HealthConnectException.rejectPromiseWithException(promise, e)
+        }
       }
     }
   }
@@ -119,9 +118,13 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
   fun readRecords(recordType: String, options: ReadableMap, promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
       CoroutineScope(Dispatchers.IO).launch {
-        val request = ReactHealthRecord.parseReadRequest(recordType, options)
-        val response = healthConnectClient?.readRecords(request)
-        promise.resolve(ReactHealthRecord.parseReadResponse(recordType, response))
+        try {
+          val request = ReactHealthRecord.parseReadRequest(recordType, options)
+          val response = healthConnectClient?.readRecords(request)
+          promise.resolve(ReactHealthRecord.parseReadResponse(recordType, response))
+        } catch (e: Exception) {
+          HealthConnectException.rejectPromiseWithException(promise, e)
+        }
       }
     }
   }
