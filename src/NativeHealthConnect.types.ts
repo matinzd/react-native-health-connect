@@ -22,9 +22,16 @@ interface BaseRecord {
   metadata?: Metadata;
 }
 
-interface BaseRecordWithTime extends BaseRecord {
+interface InstantaneousRecord extends BaseRecord {
   time: string;
   zoneOffset?: string;
+}
+
+interface IntervalRecord extends BaseRecord {
+  startTime: string;
+  startZoneOffset?: string;
+  endTime: string;
+  endZoneOffset?: string;
 }
 
 interface Metadata {
@@ -38,27 +45,23 @@ interface Metadata {
   device: number;
 }
 
-interface ActiveCaloriesBurnedRecord extends BaseRecord {
+interface ActiveCaloriesBurnedRecord extends IntervalRecord {
   recordType: 'activeCaloriesBurned';
-  startTime: string;
-  startZoneOffset?: string;
-  endTime: string;
-  endZoneOffset?: string;
   energy: Energy;
 }
 
-interface BasalBodyTemperatureRecord extends BaseRecordWithTime {
+interface BasalBodyTemperatureRecord extends InstantaneousRecord {
   recordType: 'basalBodyTemperature';
   temperature: Temperature;
   measurementLocation: number;
 }
 
-interface BasalMetabolicRateRecord extends BaseRecordWithTime {
+interface BasalMetabolicRateRecord extends InstantaneousRecord {
   recordType: 'basalMetabolicRate';
   basalMetabolicRate: Power;
 }
 
-interface BloodGlucoseRecord extends BaseRecordWithTime {
+interface BloodGlucoseRecord extends InstantaneousRecord {
   recordType: 'bloodGlucose';
   level: BloodGlucose;
   specimenSource: number;
@@ -72,9 +75,8 @@ export type HealthConnectRecord =
   | BasalMetabolicRateRecord
   | BloodGlucoseRecord;
 
+type RecordTypes = HealthConnectRecord['recordType'];
 export interface Permission {
   accessType: 'read' | 'write';
   recordType: RecordTypes;
 }
-
-export type RecordTypes = HealthConnectRecord['recordType'];

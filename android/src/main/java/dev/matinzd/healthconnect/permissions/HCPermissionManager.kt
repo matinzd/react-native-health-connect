@@ -22,6 +22,42 @@ class HCPermissionManager {
       "basalBodyTemperature" to BasalBodyTemperatureRecord::class,
       "basalMetabolicRate" to BasalMetabolicRateRecord::class,
       "bloodGlucose" to BloodGlucoseRecord::class,
+      "bloodPressure" to BloodPressureRecord::class,
+      "bodyFat" to BodyFatRecord::class,
+      "boneMass" to BoneMassRecord::class,
+      "cervicalMucus" to CervicalMucusRecord::class,
+      "cyclingPedalingCadence" to CyclingPedalingCadenceRecord::class,
+      "distance" to DistanceRecord::class,
+      "elevationGained" to ElevationGainedRecord::class,
+      "exerciseEvent" to ExerciseEventRecord::class,
+      "exerciseLap" to ExerciseLapRecord::class,
+      "exerciseRepetitions" to ExerciseRepetitionsRecord::class,
+      "exerciseSession" to ExerciseSessionRecord::class,
+      "floorsClimbed" to FloorsClimbedRecord::class,
+      "heartRate" to HeartRateRecord::class,
+      "height" to HeightRecord::class,
+      "hipCircumference" to HipCircumferenceRecord::class,
+      "hydration" to HydrationRecord::class,
+      "leanBodyMass" to LeanBodyMassRecord::class,
+      "menstruationFlow" to MenstruationFlowRecord::class,
+      "nutrition" to NutritionRecord::class,
+      "ovulationTest" to OvulationTestRecord::class,
+      "oxygenSaturation" to OxygenSaturationRecord::class,
+      "power" to PowerRecord::class,
+      "respiratoryRate" to RespiratoryRateRecord::class,
+      "restingHeartRate" to RestingHeartRateRecord::class,
+      "sexualActivity" to SexualActivityRecord::class,
+      "sleepSession" to SleepSessionRecord::class,
+      "sleepStage" to SleepStageRecord::class,
+      "speed" to SpeedRecord::class,
+      "stepsCadence" to StepsCadenceRecord::class,
+      "steps" to StepsRecord::class,
+      "swimmingStrokes" to SwimmingStrokesRecord::class,
+      "totalCaloriesBurned" to TotalCaloriesBurnedRecord::class,
+      "vo2Max" to Vo2MaxRecord::class,
+      "waistCircumference" to WaistCircumferenceRecord::class,
+      "weight" to WeightRecord::class,
+      "wheelchairPushes" to WheelchairPushesRecord::class
     )
 
     fun parsePermissions(reactPermissions: ReadableArray): Set<HealthPermission> {
@@ -44,7 +80,7 @@ class HCPermissionManager {
 
 
       results.forEach {
-        //TODO: parse incoming results and pass it back to javascript
+//        TODO("parse incoming results and pass it back to javascript")
         Log.d(HealthConnectModule.NAME, it.toString())
       }
 

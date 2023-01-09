@@ -60,7 +60,7 @@ To access health data from the Health Connect app in your own app, you need to a
 ## Features
 
 - Typescript :white_check_mark:
-- New architecture supported :white_check_mark:
+- Supports both old and new architecture :white_check_mark:
 
 ## Tips
 1. Keep in mind that this library is **Android only**.
