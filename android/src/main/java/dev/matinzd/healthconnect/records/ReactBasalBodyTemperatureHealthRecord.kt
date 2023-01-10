@@ -9,6 +9,7 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
+import dev.matinzd.healthconnect.HealthConnectUtils
 import java.time.Instant
 
 class ReactBasalBodyTemperatureHealthRecord : ReactHealthRecordImpl {
@@ -21,17 +22,6 @@ class ReactBasalBodyTemperatureHealthRecord : ReactHealthRecordImpl {
   }
 
   override fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<BasalBodyTemperatureRecord> {
-    return ReadRecordsRequest(
-      BasalBodyTemperatureRecord::class,
-      timeRangeFilter = TimeRangeFilter.between(
-        Instant.parse(readableMap.getString("startTime")),
-        Instant.parse(readableMap.getString("endTime")),
-      ),
-      dataOriginFilter = readableMap.getArray("dataOriginFilter")?.toArrayList()
-        ?.mapNotNull { DataOrigin(it.toString()) }?.toSet() ?: emptySet(),
-      ascendingOrder = readableMap.getBoolean("ascendingOrder"),
-      pageSize = readableMap.getInt("pageSize"),
-      pageToken = readableMap.getString("pageToken")
-    )
+    return HealthConnectUtils.convertReactRequestOptionsFromJS(BasalBodyTemperatureRecord::class, readableMap)
   }
 }

@@ -2,19 +2,18 @@ package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.records.Record
-import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
-import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Energy
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
+import dev.matinzd.healthconnect.HealthConnectUtils
 import java.time.Instant
 
 class ReactActiveCaloriesBurnedHealthRecord : ReactHealthRecordImpl {
-  private fun parseEnergy(energy: HashMap<*, *>): Energy {
+  private fun getEnergyFromJsMap(energy: HashMap<*, *>): Energy {
     val value = energy["value"] as Double
     return when (energy["unit"]) {
       "kilojoules" -> Energy.kilocalories(value)
@@ -25,13 +24,22 @@ class ReactActiveCaloriesBurnedHealthRecord : ReactHealthRecordImpl {
     }
   }
 
+  private fun energyToJsMap(energy: Energy): WritableNativeMap {
+    val map = WritableNativeMap()
+    map.putDouble("inCalories", energy.inCalories)
+    map.putDouble("inJoules", energy.inJoules)
+    map.putDouble("inKilocalories", energy.inKilocalories)
+    map.putDouble("inKilojoules", energy.inKilojoules)
+    return map
+  }
+
   override fun parseWriteRecord(readableArray: ReadableArray): List<ActiveCaloriesBurnedRecord> {
     return readableArray.toArrayList().mapNotNull {
       it as HashMap<*, *>
       ActiveCaloriesBurnedRecord(
         startTime = Instant.parse(it["startTime"].toString()),
         endTime = Instant.parse(it["endTime"].toString()),
-        energy = parseEnergy(it["energy"] as HashMap<*, *>),
+        energy =  getEnergyFromJsMap(it["energy"] as HashMap<*, *>),
         endZoneOffset = null,
         startZoneOffset = null
       )
@@ -39,18 +47,7 @@ class ReactActiveCaloriesBurnedHealthRecord : ReactHealthRecordImpl {
   }
 
   override fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<ActiveCaloriesBurnedRecord> {
-    return ReadRecordsRequest(
-      ActiveCaloriesBurnedRecord::class,
-      timeRangeFilter = TimeRangeFilter.between(
-        Instant.parse(readableMap.getString("startTime")),
-        Instant.parse(readableMap.getString("endTime")),
-      ),
-      dataOriginFilter = readableMap.getArray("dataOriginFilter")?.toArrayList()
-        ?.mapNotNull { DataOrigin(it.toString()) }?.toSet() ?: emptySet(),
-      ascendingOrder = if(readableMap.hasKey("ascendingOrder")) readableMap.getBoolean("ascendingOrder") else true,
-      pageSize = if(readableMap.hasKey("pageSize"))  readableMap.getInt("pageSize") else 1000,
-      pageToken = if(readableMap.hasKey("pageToken"))  readableMap.getString("pageToken") else null,
-    )
+    return HealthConnectUtils.convertReactRequestOptionsFromJS(ActiveCaloriesBurnedRecord::class, readableMap)
   }
 
   override fun parseReadResponse(response: ReadRecordsResponse<out Record>?): WritableNativeArray {
@@ -61,7 +58,7 @@ class ReactActiveCaloriesBurnedHealthRecord : ReactHealthRecordImpl {
       val reactMap = WritableNativeMap()
       reactMap.putString("startTime", record.startTime.toString())
       reactMap.putString("endTime", record.startTime.toString())
-      reactMap.putDouble("energy", record.energy.inCalories)
+      reactMap.putMap("energy", energyToJsMap(record.energy))
       reactMap.putMap("metadata", ReactHealthRecord.extractMetadata(record.metadata))
       reactArray.pushMap(reactMap)
     }

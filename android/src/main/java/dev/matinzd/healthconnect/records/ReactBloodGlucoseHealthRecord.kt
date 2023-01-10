@@ -9,6 +9,7 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
+import dev.matinzd.healthconnect.HealthConnectUtils
 import java.time.Instant
 
 class ReactBloodGlucoseHealthRecord : ReactHealthRecordImpl {
@@ -21,17 +22,6 @@ class ReactBloodGlucoseHealthRecord : ReactHealthRecordImpl {
   }
 
   override fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<BloodGlucoseRecord> {
-    return ReadRecordsRequest(
-      BloodGlucoseRecord::class,
-      timeRangeFilter = TimeRangeFilter.between(
-        Instant.parse(readableMap.getString("startTime")),
-        Instant.parse(readableMap.getString("endTime")),
-      ),
-      dataOriginFilter = readableMap.getArray("dataOriginFilter")?.toArrayList()
-        ?.mapNotNull { DataOrigin(it.toString()) }?.toSet() ?: emptySet(),
-      ascendingOrder = readableMap.getBoolean("ascendingOrder"),
-      pageSize = readableMap.getInt("pageSize"),
-      pageToken = readableMap.getString("pageToken")
-    )
+    return HealthConnectUtils.convertReactRequestOptionsFromJS(BloodGlucoseRecord::class, readableMap)
   }
 }

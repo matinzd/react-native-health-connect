@@ -22,33 +22,19 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
     context.addActivityEventListener(this)
   }
 
-  var permissionPromise: Promise? = null
+  var pendingPromise: Promise? = null
   var latestPermissions: Set<HealthPermission>? = null
 
-  val isInitialized get() = healthConnectClient != null
+  private val isInitialized get() = healthConnectClient != null
 
   private inline fun throwUnlessClientIsAvailable(promise: Promise, block: () -> Unit) {
     if (!this.isAvailable()) {
-      return HealthConnectException.rejectPromiseWithException(promise, ClientNotAvailable())
+      return promise.rejectWithException(ClientNotAvailable())
     }
-    if (this.healthConnectClient == null) {
-      return HealthConnectException.rejectPromiseWithException(promise, ClientNotInitialized())
+    if (!isInitialized) {
+      return promise.rejectWithException(ClientNotInitialized())
     }
     block()
-  }
-
-  private fun getExceptionCode(exception: Exception): String {
-    return when (exception) {
-      is UnsupportedOperationException -> {
-        "SDK_VERSION_ERROR";
-      }
-      is IllegalStateException -> {
-        "NOT_AVAILABLE"
-      }
-      else -> {
-        "UNKNOWN_ERROR"
-      }
-    }
   }
 
   override fun onActivityResult(
@@ -58,13 +44,11 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
     intent: Intent?
   ) {
     if (requestCode == REQUEST_CODE) {
-      permissionPromise?.resolve(HCPermissionManager.parseResult(resultCode, intent))
+      pendingPromise?.resolve(HCPermissionManager.parseResult(resultCode, intent))
     }
   }
 
-  override fun onNewIntent(p0: Intent?) {
-    // TODO
-  }
+  override fun onNewIntent(intent: Intent?) {}
 
   fun isAvailable(): Boolean {
     return HealthConnectClient.isProviderAvailable(context)
@@ -77,13 +61,13 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
       }
       promise.resolve(true)
     } catch (e: Exception) {
-      promise.reject(getExceptionCode(e), e.message)
+      promise.rejectWithException(e)
     }
   }
 
   fun requestPermission(reactPermissions: ReadableArray, promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
-      this.permissionPromise = promise
+      this.pendingPromise = promise
       this.latestPermissions = HCPermissionManager.parsePermissions(reactPermissions)
       val intent = HCPermissionManager.healthPermissionContract.createIntent(
         context,
@@ -109,7 +93,7 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
           val response = healthConnectClient?.insertRecords(records)
           promise.resolve(ReactHealthRecord.parseWriteResponse(response))
         } catch (e: Exception) {
-          HealthConnectException.rejectPromiseWithException(promise, e)
+          promise.rejectWithException(e)
         }
       }
     }
@@ -123,7 +107,7 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
           val response = healthConnectClient?.readRecords(request)
           promise.resolve(ReactHealthRecord.parseReadResponse(recordType, response))
         } catch (e: Exception) {
-          HealthConnectException.rejectPromiseWithException(promise, e)
+          promise.rejectWithException(e)
         }
       }
     }
