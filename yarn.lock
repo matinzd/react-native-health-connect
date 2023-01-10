@@ -1101,6 +1101,22 @@
     resolve-global "1.0.0"
     yargs "^17.0.0"
 
+"@commitlint/cli@^17.4.1":
+  version "17.4.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-17.4.1.tgz#71086653a42abafe5519c6c5f8ada35b17f1dc53"
+  integrity sha512-W8OJwz+izY+fVwyUt1HveCDmABMZNRVZHSVPw/Bh9Y62tp11SmmQaycgbsYLMiMy7JGn4mAJqEGlSHS9Uti9ZQ==
+  dependencies:
+    "@commitlint/format" "^17.4.0"
+    "@commitlint/lint" "^17.4.0"
+    "@commitlint/load" "^17.4.1"
+    "@commitlint/read" "^17.4.0"
+    "@commitlint/types" "^17.4.0"
+    execa "^5.0.0"
+    lodash.isfunction "^3.0.9"
+    resolve-from "5.0.0"
+    resolve-global "1.0.0"
+    yargs "^17.0.0"
+
 "@commitlint/config-conventional@^17.0.2":
   version "17.4.0"
   resolved "https://registry.yarnpkg.com/@commitlint/config-conventional/-/config-conventional-17.4.0.tgz#9188d793886d8a1c633834602f06a642dd16ed64"
@@ -1168,6 +1184,26 @@
     "@commitlint/execute-rule" "^17.4.0"
     "@commitlint/resolve-extends" "^17.4.0"
     "@commitlint/types" "^17.4.0"
+    chalk "^4.1.0"
+    cosmiconfig "^8.0.0"
+    cosmiconfig-typescript-loader "^4.0.0"
+    lodash.isplainobject "^4.0.6"
+    lodash.merge "^4.6.2"
+    lodash.uniq "^4.5.0"
+    resolve-from "^5.0.0"
+    ts-node "^10.8.1"
+    typescript "^4.6.4"
+
+"@commitlint/load@^17.4.1":
+  version "17.4.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/load/-/load-17.4.1.tgz#e1073e0264c84b304f5ab22862217152daca5d27"
+  integrity sha512-6A7/LhIaQpL4ieciIDcVvK2d5z/UI1GBrtDaHm6sQSCL0265clB2/F7XKQNTJHXv9yG4LByT2r+QCpM4GugIfw==
+  dependencies:
+    "@commitlint/config-validator" "^17.4.0"
+    "@commitlint/execute-rule" "^17.4.0"
+    "@commitlint/resolve-extends" "^17.4.0"
+    "@commitlint/types" "^17.4.0"
+    "@types/node" "*"
     chalk "^4.1.0"
     cosmiconfig "^8.0.0"
     cosmiconfig-typescript-loader "^4.0.0"
@@ -5061,6 +5097,11 @@ human-signals@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-3.0.1.tgz#c740920859dafa50e5a3222da9d3bf4bb0e5eef5"
   integrity sha512-rQLskxnM/5OCldHo+wNXbpVgDn5A17CUoKX+7Sokwaknlq7CdSnphy0W39GU8dw59XiCXmFXDg4fRuckQRKewQ==
+
+husky@^8.0.3:
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
+  integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==
 
 iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"
