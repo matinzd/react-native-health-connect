@@ -5,7 +5,7 @@ import com.facebook.react.bridge.Promise
 import okio.IOException
 
 class ClientNotInitialized : Exception("Health Connect client is not initialized")
-class ClientNotAvailable : Exception( "Client is not available on this device")
+class ClientNotAvailable : Exception("Client is not available on this device")
 class InvalidRecordType : Exception("Record type is not valid")
 
 fun Promise.rejectWithException(exception: Exception) {
@@ -22,5 +22,5 @@ fun Promise.rejectWithException(exception: Exception) {
     else -> "UNKNOWN_ERROR"
   }
 
-  this.reject(code, exception.message)
+  this.reject(code, exception.message, exception)
 }
