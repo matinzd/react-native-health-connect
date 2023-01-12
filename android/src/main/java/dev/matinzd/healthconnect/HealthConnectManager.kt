@@ -89,7 +89,7 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
         context,
         latestPermissions!!
       )
-      
+
       context.startActivityForResult(intent, HealthConnectManager.REQUEST_CODE, bundle)
     }
   }

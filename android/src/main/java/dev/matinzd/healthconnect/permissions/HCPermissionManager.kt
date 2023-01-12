@@ -1,11 +1,14 @@
 package dev.matinzd.healthconnect.permissions
 
 import android.content.Intent
+import android.util.Log
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.*
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.WritableNativeArray
+import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.InvalidRecordType
 import kotlin.reflect.KClass
 
@@ -14,7 +17,7 @@ class HCPermissionManager(providerPackageName: String) {
     PermissionController.createRequestPermissionResultContract(providerPackageName)
 
   companion object {
-    internal const val DEFAULT_PROVIDER_PACKAGE_NAME = "com.google.android.apps.healthdata"
+    private const val DEFAULT_PROVIDER_PACKAGE_NAME = "com.google.android.apps.healthdata"
 
     private val permissionClassMap: Map<String, KClass<out Record>> = mapOf(
       "activeCaloriesBurned" to ActiveCaloriesBurnedRecord::class,
@@ -79,12 +82,27 @@ class HCPermissionManager(providerPackageName: String) {
       intent: Intent?,
       pendingPromise: Promise?
     ) {
-      val providerPackageName = intent?.getStringExtra("providerPackageName") ?: DEFAULT_PROVIDER_PACKAGE_NAME
-      val result = HCPermissionManager(providerPackageName).healthPermissionContract.parseResult(
+      val providerPackageName =
+        intent?.getStringExtra("providerPackageName") ?: DEFAULT_PROVIDER_PACKAGE_NAME
+      val contract = HCPermissionManager(providerPackageName).healthPermissionContract
+      val result = contract.parseResult(
         resultCode,
         intent
       )
-      pendingPromise?.resolve(result.map { it.toString() })
+
+      val grantedPermissions = WritableNativeArray()
+      result.forEach {
+        it
+        val map = WritableNativeMap()
+        // TODO: Find a way to properly parse permission result without suppression
+        @Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+        map.putString("recordType", it.recordType.simpleName)
+        @Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+        map.putInt("accessType", it.accessType)
+        grantedPermissions.pushMap(map)
+      }
+
+      pendingPromise?.resolve(grantedPermissions)
     }
   }
 }
