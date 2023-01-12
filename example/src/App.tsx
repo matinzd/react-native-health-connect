@@ -60,18 +60,13 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Button title="Initialize" onPress={onInitialize} />
-      <View style={styles.spacer} />
       <Button title="Check availability" onPress={checkAvailability} />
-      <View style={styles.spacer} />
       <Button
         title="Request sample permissions"
         onPress={requestSamplePermissions}
       />
-      <View style={styles.spacer} />
       <Button title="Revoke all permissions" onPress={revokeAllPermissions} />
-      <View style={styles.spacer} />
       <Button title="Insert sample data" onPress={insertSampleData} />
-      <View style={styles.spacer} />
       <Button title="Read sample data" onPress={readSampleData} />
     </View>
   );
@@ -82,13 +77,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    rowGap: 16,
   },
   box: {
     width: 60,
     height: 60,
     marginVertical: 20,
-  },
-  spacer: {
-    marginVertical: 16,
   },
 });
