@@ -40,12 +40,18 @@ const HealthConnect = HealthConnectModule
   ? HealthConnectModule
   : moduleProxy(LINKING_ERROR);
 
-export function isAvailable(): Promise<boolean> {
-  return HealthConnect.isAvailable();
+const DEFAULT_PROVIDER_PACKAGE_NAME = 'com.google.android.apps.healthdata';
+
+export function isAvailable(
+  providerPackageNames: string[] = [DEFAULT_PROVIDER_PACKAGE_NAME]
+): Promise<boolean> {
+  return HealthConnect.isAvailable(providerPackageNames);
 }
 
-export function initialize(): Promise<boolean> {
-  return HealthConnect.initialize();
+export function initialize(
+  providerPackageNames: string[] = [DEFAULT_PROVIDER_PACKAGE_NAME]
+): Promise<boolean> {
+  return HealthConnect.initialize(providerPackageNames);
 }
 
 /**
@@ -54,9 +60,10 @@ export function initialize(): Promise<boolean> {
  * @returns granted permissions
  */
 export function requestPermission(
-  permissions: Permission[]
+  permissions: Permission[],
+  providerPackageName = DEFAULT_PROVIDER_PACKAGE_NAME
 ): Promise<Permission> {
-  return HealthConnect.requestPermission(permissions);
+  return HealthConnect.requestPermission(permissions, providerPackageName);
 }
 
 export function revokeAllPermissions(): void {

@@ -6,13 +6,13 @@ abstract class HealthConnectSpec internal constructor(context: ReactApplicationC
   ReactContextBaseJavaModule(context) {
 
   @ReactMethod
-  abstract fun isAvailable(promise: Promise)
+  abstract fun isAvailable(providerPackageNames: ReadableArray, promise: Promise)
 
   @ReactMethod
-  abstract fun initialize(promise: Promise);
+  abstract fun initialize(providerPackageNames: ReadableArray, promise: Promise);
 
   @ReactMethod
-  abstract fun requestPermission(permissions: ReadableArray, promise: Promise);
+  abstract fun requestPermission(permissions: ReadableArray, providerPackageName: String, promise: Promise);
 
   @ReactMethod
   abstract fun revokeAllPermissions(promise: Promise);

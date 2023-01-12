@@ -2,15 +2,12 @@ package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.records.BloodGlucoseRecord
 import androidx.health.connect.client.records.Record
-import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
-import androidx.health.connect.client.time.TimeRangeFilter
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
-import dev.matinzd.healthconnect.HealthConnectUtils
-import java.time.Instant
+import dev.matinzd.healthconnect.convertReactRequestOptionsFromJS
 
 class ReactBloodGlucoseHealthRecord : ReactHealthRecordImpl {
   override fun parseWriteRecord(readableArray: ReadableArray): List<Record> {
@@ -22,6 +19,6 @@ class ReactBloodGlucoseHealthRecord : ReactHealthRecordImpl {
   }
 
   override fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<BloodGlucoseRecord> {
-    return HealthConnectUtils.convertReactRequestOptionsFromJS(BloodGlucoseRecord::class, readableMap)
+    return convertReactRequestOptionsFromJS(BloodGlucoseRecord::class, readableMap)
   }
 }

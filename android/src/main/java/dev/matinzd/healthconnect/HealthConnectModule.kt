@@ -12,18 +12,22 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun isAvailable(promise: Promise) {
-    return promise.resolve(manager.isAvailable())
+  override fun isAvailable(providerPackageNames: ReadableArray, promise: Promise) {
+    return manager.isAvailable(providerPackageNames, promise)
   }
 
   @ReactMethod
-  override fun initialize(promise: Promise) {
-    return manager.initialize(promise)
+  override fun initialize(providerPackageNames: ReadableArray, promise: Promise) {
+    return manager.initialize(providerPackageNames, promise)
   }
 
   @ReactMethod
-  override fun requestPermission(readableArray: ReadableArray, promise: Promise) {
-    return manager.requestPermission(readableArray, promise)
+  override fun requestPermission(
+    readableArray: ReadableArray,
+    providerPackageName: String,
+    promise: Promise
+  ) {
+    return manager.requestPermission(readableArray, providerPackageName, promise)
   }
 
   @ReactMethod

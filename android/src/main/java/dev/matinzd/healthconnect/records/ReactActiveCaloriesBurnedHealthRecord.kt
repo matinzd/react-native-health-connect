@@ -9,7 +9,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.HealthConnectUtils
+import dev.matinzd.healthconnect.convertReactRequestOptionsFromJS
 import java.time.Instant
 
 class ReactActiveCaloriesBurnedHealthRecord : ReactHealthRecordImpl {
@@ -47,7 +47,7 @@ class ReactActiveCaloriesBurnedHealthRecord : ReactHealthRecordImpl {
   }
 
   override fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<ActiveCaloriesBurnedRecord> {
-    return HealthConnectUtils.convertReactRequestOptionsFromJS(ActiveCaloriesBurnedRecord::class, readableMap)
+    return convertReactRequestOptionsFromJS(ActiveCaloriesBurnedRecord::class, readableMap)
   }
 
   override fun parseReadResponse(response: ReadRecordsResponse<out Record>?): WritableNativeArray {
