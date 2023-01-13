@@ -25,12 +25,12 @@ class ReactActiveCaloriesBurnedHealthRecord : ReactHealthRecordImpl {
   }
 
   private fun energyToJsMap(energy: Energy): WritableNativeMap {
-    val map = WritableNativeMap()
-    map.putDouble("inCalories", energy.inCalories)
-    map.putDouble("inJoules", energy.inJoules)
-    map.putDouble("inKilocalories", energy.inKilocalories)
-    map.putDouble("inKilojoules", energy.inKilojoules)
-    return map
+    return WritableNativeMap().apply {
+      putDouble("inCalories", energy.inCalories)
+      putDouble("inJoules", energy.inJoules)
+      putDouble("inKilocalories", energy.inKilocalories)
+      putDouble("inKilojoules", energy.inKilojoules)
+    }
   }
 
   override fun parseWriteRecord(readableArray: ReadableArray): List<ActiveCaloriesBurnedRecord> {
@@ -39,7 +39,7 @@ class ReactActiveCaloriesBurnedHealthRecord : ReactHealthRecordImpl {
       ActiveCaloriesBurnedRecord(
         startTime = Instant.parse(it["startTime"].toString()),
         endTime = Instant.parse(it["endTime"].toString()),
-        energy =  getEnergyFromJsMap(it["energy"] as HashMap<*, *>),
+        energy = getEnergyFromJsMap(it["energy"] as HashMap<*, *>),
         endZoneOffset = null,
         startZoneOffset = null
       )
@@ -51,16 +51,19 @@ class ReactActiveCaloriesBurnedHealthRecord : ReactHealthRecordImpl {
   }
 
   override fun parseReadResponse(response: ReadRecordsResponse<out Record>?): WritableNativeArray {
+    //TODO: find a better way to properly cast to upper classes
     @Suppress("UNCHECKED_CAST")
     val castedResponse = response as ReadRecordsResponse<ActiveCaloriesBurnedRecord>
-    val reactArray = WritableNativeArray()
-    for (record in castedResponse.records) {
-      val reactMap = WritableNativeMap()
-      reactMap.putString("startTime", record.startTime.toString())
-      reactMap.putString("endTime", record.startTime.toString())
-      reactMap.putMap("energy", energyToJsMap(record.energy))
-      reactMap.putMap("metadata", ReactHealthRecord.extractMetadata(record.metadata))
-      reactArray.pushMap(reactMap)
+    val reactArray = WritableNativeArray().apply {
+      for (record in castedResponse.records) {
+        val reactMap = WritableNativeMap().apply {
+          putString("startTime", record.startTime.toString())
+          putString("endTime", record.startTime.toString())
+          putMap("energy", energyToJsMap(record.energy))
+          putMap("metadata", ReactHealthRecord.extractMetadata(record.metadata))
+        }
+        pushMap(reactMap)
+      }
     }
     return reactArray
   }

@@ -21,14 +21,14 @@ class ReactHealthRecord {
     )
 
     fun extractMetadata(meta: Metadata): WritableNativeMap {
-      val metadata = WritableNativeMap()
-      metadata.putString("id", meta.id)
-      metadata.putString("clientRecordId", meta.clientRecordId)
-      metadata.putDouble("clientRecordVersion", meta.clientRecordVersion.toDouble())
-      metadata.putString("dataOrigin", meta.dataOrigin.packageName)
-      metadata.putString("lastModifiedTime", meta.lastModifiedTime.toString())
-      metadata.putInt("device", meta.device?.type ?: 0)
-      return metadata
+      return WritableNativeMap().apply {
+        putString("id", meta.id)
+        putString("clientRecordId", meta.clientRecordId)
+        putDouble("clientRecordVersion", meta.clientRecordVersion.toDouble())
+        putString("dataOrigin", meta.dataOrigin.packageName)
+        putString("lastModifiedTime", meta.lastModifiedTime.toString())
+        putInt("device", meta.device?.type ?: 0)
+      }
     }
 
     fun parseWriteRecords(reactRecords: ReadableArray): List<Record> {

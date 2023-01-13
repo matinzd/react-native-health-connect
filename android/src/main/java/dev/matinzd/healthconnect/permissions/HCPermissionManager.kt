@@ -90,16 +90,16 @@ class HCPermissionManager(providerPackageName: String) {
         intent
       )
 
-      val grantedPermissions = WritableNativeArray()
-      result.forEach {
-        it
-        val map = WritableNativeMap()
-        // TODO: Find a way to properly parse permission result without suppression
-        @Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-        map.putString("recordType", it.recordType.simpleName)
-        @Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-        map.putInt("accessType", it.accessType)
-        grantedPermissions.pushMap(map)
+      val grantedPermissions = WritableNativeArray().apply {
+        result.forEach {
+          val map = WritableNativeMap()
+          // TODO: Find a way to properly parse permission result without suppression
+          @Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+          map.putString("recordType", it.recordType.simpleName)
+          @Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+          map.putInt("accessType", it.accessType)
+          pushMap(map)
+        }
       }
 
       pendingPromise?.resolve(grantedPermissions)

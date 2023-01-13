@@ -82,8 +82,9 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
       this.pendingPromise = promise
       this.latestPermissions = HCPermissionManager.parsePermissions(reactPermissions)
 
-      val bundle = Bundle()
-      bundle.putString("providerPackageName", providerPackageName)
+      val bundle = Bundle().apply {
+        putString("providerPackageName", providerPackageName)
+      }
 
       val intent = HCPermissionManager(providerPackageName).healthPermissionContract.createIntent(
         context,
