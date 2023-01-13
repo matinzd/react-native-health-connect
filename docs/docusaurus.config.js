@@ -9,7 +9,7 @@ const config = {
   title: 'React Native Health Connect',
   tagline: '',
   url: 'https://matinzd.github.io',
-  baseUrl: '/',
+  baseUrl: '/react-native-health-connect/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
@@ -18,7 +18,7 @@ const config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-
+  organizationName: 'matinzd',
   presets: [
     [
       'classic',

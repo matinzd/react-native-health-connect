@@ -19,3 +19,20 @@ Health Connect is now currently on alpha channel. Check [here](https://developer
 :::
 
 Read more about health connect architecture [here](https://developer.android.com/guide/health-and-fitness/health-connect/platform-overview/architecture).
+
+## Features
+
+- Typescript :white_check_mark:
+- Supports both old and new architecture :white_check_mark:
+
+## Tips
+
+1. Keep in mind that this library is **Android only**.
+1. Health Connect is now currently on alpha version. Check [here](https://developer.android.com/jetpack/androidx/releases/health-connect).
+1. If the user declines your permission request twice, your app is permanently locked out, and cannot request permissions again.
+
+Read more about health connect architecture [here](https://developer.android.com/guide/health-and-fitness/health-connect/platform-overview/architecture).
+
+## License
+
+MIT
