@@ -3,6 +3,7 @@ import type {
   HealthConnectRecord,
   Permission,
   ReadRecordsOptions,
+  RecordResult,
   RecordType,
 } from './NativeHealthConnect.types';
 import { HealthConnectError } from './errors';
@@ -70,10 +71,10 @@ export function revokeAllPermissions(): void {
   return HealthConnect.revokeAllPermissions();
 }
 
-export function readRecords(
-  recordType: RecordType,
+export function readRecords<T extends RecordType>(
+  recordType: T,
   options: ReadRecordsOptions
-): Promise<string[]> {
+): Promise<RecordResult<T>[]> {
   return HealthConnect.readRecords(recordType, options);
 }
 
