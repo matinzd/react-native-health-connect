@@ -1,4 +1,4 @@
-package dev.matinzd.healthconnect
+package dev.matinzd.healthconnect.utils
 
 import android.os.RemoteException
 import com.facebook.react.bridge.Promise

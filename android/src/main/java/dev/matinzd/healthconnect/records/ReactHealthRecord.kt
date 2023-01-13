@@ -7,35 +7,31 @@ import androidx.health.connect.client.response.ReadRecordsResponse
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
-import dev.matinzd.healthconnect.InvalidRecordType
-import androidx.health.connect.client.records.metadata.Metadata
-import com.facebook.react.bridge.WritableNativeMap
+import dev.matinzd.healthconnect.utils.InvalidRecordType
 
 class ReactHealthRecord {
   companion object {
-    private val recordParserClassMap: Map<String, Class<out ReactHealthRecordImpl>> = mapOf(
-      "activeCaloriesBurned" to ReactActiveCaloriesBurnedHealthRecord::class.java,
-      "basalBodyTemperature" to ReactBasalBodyTemperatureHealthRecord::class.java,
-      "basalMetabolicRate" to ReactBasalMetabolicRateHealthRecord::class.java,
-      "bloodGlucose" to ReactBloodGlucoseHealthRecord::class.java,
-    )
+    private val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<*>>> =
+      mapOf(
+        "activeCaloriesBurned" to ReactActiveCaloriesBurnedRecord::class.java,
+        "basalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
+        "basalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,
+        "bloodGlucose" to ReactBloodGlucoseRecord::class.java,
+      )
 
-    fun extractMetadata(meta: Metadata): WritableNativeMap {
-      return WritableNativeMap().apply {
-        putString("id", meta.id)
-        putString("clientRecordId", meta.clientRecordId)
-        putDouble("clientRecordVersion", meta.clientRecordVersion.toDouble())
-        putString("dataOrigin", meta.dataOrigin.packageName)
-        putString("lastModifiedTime", meta.lastModifiedTime.toString())
-        putInt("device", meta.device?.type ?: 0)
+    private fun <T : Record> createReactHealthRecordInstance(recordType: String?): ReactHealthRecordImpl<T> {
+      if (!reactRecordTypeToReactClassMap.containsKey(recordType)) {
+        throw InvalidRecordType()
       }
+
+      val reactClass = reactRecordTypeToReactClassMap[recordType]
+      return reactClass?.newInstance() as ReactHealthRecordImpl<T>
     }
 
     fun parseWriteRecords(reactRecords: ReadableArray): List<Record> {
       val recordType = reactRecords.getMap(0).getString("recordType")
 
-      val recordClass = recordParserClassMap[recordType]?.newInstance()
-        ?: throw InvalidRecordType()
+      val recordClass = createReactHealthRecordInstance<Record>(recordType)
 
       return recordClass.parseWriteRecord(reactRecords)
     }
@@ -46,17 +42,17 @@ class ReactHealthRecord {
       return ids
     }
 
-    fun parseReadRequest(recordType: String, reactRequest: ReadableMap): ReadRecordsRequest<out Record> {
-      val recordClass = recordParserClassMap[recordType]?.newInstance()
-        ?: throw InvalidRecordType()
+    fun parseReadRequest(recordType: String, reactRequest: ReadableMap): ReadRecordsRequest<*> {
+      val recordClass = createReactHealthRecordInstance<Record>(recordType)
 
       return recordClass.parseReadRequest(reactRequest)
     }
 
-    fun parseReadResponse(recordType: String, response: ReadRecordsResponse<out Record>?): WritableNativeArray {
-      val recordClass = recordParserClassMap[recordType]?.newInstance()
-        ?: throw InvalidRecordType()
-
+    fun parseReadResponse(
+      recordType: String,
+      response: ReadRecordsResponse<out Record>
+    ): WritableNativeArray {
+      val recordClass = createReactHealthRecordInstance<Record>(recordType)
       return recordClass.parseReadResponse(response)
     }
   }

@@ -7,8 +7,8 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 
-interface ReactHealthRecordImpl {
-  fun parseWriteRecord(readableArray: ReadableArray): List<Record>
-  fun parseReadResponse(response: ReadRecordsResponse<out Record>?): WritableNativeArray
-  fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<out Record>
+interface ReactHealthRecordImpl<T: Record> {
+  fun parseWriteRecord(readableArray: ReadableArray): List<T>
+  fun parseReadResponse(response: ReadRecordsResponse<out T>): WritableNativeArray
+  fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<T>
 }

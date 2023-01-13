@@ -8,6 +8,9 @@ import androidx.health.connect.client.permission.HealthPermission
 import com.facebook.react.bridge.*
 import dev.matinzd.healthconnect.permissions.HCPermissionManager
 import dev.matinzd.healthconnect.records.ReactHealthRecord
+import dev.matinzd.healthconnect.utils.ClientNotInitialized
+import dev.matinzd.healthconnect.utils.convertProviderPackageNamesFromJS
+import dev.matinzd.healthconnect.utils.rejectWithException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
