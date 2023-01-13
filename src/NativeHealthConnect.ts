@@ -14,6 +14,7 @@ type ReadRecordsOptions = {
   pageToken?: string;
 };
 
+//@TODO: Fix and refactor types when codegen starts supporting type imports and generics
 export interface Spec extends TurboModule {
   isAvailable(providerPackageNames: string[]): Promise<boolean>;
   initialize(providerPackageNames: string[]): Promise<boolean>;
@@ -26,7 +27,7 @@ export interface Spec extends TurboModule {
   readRecords(
     recordType: string,
     options: ReadRecordsOptions
-  ): Promise<string[]>;
+  ): Promise<Array<{}>>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('HealthConnect');

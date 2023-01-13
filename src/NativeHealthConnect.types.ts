@@ -90,3 +90,20 @@ export type HealthConnectRecord =
   | BasalBodyTemperatureRecord
   | BasalMetabolicRateRecord
   | BloodGlucoseRecord;
+
+interface ActiveCaloriesBurnedRecordResult
+  extends Omit<ActiveCaloriesBurnedRecord, 'energy'> {
+  energy: {
+    inCalories: number;
+    inJoules: number;
+    inKilocalories: number;
+    inKilojoules: number;
+  };
+}
+
+type HealthConnectRecordResult = ActiveCaloriesBurnedRecordResult;
+
+export type RecordResult<T extends RecordType> = Extract<
+  HealthConnectRecordResult,
+  { recordType: T }
+>;
