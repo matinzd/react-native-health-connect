@@ -53,7 +53,7 @@ interface ActiveCaloriesBurnedRecord extends IntervalRecord {
 interface BasalBodyTemperatureRecord extends InstantaneousRecord {
   recordType: 'basalBodyTemperature';
   temperature: Temperature;
-  measurementLocation: number;
+  measurementLocation?: number;
 }
 
 interface BasalMetabolicRateRecord extends InstantaneousRecord {

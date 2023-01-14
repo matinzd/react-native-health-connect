@@ -1,6 +1,7 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.records.BasalBodyTemperatureRecord
+import androidx.health.connect.client.records.BodyTemperatureMeasurementLocation
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
 import androidx.health.connect.client.units.Temperature
@@ -19,7 +20,7 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
       throw InvalidTemperature()
     }
 
-    val value = temperature.getDouble("temperature")
+    val value = temperature.getDouble("value")
     return when (temperature.getString("unit")) {
       "fahrenheit" -> Temperature.fahrenheit(value)
       "calories" -> Temperature.celsius(value)
@@ -42,8 +43,10 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
           BasalBodyTemperatureRecord(
             time = Instant.parse(record.getString("time")),
             zoneOffset = null,
-            temperature = getTemperatureFromJsMap(record.getMap("record")),
-            measurementLocation = record.getInt("measurementLocation")
+            temperature = getTemperatureFromJsMap(record.getMap("temperature")),
+            measurementLocation = if (record.hasKey("measurementLocation")) record.getInt(
+              "measurementLocation"
+            ) else BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_UNKNOWN
           )
         )
       }
