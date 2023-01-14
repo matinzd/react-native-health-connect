@@ -6,6 +6,8 @@ import okio.IOException
 
 class ClientNotInitialized : Exception("Health Connect client is not initialized")
 class InvalidRecordType : Exception("Record type is not valid")
+class InvalidTemperature : Exception("Temperature is not valid")
+class InvalidEnergy : Exception("Energy is not valid")
 
 fun Promise.rejectWithException(exception: Exception) {
   val code = when (exception) {
@@ -17,6 +19,8 @@ fun Promise.rejectWithException(exception: Exception) {
     is RemoteException -> "UNDERLYING_ERROR"
     is InvalidRecordType -> "INVALID_RECORD_TYPE"
     is ClientNotInitialized -> "CLIENT_NOT_INITIALIZED"
+    is InvalidTemperature -> "INVALID_TEMPERATURE"
+    is InvalidEnergy -> "INVALID_ENERGY"
     else -> "UNKNOWN_ERROR"
   }
 

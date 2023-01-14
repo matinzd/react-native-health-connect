@@ -8,14 +8,19 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
+import dev.matinzd.healthconnect.utils.InvalidTemperature
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
 import java.time.Instant
 
 class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatureRecord> {
-  private fun getTemperatureFromJsMap(temperature: HashMap<*, *>): Temperature {
-    val value = temperature["value"] as Double
-    return when (temperature["unit"]) {
+  private fun getTemperatureFromJsMap(temperature: ReadableMap?): Temperature {
+    if (temperature == null) {
+      throw InvalidTemperature()
+    }
+
+    val value = temperature.getDouble("temperature")
+    return when (temperature.getString("unit")) {
       "fahrenheit" -> Temperature.fahrenheit(value)
       "calories" -> Temperature.celsius(value)
       else -> Temperature.celsius(value)
@@ -29,17 +34,20 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
     }
   }
 
-
-  override fun parseWriteRecord(readableArray: ReadableArray): List<BasalBodyTemperatureRecord> {
-    return readableArray.toArrayList().mapNotNull {
-      it as HashMap<*, *>
-      BasalBodyTemperatureRecord(
-        time = Instant.parse(it["time"].toString()),
-        zoneOffset = null,
-        temperature = getTemperatureFromJsMap(it["temperature"] as HashMap<*, *>),
-        measurementLocation = it["measurementLocation"] as Int
-      )
-    }.toList()
+  override fun parseWriteRecord(records: ReadableArray): List<BasalBodyTemperatureRecord> {
+    return ArrayList<BasalBodyTemperatureRecord>().apply {
+      for (i in 0 until records.size()) {
+        val record = records.getMap(i)
+        add(
+          BasalBodyTemperatureRecord(
+            time = Instant.parse(record.getString("time")),
+            zoneOffset = null,
+            temperature = getTemperatureFromJsMap(record.getMap("record")),
+            measurementLocation = record.getInt("measurementLocation")
+          )
+        )
+      }
+    }
   }
 
   override fun parseReadResponse(response: ReadRecordsResponse<out BasalBodyTemperatureRecord>): WritableNativeArray {

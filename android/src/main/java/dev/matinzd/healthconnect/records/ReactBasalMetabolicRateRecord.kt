@@ -9,7 +9,7 @@ import com.facebook.react.bridge.WritableNativeArray
 import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
 
 class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRecord> {
-  override fun parseWriteRecord(readableArray: ReadableArray): List<BasalMetabolicRateRecord> {
+  override fun parseWriteRecord(records: ReadableArray): List<BasalMetabolicRateRecord> {
     TODO("Not yet implemented")
   }
 
