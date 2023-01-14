@@ -17,7 +17,7 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
     TODO("Not yet implemented")
   }
 
-  override fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<BasalMetabolicRateRecord> {
-    return convertReactRequestOptionsFromJS(BasalMetabolicRateRecord::class, readableMap)
+  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BasalMetabolicRateRecord> {
+    return convertReactRequestOptionsFromJS(BasalMetabolicRateRecord::class, options)
   }
 }

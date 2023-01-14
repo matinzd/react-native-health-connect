@@ -13,19 +13,19 @@ import kotlin.reflect.KClass
 
 fun <T : Record> convertReactRequestOptionsFromJS(
   recordType: KClass<T>,
-  readableMap: ReadableMap
+  options: ReadableMap
 ): ReadRecordsRequest<T> {
   return ReadRecordsRequest(
     recordType,
     timeRangeFilter = TimeRangeFilter.between(
-      Instant.parse(readableMap.getString("startTime")),
-      Instant.parse(readableMap.getString("endTime")),
+      Instant.parse(options.getString("startTime")),
+      Instant.parse(options.getString("endTime")),
     ),
-    dataOriginFilter = readableMap.getArray("dataOriginFilter")?.toArrayList()
+    dataOriginFilter = options.getArray("dataOriginFilter")?.toArrayList()
       ?.mapNotNull { DataOrigin(it.toString()) }?.toSet() ?: emptySet(),
-    ascendingOrder = if (readableMap.hasKey("ascendingOrder")) readableMap.getBoolean("ascendingOrder") else true,
-    pageSize = if (readableMap.hasKey("pageSize")) readableMap.getInt("pageSize") else 1000,
-    pageToken = if (readableMap.hasKey("pageToken")) readableMap.getString("pageToken") else null,
+    ascendingOrder = if (options.hasKey("ascendingOrder")) options.getBoolean("ascendingOrder") else true,
+    pageSize = if (options.hasKey("pageSize")) options.getInt("pageSize") else 1000,
+    pageToken = if (options.hasKey("pageToken")) options.getString("pageToken") else null,
   )
 }
 

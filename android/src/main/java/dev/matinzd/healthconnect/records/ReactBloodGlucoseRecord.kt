@@ -17,7 +17,7 @@ class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
     TODO("Not yet implemented")
   }
 
-  override fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<BloodGlucoseRecord> {
-    return convertReactRequestOptionsFromJS(BloodGlucoseRecord::class, readableMap)
+  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BloodGlucoseRecord> {
+    return convertReactRequestOptionsFromJS(BloodGlucoseRecord::class, options)
   }
 }

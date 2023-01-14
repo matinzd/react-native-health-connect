@@ -67,7 +67,7 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
     }
   }
 
-  override fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<BasalBodyTemperatureRecord> {
-    return convertReactRequestOptionsFromJS(BasalBodyTemperatureRecord::class, readableMap)
+  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BasalBodyTemperatureRecord> {
+    return convertReactRequestOptionsFromJS(BasalBodyTemperatureRecord::class, options)
   }
 }

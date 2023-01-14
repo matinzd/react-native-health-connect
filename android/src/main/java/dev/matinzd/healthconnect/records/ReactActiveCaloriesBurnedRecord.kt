@@ -56,8 +56,8 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
     }
   }
 
-  override fun parseReadRequest(readableMap: ReadableMap): ReadRecordsRequest<ActiveCaloriesBurnedRecord> {
-    return convertReactRequestOptionsFromJS(ActiveCaloriesBurnedRecord::class, readableMap)
+  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<ActiveCaloriesBurnedRecord> {
+    return convertReactRequestOptionsFromJS(ActiveCaloriesBurnedRecord::class, options)
   }
 
   override fun parseReadResponse(response: ReadRecordsResponse<out ActiveCaloriesBurnedRecord>): WritableNativeArray {
