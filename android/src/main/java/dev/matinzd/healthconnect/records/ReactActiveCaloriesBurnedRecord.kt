@@ -52,7 +52,7 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
   }
 
   override fun parseReadResponse(response: ReadRecordsResponse<out ActiveCaloriesBurnedRecord>): WritableNativeArray {
-    val reactArray = WritableNativeArray().apply {
+    return WritableNativeArray().apply {
       for (record in response.records) {
         val reactMap = WritableNativeMap().apply {
           putString("startTime", record.startTime.toString())
@@ -63,6 +63,5 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
         pushMap(reactMap)
       }
     }
-    return reactArray
   }
 }

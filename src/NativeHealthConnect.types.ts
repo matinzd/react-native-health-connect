@@ -101,7 +101,17 @@ interface ActiveCaloriesBurnedRecordResult
   };
 }
 
-type HealthConnectRecordResult = ActiveCaloriesBurnedRecordResult;
+interface BasalBodyTemperatureRecordResult
+  extends Omit<BasalBodyTemperatureRecord, 'temperature'> {
+  temperature: {
+    inFahrenheit: number;
+    inCelsius: number;
+  };
+}
+
+type HealthConnectRecordResult =
+  | ActiveCaloriesBurnedRecordResult
+  | BasalBodyTemperatureRecordResult;
 
 export type RecordResult<T extends RecordType> = Extract<
   HealthConnectRecordResult,
