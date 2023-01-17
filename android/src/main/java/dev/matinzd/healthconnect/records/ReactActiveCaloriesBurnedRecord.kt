@@ -1,7 +1,6 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
-import androidx.health.connect.client.records.BasalBodyTemperatureRecord
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
 import androidx.health.connect.client.units.Energy
@@ -12,16 +11,47 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidEnergy
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
+import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
 class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurnedRecord> {
-  private fun getEnergyFromJsMap(energy: ReadableMap?): Energy {
-    if (energy == null) {
+  override fun parseWriteRecord(records: ReadableArray): List<ActiveCaloriesBurnedRecord> {
+    return records.toMapList().map {
+      ActiveCaloriesBurnedRecord(
+        startTime = Instant.parse(it.getString("startTime")),
+        endTime = Instant.parse(it.getString("endTime")),
+        energy = getEnergyFromJsMap(it.getMap("energy")),
+        endZoneOffset = null,
+        startZoneOffset = null
+      )
+    }
+  }
+
+  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<ActiveCaloriesBurnedRecord> {
+    return convertReactRequestOptionsFromJS(ActiveCaloriesBurnedRecord::class, options)
+  }
+
+  override fun parseReadResponse(response: ReadRecordsResponse<out ActiveCaloriesBurnedRecord>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      for (record in response.records) {
+        val reactMap = WritableNativeMap().apply {
+          putString("startTime", record.startTime.toString())
+          putString("endTime", record.endTime.toString())
+          putMap("energy", energyToJsMap(record.energy))
+          putMap("metadata", convertMetadataToJSMap(record.metadata))
+        }
+        pushMap(reactMap)
+      }
+    }
+  }
+
+  private fun getEnergyFromJsMap(energyMap: ReadableMap?): Energy {
+    if (energyMap == null) {
       throw InvalidEnergy()
     }
 
-    val value = energy.getDouble("value")
-    return when (energy.getString("unit")) {
+    val value = energyMap.getDouble("value")
+    return when (energyMap.getString("unit")) {
       "kilojoules" -> Energy.kilocalories(value)
       "kilocalories" -> Energy.kilojoules(value)
       "joules" -> Energy.joules(value)
@@ -36,41 +66,6 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
       putDouble("inJoules", energy.inJoules)
       putDouble("inKilocalories", energy.inKilocalories)
       putDouble("inKilojoules", energy.inKilojoules)
-    }
-  }
-
-  override fun parseWriteRecord(records: ReadableArray): List<ActiveCaloriesBurnedRecord> {
-    return ArrayList<ActiveCaloriesBurnedRecord>().apply {
-      for (i in 0 until records.size()) {
-        val record = records.getMap(i)
-        add(
-          ActiveCaloriesBurnedRecord(
-            startTime = Instant.parse(record.getString("startTime")),
-            endTime = Instant.parse(record.getString("endTime")),
-            energy = getEnergyFromJsMap(record.getMap("energy")),
-            endZoneOffset = null,
-            startZoneOffset = null
-          )
-        )
-      }
-    }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<ActiveCaloriesBurnedRecord> {
-    return convertReactRequestOptionsFromJS(ActiveCaloriesBurnedRecord::class, options)
-  }
-
-  override fun parseReadResponse(response: ReadRecordsResponse<out ActiveCaloriesBurnedRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("startTime", record.startTime.toString())
-          putString("endTime", record.startTime.toString())
-          putMap("energy", energyToJsMap(record.energy))
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
-        }
-        pushMap(reactMap)
-      }
     }
   }
 }

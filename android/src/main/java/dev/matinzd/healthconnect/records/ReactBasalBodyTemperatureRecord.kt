@@ -9,47 +9,21 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.InvalidTemperature
-import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
-import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatureRecord> {
-  private fun getTemperatureFromJsMap(temperature: ReadableMap?): Temperature {
-    if (temperature == null) {
-      throw InvalidTemperature()
-    }
-
-    val value = temperature.getDouble("value")
-    return when (temperature.getString("unit")) {
-      "fahrenheit" -> Temperature.fahrenheit(value)
-      "calories" -> Temperature.celsius(value)
-      else -> Temperature.celsius(value)
-    }
-  }
-
-  private fun temperatureToJsMap(temperature: Temperature): WritableNativeMap {
-    return WritableNativeMap().apply {
-      putDouble("inFahrenheit", temperature.inFahrenheit)
-      putDouble("inCelsius", temperature.inCelsius)
-    }
-  }
-
   override fun parseWriteRecord(records: ReadableArray): List<BasalBodyTemperatureRecord> {
-    return ArrayList<BasalBodyTemperatureRecord>().apply {
-      for (i in 0 until records.size()) {
-        val record = records.getMap(i)
-        add(
-          BasalBodyTemperatureRecord(
-            time = Instant.parse(record.getString("time")),
-            zoneOffset = null,
-            temperature = getTemperatureFromJsMap(record.getMap("temperature")),
-            measurementLocation = if (record.hasKey("measurementLocation")) record.getInt(
-              "measurementLocation"
-            ) else BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_UNKNOWN
-          )
+    return records.toMapList().map {
+      BasalBodyTemperatureRecord(
+        time = Instant.parse(it.getString("time")),
+        zoneOffset = null,
+        temperature = getTemperatureFromJsMap(it.getMap("temperature")),
+        measurementLocation = it.getSafeInt(
+          "measurementLocation",
+          BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_UNKNOWN
         )
-      }
+      )
     }
   }
 
@@ -69,5 +43,25 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
 
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BasalBodyTemperatureRecord> {
     return convertReactRequestOptionsFromJS(BasalBodyTemperatureRecord::class, options)
+  }
+
+  private fun getTemperatureFromJsMap(temperatureMap: ReadableMap?): Temperature {
+    if (temperatureMap == null) {
+      throw InvalidTemperature()
+    }
+
+    val value = temperatureMap.getDouble("value")
+    return when (temperatureMap.getString("unit")) {
+      "fahrenheit" -> Temperature.fahrenheit(value)
+      "celsius" -> Temperature.celsius(value)
+      else -> Temperature.celsius(value)
+    }
+  }
+
+  private fun temperatureToJsMap(temperature: Temperature): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putDouble("inFahrenheit", temperature.inFahrenheit)
+      putDouble("inCelsius", temperature.inCelsius)
+    }
   }
 }

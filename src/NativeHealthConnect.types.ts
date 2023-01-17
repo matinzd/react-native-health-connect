@@ -109,9 +109,26 @@ interface BasalBodyTemperatureRecordResult
   };
 }
 
+interface BasalMetabolicRateRecordResult
+  extends Omit<BasalMetabolicRateRecord, 'basalMetabolicRate'> {
+  basalMetabolicRate: {
+    inKilocaloriesPerDay: number;
+    inWatts: number;
+  };
+}
+
+interface BloodGlucoseRecordResult extends Omit<BloodGlucoseRecord, 'level'> {
+  level: {
+    inMillimolesPerLiter: number;
+    inMilligramsPerDeciliter: number;
+  };
+}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
-  | BasalBodyTemperatureRecordResult;
+  | BasalBodyTemperatureRecordResult
+  | BasalMetabolicRateRecordResult
+  | BloodGlucoseRecordResult;
 
 export type RecordResult<T extends RecordType> = Extract<
   HealthConnectRecordResult,

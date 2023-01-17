@@ -24,6 +24,12 @@ export default function App() {
     insertRecords([
       {
         recordType: 'activeCaloriesBurned',
+        energy: { unit: 'kilocalories', value: 10000 },
+        startTime: '2023-01-09T10:00:00.405Z',
+        endTime: '2023-01-09T11:53:15.405Z',
+      },
+      {
+        recordType: 'activeCaloriesBurned',
         energy: { unit: 'kilocalories', value: 15000 },
         startTime: '2023-01-09T12:00:00.405Z',
         endTime: '2023-01-09T23:53:15.405Z',

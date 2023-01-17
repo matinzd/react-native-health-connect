@@ -33,6 +33,18 @@ fun convertProviderPackageNamesFromJS(providerPackageNames: ReadableArray): List
   return providerPackageNames.toArrayList().map { it.toString() }.toList()
 }
 
+fun ReadableArray.toMapList(): List<ReadableMap> {
+  val list = mutableListOf<ReadableMap>()
+  for (i in 0 until size()) {
+    list.add(getMap(i))
+  }
+  return list
+}
+
+fun ReadableMap.getSafeInt(key: String, default: Int): Int {
+  return if (this.hasKey(key)) this.getInt("measurementLocation") else default
+}
+
 fun convertMetadataToJSMap(meta: Metadata): WritableNativeMap {
   return WritableNativeMap().apply {
     putString("id", meta.id)
@@ -43,7 +55,6 @@ fun convertMetadataToJSMap(meta: Metadata): WritableNativeMap {
     putInt("device", meta.device?.type ?: 0)
   }
 }
-
 
 val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "activeCaloriesBurned" to ActiveCaloriesBurnedRecord::class,
