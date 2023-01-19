@@ -17,6 +17,7 @@ class ReactHealthRecord {
         "basalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
         "basalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,
         "bloodGlucose" to ReactBloodGlucoseRecord::class.java,
+        "bloodPressure" to ReactBloodPressureRecord::class.java
       )
 
     private fun <T : Record> createReactHealthRecordInstance(recordType: String?): ReactHealthRecordImpl<T> {

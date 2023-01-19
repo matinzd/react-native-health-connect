@@ -18,6 +18,11 @@ interface Temperature {
   unit: 'celsius' | 'fahrenheit';
 }
 
+interface Pressure {
+  value: number;
+  unit: 'millimetersOfMercury';
+}
+
 interface BaseRecord {
   metadata?: Metadata;
 }
@@ -69,7 +74,13 @@ interface BloodGlucoseRecord extends InstantaneousRecord {
   relationToMeal: number;
 }
 
-export type RecordType = HealthConnectRecord['recordType'];
+interface BloodPressureRecord extends InstantaneousRecord {
+  recordType: 'bloodPressure';
+  systolic: Pressure;
+  diastolic: Pressure;
+  bodyPosition: number;
+  measurementLocation: number;
+}
 
 export interface Permission {
   accessType: 'read' | 'write';
@@ -89,7 +100,10 @@ export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
   | BasalMetabolicRateRecord
-  | BloodGlucoseRecord;
+  | BloodGlucoseRecord
+  | BloodPressureRecord;
+
+export type RecordType = HealthConnectRecord['recordType'];
 
 interface ActiveCaloriesBurnedRecordResult
   extends Omit<ActiveCaloriesBurnedRecord, 'energy'> {
@@ -124,11 +138,22 @@ interface BloodGlucoseRecordResult extends Omit<BloodGlucoseRecord, 'level'> {
   };
 }
 
+interface BloodPressureRecordResult
+  extends Omit<BloodPressureRecord, 'systolic' | 'diastolic'> {
+  systolic: {
+    inMillimetersOfMercury: number;
+  };
+  diastolic: {
+    inMillimetersOfMercury: number;
+  };
+}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
   | BasalMetabolicRateRecordResult
-  | BloodGlucoseRecordResult;
+  | BloodGlucoseRecordResult
+  | BloodPressureRecordResult;
 
 export type RecordResult<T extends RecordType> = Extract<
   HealthConnectRecordResult,

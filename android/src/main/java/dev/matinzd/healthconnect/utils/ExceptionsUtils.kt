@@ -10,6 +10,7 @@ class InvalidTemperature : Exception("Temperature is not valid")
 class InvalidEnergy : Exception("Energy is not valid")
 class InvalidPower : Exception("Power is not valid")
 class InvalidBloodGlucoseLevel: Exception("Blood glucose level is not valid")
+class InvalidBloodPressure: Exception("Blood pressure is not valid")
 
 fun Promise.rejectWithException(exception: Exception) {
   val code = when (exception) {
@@ -25,6 +26,7 @@ fun Promise.rejectWithException(exception: Exception) {
     is InvalidEnergy -> "INVALID_ENERGY"
     is InvalidPower -> "INVALID_POWER"
     is InvalidBloodGlucoseLevel -> "INVALID_BLOOD_GLUCOSE_LEVEL"
+    is InvalidBloodPressure -> "INVALID_BLOOD_PRESSURE"
     else -> "UNKNOWN_ERROR"
   }
 

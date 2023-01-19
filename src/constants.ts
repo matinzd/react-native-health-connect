@@ -1,4 +1,4 @@
-export const MeasurementLocation = {
+export const TemperatureMeasurementLocation = {
   ARMPIT: 1,
   EAR: 8,
   FINGER: 2,
@@ -9,7 +9,7 @@ export const MeasurementLocation = {
   TOE: 7,
   UNKNOWN: 0,
   VAGINA: 10,
-} satisfies Record<string, number>;
+};
 
 export const MealType = {
   BREAKFAST: 1,
@@ -17,7 +17,7 @@ export const MealType = {
   LUNCH: 2,
   SNACK: 4,
   UNKNOWN: 0,
-} satisfies Record<string, number>;
+};
 
 export const RelationToMeal = {
   AFTER_MEAL: 4,
@@ -25,7 +25,7 @@ export const RelationToMeal = {
   FASTING: 2,
   GENERAL: 1,
   UNKNOWN: 0,
-} satisfies Record<string, number>;
+};
 
 export const SpecimenSource = {
   CAPILLARY_BLOOD: 2,
@@ -35,4 +35,20 @@ export const SpecimenSource = {
   TEARS: 5,
   UNKNOWN: 0,
   WHOLE_BLOOD: 6,
-} satisfies Record<string, number>;
+};
+
+export const BloodPressureBodyPosition = {
+  UNKNOWN: 0,
+  STANDING_UP: 1,
+  SITTING_DOWN: 2,
+  LYING_DOWN: 3,
+  RECLINING: 4,
+};
+
+export const BloodPressureMeasurementLocation = {
+  UNKNOWN: 0,
+  LEFT_WRIST: 1,
+  RIGHT_WRIST: 2,
+  LEFT_UPPER_ARM: 3,
+  RIGHT_UPPER_ARM: 4,
+};
