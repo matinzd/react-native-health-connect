@@ -64,32 +64,35 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
       timeRangeFilter = TimeRangeFilter.between(
         Instant.parse(record.getString("startTime")),
         Instant.parse(record.getString("endTime"))
-      )
+      ),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
     return WritableNativeMap().apply {
+      record[BloodPressureRecord.SYSTOLIC_AVG]
       putDouble(
         "SYSTOLIC_AVG",
-        record[BloodPressureRecord.SYSTOLIC_AVG]!!.inMillimetersOfMercury
+        record[BloodPressureRecord.SYSTOLIC_AVG]?.inMillimetersOfMercury ?: 0.0
       )
       putDouble(
         "SYSTOLIC_MIN",
-        record[BloodPressureRecord.SYSTOLIC_MIN]!!.inMillimetersOfMercury
+        record[BloodPressureRecord.SYSTOLIC_MIN]?.inMillimetersOfMercury ?: 0.0
       )
       putDouble(
         "DIASTOLIC_AVG",
-        record[BloodPressureRecord.DIASTOLIC_AVG]!!.inMillimetersOfMercury
+        record[BloodPressureRecord.DIASTOLIC_AVG]?.inMillimetersOfMercury ?: 0.0
       )
       putDouble(
         "DIASTOLIC_MIN",
-        record[BloodPressureRecord.DIASTOLIC_MIN]!!.inMillimetersOfMercury
+        record[BloodPressureRecord.DIASTOLIC_MIN]?.inMillimetersOfMercury ?: 0.0
       )
       putDouble(
         "DIASTOLIC_MAX",
-        record[BloodPressureRecord.DIASTOLIC_MAX]!!.inMillimetersOfMercury
+        record[BloodPressureRecord.DIASTOLIC_MAX]?.inMillimetersOfMercury ?: 0.0
       )
+      putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
   }
 

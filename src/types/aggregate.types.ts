@@ -39,4 +39,5 @@ export interface AggregateRequest<T extends AggregateResultRecordType> {
   recordType: T;
   startTime: string;
   endTime: string;
+  dataOriginFilter?: string[];
 }

@@ -11,10 +11,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.InvalidPower
-import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
-import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
-import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRecord> {
@@ -51,7 +48,8 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
       timeRangeFilter = TimeRangeFilter.between(
         Instant.parse(record.getString("startTime")),
         Instant.parse(record.getString("endTime"))
-      )
+      ),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
 
@@ -59,20 +57,21 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
     return WritableNativeMap().apply {
       putDouble(
         "inKilojoules",
-        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]!!.inKilojoules
+        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]?.inKilojoules ?: 0.0
       )
       putDouble(
         "inCalories",
-        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]!!.inCalories
+        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]?.inCalories ?: 0.0
       )
       putDouble(
         "inJoules",
-        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]!!.inJoules
+        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]?.inJoules ?: 0.0
       )
       putDouble(
         "inKilocalories",
-        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]!!.inKilocalories
+        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]?.inKilocalories ?: 0.0
       )
+      putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
   }
 

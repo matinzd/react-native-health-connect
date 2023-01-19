@@ -2,6 +2,7 @@ package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
+import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
@@ -11,10 +12,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.InvalidEnergy
-import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
-import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
-import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurnedRecord> {
@@ -34,7 +32,7 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
     return convertReactRequestOptionsFromJS(ActiveCaloriesBurnedRecord::class, options)
   }
 
-    override fun parseReadResponse(response: ReadRecordsResponse<out ActiveCaloriesBurnedRecord>): WritableNativeArray {
+  override fun parseReadResponse(response: ReadRecordsResponse<out ActiveCaloriesBurnedRecord>): WritableNativeArray {
     return WritableNativeArray().apply {
       for (record in response.records) {
         val reactMap = WritableNativeMap().apply {
@@ -54,16 +52,31 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
       timeRangeFilter = TimeRangeFilter.between(
         Instant.parse(record.getString("startTime")),
         Instant.parse(record.getString("endTime"))
-      )
+      ),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
+    record.dataOrigins
     return WritableNativeMap().apply {
-      putDouble("inCalories", record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]!!.inCalories)
-      putDouble("inKilojoules", record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]!!.inKilojoules)
-      putDouble("inKilocalories", record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]!!.inKilocalories)
-      putDouble("inJoules", record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]!!.inJoules)
+      putDouble(
+        "inCalories",
+        record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inCalories ?: 0.0
+      )
+      putDouble(
+        "inKilojoules",
+        record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inKilojoules ?: 0.0
+      )
+      putDouble(
+        "inKilocalories",
+        record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inKilocalories ?: 0.0
+      )
+      putDouble(
+        "inJoules",
+        record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inJoules ?: 0.0
+      )
+      putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
   }
 

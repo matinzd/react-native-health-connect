@@ -7,13 +7,13 @@ import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import java.time.Instant
 import kotlin.reflect.KClass
 
 fun <T : Record> convertReactRequestOptionsFromJS(
-  recordType: KClass<T>,
-  options: ReadableMap
+  recordType: KClass<T>, options: ReadableMap
 ): ReadRecordsRequest<T> {
   return ReadRecordsRequest(
     recordType,
@@ -21,12 +21,27 @@ fun <T : Record> convertReactRequestOptionsFromJS(
       Instant.parse(options.getString("startTime")),
       Instant.parse(options.getString("endTime")),
     ),
-    dataOriginFilter = options.getArray("dataOriginFilter")?.toArrayList()
-      ?.mapNotNull { DataOrigin(it.toString()) }?.toSet() ?: emptySet(),
+    dataOriginFilter = convertJsToDataOriginSet(options.getArray("dataOriginFilter")),
     ascendingOrder = if (options.hasKey("ascendingOrder")) options.getBoolean("ascendingOrder") else true,
     pageSize = if (options.hasKey("pageSize")) options.getInt("pageSize") else 1000,
     pageToken = if (options.hasKey("pageToken")) options.getString("pageToken") else null,
   )
+}
+
+fun convertDataOriginsToJsArray(dataOrigin: Set<DataOrigin>): WritableNativeArray {
+  return WritableNativeArray().apply {
+    dataOrigin.forEach {
+      pushString(it.packageName)
+    }
+  }
+}
+
+fun convertJsToDataOriginSet(readableArray: ReadableArray?): Set<DataOrigin> {
+  if (readableArray == null) {
+    return emptySet()
+  }
+
+  return readableArray.toArrayList().mapNotNull { DataOrigin(it.toString()) }.toSet()
 }
 
 fun convertProviderPackageNamesFromJS(providerPackageNames: ReadableArray): List<String> {
