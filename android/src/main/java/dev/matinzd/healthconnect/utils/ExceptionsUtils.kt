@@ -11,6 +11,7 @@ class InvalidEnergy : Exception("Energy is not valid")
 class InvalidPower : Exception("Power is not valid")
 class InvalidBloodGlucoseLevel: Exception("Blood glucose level is not valid")
 class InvalidBloodPressure: Exception("Blood pressure is not valid")
+class AggregationNotSupported: Exception("Aggregation is not supported for this record")
 
 fun Promise.rejectWithException(exception: Exception) {
   val code = when (exception) {
@@ -27,6 +28,7 @@ fun Promise.rejectWithException(exception: Exception) {
     is InvalidPower -> "INVALID_POWER"
     is InvalidBloodGlucoseLevel -> "INVALID_BLOOD_GLUCOSE_LEVEL"
     is InvalidBloodPressure -> "INVALID_BLOOD_PRESSURE"
+    is AggregationNotSupported -> "AGGREGATION_NOT_SUPPORTED"
     else -> "UNKNOWN_ERROR"
   }
 

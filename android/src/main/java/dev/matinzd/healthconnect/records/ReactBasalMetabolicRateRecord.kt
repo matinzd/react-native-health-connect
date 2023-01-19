@@ -1,8 +1,11 @@
 package dev.matinzd.healthconnect.records
 
+import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BasalMetabolicRateRecord
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
+import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Power
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -40,6 +43,37 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
 
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BasalMetabolicRateRecord> {
     return convertReactRequestOptionsFromJS(BasalMetabolicRateRecord::class, options)
+  }
+
+  override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
+    return AggregateRequest(
+      metrics = setOf(BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL),
+      timeRangeFilter = TimeRangeFilter.between(
+        Instant.parse(record.getString("startTime")),
+        Instant.parse(record.getString("endTime"))
+      )
+    )
+  }
+
+  override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putDouble(
+        "inKilojoules",
+        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]!!.inKilojoules
+      )
+      putDouble(
+        "inCalories",
+        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]!!.inCalories
+      )
+      putDouble(
+        "inJoules",
+        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]!!.inJoules
+      )
+      putDouble(
+        "inKilocalories",
+        record[BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL]!!.inKilocalories
+      )
+    }
   }
 
   private fun powerToJsMap(power: Power): WritableNativeMap {

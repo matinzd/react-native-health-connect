@@ -120,6 +120,21 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
     }
   }
 
+  fun aggregateRecord(record: ReadableMap, promise: Promise) {
+    throwUnlessClientIsAvailable(promise) {
+      coroutineScope.launch {
+        val recordType = record.getString("recordType") ?: ""
+        val response = healthConnectClient.aggregate(
+          ReactHealthRecord.getAggregateRequest(
+            recordType,
+            record
+          )
+        )
+        promise.resolve(ReactHealthRecord.parseAggregationResult(recordType, response))
+      }
+    }
+  }
+
   companion object {
     const val REQUEST_CODE = 150
   }

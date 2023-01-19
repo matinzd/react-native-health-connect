@@ -1,7 +1,9 @@
 package dev.matinzd.healthconnect.records
 
+import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BasalBodyTemperatureRecord
 import androidx.health.connect.client.records.BodyTemperatureMeasurementLocation
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
 import androidx.health.connect.client.units.Temperature
@@ -43,6 +45,14 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
 
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BasalBodyTemperatureRecord> {
     return convertReactRequestOptionsFromJS(BasalBodyTemperatureRecord::class, options)
+  }
+
+  override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
+    throw AggregationNotSupported()
+  }
+
+  override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
+    throw AggregationNotSupported()
   }
 
   private fun getTemperatureFromJsMap(temperatureMap: ReadableMap?): Temperature {

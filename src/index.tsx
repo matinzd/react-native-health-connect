@@ -1,12 +1,15 @@
 import { NativeModules, Platform } from 'react-native';
+import { HealthConnectError } from './errors';
 import type {
+  AggregateRequest,
+  AggregateResult,
+  AggregateResultRecordType,
   HealthConnectRecord,
   Permission,
   ReadRecordsOptions,
   RecordResult,
   RecordType,
-} from './NativeHealthConnect.types';
-import { HealthConnectError } from './errors';
+} from './types';
 
 const LINKING_ERROR =
   `The package 'react-native-health-connect' doesn't seem to be linked. Make sure: \n\n` +
@@ -98,6 +101,12 @@ export function insertRecords(
   }
 
   return HealthConnect.insertRecords(records);
+}
+
+export function aggregateRecord<T extends AggregateResultRecordType>(
+  request: AggregateRequest<T>
+): Promise<AggregateResult<T>> {
+  return HealthConnect.aggregateRecord(request);
 }
 
 export * from './constants';

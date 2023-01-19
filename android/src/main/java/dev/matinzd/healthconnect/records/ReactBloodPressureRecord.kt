@@ -1,8 +1,11 @@
 package dev.matinzd.healthconnect.records
 
+import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BloodPressureRecord
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
+import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Pressure
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -19,7 +22,10 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
         systolic = getBloodPressureFromJsMap(it.getMap("systolic")),
         diastolic = getBloodPressureFromJsMap(it.getMap("diastolic")),
         bodyPosition = it.getSafeInt("bodyPosition", BloodPressureRecord.BODY_POSITION_UNKNOWN),
-        measurementLocation = it.getSafeInt("measurementLocation", BloodPressureRecord.MEASUREMENT_LOCATION_UNKNOWN),
+        measurementLocation = it.getSafeInt(
+          "measurementLocation",
+          BloodPressureRecord.MEASUREMENT_LOCATION_UNKNOWN
+        ),
         zoneOffset = null
       )
     }
@@ -43,6 +49,48 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
 
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BloodPressureRecord> {
     return convertReactRequestOptionsFromJS(BloodPressureRecord::class, options)
+  }
+
+  override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
+    return AggregateRequest(
+      metrics = setOf(
+        BloodPressureRecord.SYSTOLIC_AVG,
+        BloodPressureRecord.SYSTOLIC_MIN,
+        BloodPressureRecord.SYSTOLIC_MAX,
+        BloodPressureRecord.DIASTOLIC_AVG,
+        BloodPressureRecord.DIASTOLIC_MIN,
+        BloodPressureRecord.DIASTOLIC_MAX
+      ),
+      timeRangeFilter = TimeRangeFilter.between(
+        Instant.parse(record.getString("startTime")),
+        Instant.parse(record.getString("endTime"))
+      )
+    )
+  }
+
+  override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putDouble(
+        "SYSTOLIC_AVG",
+        record[BloodPressureRecord.SYSTOLIC_AVG]!!.inMillimetersOfMercury
+      )
+      putDouble(
+        "SYSTOLIC_MIN",
+        record[BloodPressureRecord.SYSTOLIC_MIN]!!.inMillimetersOfMercury
+      )
+      putDouble(
+        "DIASTOLIC_AVG",
+        record[BloodPressureRecord.DIASTOLIC_AVG]!!.inMillimetersOfMercury
+      )
+      putDouble(
+        "DIASTOLIC_MIN",
+        record[BloodPressureRecord.DIASTOLIC_MIN]!!.inMillimetersOfMercury
+      )
+      putDouble(
+        "DIASTOLIC_MAX",
+        record[BloodPressureRecord.DIASTOLIC_MAX]!!.inMillimetersOfMercury
+      )
+    }
   }
 
   private fun bloodPressureToJsMap(pressure: Pressure): WritableNativeMap {

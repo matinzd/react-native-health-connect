@@ -1,7 +1,9 @@
 package dev.matinzd.healthconnect.records
 
+import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BloodGlucoseRecord
 import androidx.health.connect.client.records.MealType.MEAL_TYPE_UNKNOWN
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
 import androidx.health.connect.client.units.BloodGlucose
@@ -50,6 +52,14 @@ class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
 
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BloodGlucoseRecord> {
     return convertReactRequestOptionsFromJS(BloodGlucoseRecord::class, options)
+  }
+
+  override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
+    throw AggregationNotSupported()
+  }
+
+  override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
+    throw AggregationNotSupported()
   }
 
   private fun bloodGlucoseToJsMap(bloodGlucose: BloodGlucose): WritableNativeMap {

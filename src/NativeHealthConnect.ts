@@ -1,9 +1,6 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
-import type {
-  HealthConnectRecord,
-  Permission,
-} from './NativeHealthConnect.types';
+import type { HealthConnectRecord, Permission } from './types';
 
 type ReadRecordsOptions = {
   startTime: string;
@@ -28,6 +25,11 @@ export interface Spec extends TurboModule {
     recordType: string,
     options: ReadRecordsOptions
   ): Promise<Array<{}>>;
+  aggregateRecord(record: {
+    recordType: string;
+    startTime: string;
+    endTime: string;
+  }): Promise<{}>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('HealthConnect');

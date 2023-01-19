@@ -45,6 +45,11 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
     return manager.readRecords(recordType, options, promise)
   }
 
+  @ReactMethod
+  override fun aggregateRecord(record: ReadableMap, promise: Promise) {
+    return manager.aggregateRecord(record, promise)
+  }
+
   companion object {
     const val NAME = "HealthConnect"
   }

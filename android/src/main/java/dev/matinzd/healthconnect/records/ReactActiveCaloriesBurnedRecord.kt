@@ -1,8 +1,11 @@
 package dev.matinzd.healthconnect.records
 
+import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
+import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Energy
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -31,7 +34,7 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
     return convertReactRequestOptionsFromJS(ActiveCaloriesBurnedRecord::class, options)
   }
 
-  override fun parseReadResponse(response: ReadRecordsResponse<out ActiveCaloriesBurnedRecord>): WritableNativeArray {
+    override fun parseReadResponse(response: ReadRecordsResponse<out ActiveCaloriesBurnedRecord>): WritableNativeArray {
     return WritableNativeArray().apply {
       for (record in response.records) {
         val reactMap = WritableNativeMap().apply {
@@ -42,6 +45,25 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
         }
         pushMap(reactMap)
       }
+    }
+  }
+
+  override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
+    return AggregateRequest(
+      metrics = setOf(ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL),
+      timeRangeFilter = TimeRangeFilter.between(
+        Instant.parse(record.getString("startTime")),
+        Instant.parse(record.getString("endTime"))
+      )
+    )
+  }
+
+  override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putDouble("inCalories", record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]!!.inCalories)
+      putDouble("inKilojoules", record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]!!.inKilojoules)
+      putDouble("inKilocalories", record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]!!.inKilocalories)
+      putDouble("inJoules", record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]!!.inJoules)
     }
   }
 

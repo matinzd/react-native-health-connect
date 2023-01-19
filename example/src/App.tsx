@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Button, StyleSheet, View } from 'react-native';
 import {
+  aggregateRecord,
   initialize,
   insertRecords,
   isAvailable,
@@ -48,6 +49,16 @@ export default function App() {
     });
   };
 
+  const aggreagetSampleData = () => {
+    aggregateRecord({
+      recordType: 'activeCaloriesBurned',
+      startTime: '2023-01-09T12:00:00.405Z',
+      endTime: '2023-01-09T23:53:15.405Z',
+    }).then((result) => {
+      console.log('Aggregated record: ', { result });
+    });
+  };
+
   const requestSamplePermissions = () => {
     requestPermission([
       {
@@ -74,6 +85,7 @@ export default function App() {
       <Button title="Revoke all permissions" onPress={revokeAllPermissions} />
       <Button title="Insert sample data" onPress={insertSampleData} />
       <Button title="Read sample data" onPress={readSampleData} />
+      <Button title="Aggregate sample data" onPress={aggreagetSampleData} />
     </View>
   );
 }

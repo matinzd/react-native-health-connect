@@ -1,12 +1,15 @@
 package dev.matinzd.healthconnect.records
 
+import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.Record
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.InsertRecordsResponse
 import androidx.health.connect.client.response.ReadRecordsResponse
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
+import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidRecordType
 
 class ReactHealthRecord {
@@ -47,6 +50,18 @@ class ReactHealthRecord {
       val recordClass = createReactHealthRecordInstance<Record>(recordType)
 
       return recordClass.parseReadRequest(reactRequest)
+    }
+
+    fun getAggregateRequest(recordType: String, reactRequest: ReadableMap): AggregateRequest {
+      val recordClass = createReactHealthRecordInstance<Record>(recordType)
+
+      return recordClass.getAggregateRequest(reactRequest)
+    }
+
+    fun parseAggregationResult(recordType: String, result: AggregationResult): WritableNativeMap {
+      val recordClass = createReactHealthRecordInstance<Record>(recordType)
+
+      return recordClass.parseAggregationResult(result)
     }
 
     fun parseReadResponse(
