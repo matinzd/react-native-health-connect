@@ -18,17 +18,18 @@ aggregateRecord<T extends AggregateResultRecordType>(
 # Example
 
 ```ts
-import { readRecords } from 'react-native-health-connect';
+import { aggregateRecord } from 'react-native-health-connect';
 
-const readSampleData = () => {
-  readRecords('activeCaloriesBurned', {
+const aggreagetSampleData = () => {
+  aggregateRecord({
+    recordType: 'ActiveCaloriesBurned',
     timeRangeFilter: {
       operator: 'between',
       startTime: '2023-01-09T12:00:00.405Z',
       endTime: '2023-01-09T23:53:15.405Z',
     },
   }).then((result) => {
-    console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
+    console.log('Aggregated record: ', { result });
   });
 };
 ```

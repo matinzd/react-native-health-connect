@@ -22,7 +22,7 @@ deleteRecordsByTimeRange(
 import { deleteRecordsByTimeRange } from 'react-native-health-connect';
 
 // ...
-deleteRecordsByTimeRange('activeCaloriesBurned', {
+deleteRecordsByTimeRange('ActiveCaloriesBurned', {
   operator: 'between',
   startTime: '2023-01-09T12:00:00.405Z',
   endTime: '2023-01-09T23:53:15.405Z',

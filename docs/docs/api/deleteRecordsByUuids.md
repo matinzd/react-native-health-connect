@@ -23,7 +23,7 @@ deleteRecordsByUuids(
 import { deleteRecordsByUuids } from 'react-native-health-connect';
 
 // ...
-deleteRecordsByUuids('activeCaloriesBurned', [
+deleteRecordsByUuids('ActiveCaloriesBurned', [
   '47066a7c-8994-4caf-b031-c54b2b6a2023',
   '2279fa69-683b-44c7-8cfa-930fb5fc64eb',
 ]);

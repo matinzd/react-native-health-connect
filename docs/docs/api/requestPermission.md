@@ -22,11 +22,11 @@ const requestPermissions = () => {
   requestPermission([
     {
       accessType: 'read',
-      recordType: 'activeCaloriesBurned',
+      recordType: 'ActiveCaloriesBurned',
     },
     {
       accessType: 'write',
-      recordType: 'activeCaloriesBurned',
+      recordType: 'ActiveCaloriesBurned',
     },
   ]).then((permissions) => {
     console.log('Granted permissions ', { permissions });

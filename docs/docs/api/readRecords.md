@@ -25,7 +25,7 @@ readRecords<T extends RecordType>(
 import { readRecords } from 'react-native-health-connect';
 
 const readSampleData = () => {
-  readRecords('activeCaloriesBurned', {
+  readRecords('ActiveCaloriesBurned', {
     timeRangeFilter: {
       operator: 'between',
       startTime: '2023-01-09T12:00:00.405Z',
