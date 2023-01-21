@@ -53,8 +53,8 @@ export interface Metadata {
 export type TimeRangeFilter =
   | {
       operator: 'between';
-      startTime?: string;
-      endTime?: string;
+      startTime: string;
+      endTime: string;
     }
   | {
       operator: 'after';

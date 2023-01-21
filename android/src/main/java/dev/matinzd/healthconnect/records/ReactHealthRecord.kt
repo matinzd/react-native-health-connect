@@ -16,11 +16,11 @@ class ReactHealthRecord {
   companion object {
     private val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<*>>> =
       mapOf(
-        "activeCaloriesBurned" to ReactActiveCaloriesBurnedRecord::class.java,
-        "basalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
-        "basalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,
-        "bloodGlucose" to ReactBloodGlucoseRecord::class.java,
-        "bloodPressure" to ReactBloodPressureRecord::class.java
+        "ActiveCaloriesBurned" to ReactActiveCaloriesBurnedRecord::class.java,
+        "BasalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
+        "BasalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,
+        "BloodGlucose" to ReactBloodGlucoseRecord::class.java,
+        "BloodPressure" to ReactBloodPressureRecord::class.java
       )
 
     private fun <T : Record> createReactHealthRecordInstance(recordType: String?): ReactHealthRecordImpl<T> {

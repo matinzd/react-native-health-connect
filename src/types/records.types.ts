@@ -10,23 +10,23 @@ import type {
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
-  recordType: 'activeCaloriesBurned';
+  recordType: 'ActiveCaloriesBurned';
   energy: Energy;
 }
 
 export interface BasalBodyTemperatureRecord extends InstantaneousRecord {
-  recordType: 'basalBodyTemperature';
+  recordType: 'BasalBodyTemperature';
   temperature: Temperature;
   measurementLocation?: number;
 }
 
 export interface BasalMetabolicRateRecord extends InstantaneousRecord {
-  recordType: 'basalMetabolicRate';
+  recordType: 'BasalMetabolicRate';
   basalMetabolicRate: Power;
 }
 
 export interface BloodGlucoseRecord extends InstantaneousRecord {
-  recordType: 'bloodGlucose';
+  recordType: 'BloodGlucose';
   level: BloodGlucose;
   specimenSource: number;
   mealType: number;
@@ -34,7 +34,7 @@ export interface BloodGlucoseRecord extends InstantaneousRecord {
 }
 
 export interface BloodPressureRecord extends InstantaneousRecord {
-  recordType: 'bloodPressure';
+  recordType: 'BloodPressure';
   systolic: Pressure;
   diastolic: Pressure;
   bodyPosition: number;

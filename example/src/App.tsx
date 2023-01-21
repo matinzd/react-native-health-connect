@@ -24,13 +24,13 @@ export default function App() {
   const insertSampleData = () => {
     insertRecords([
       {
-        recordType: 'activeCaloriesBurned',
+        recordType: 'ActiveCaloriesBurned',
         energy: { unit: 'kilocalories', value: 10000 },
         startTime: '2023-01-09T10:00:00.405Z',
         endTime: '2023-01-09T11:53:15.405Z',
       },
       {
-        recordType: 'activeCaloriesBurned',
+        recordType: 'ActiveCaloriesBurned',
         energy: { unit: 'kilocalories', value: 15000 },
         startTime: '2023-01-09T12:00:00.405Z',
         endTime: '2023-01-09T23:53:15.405Z',
@@ -41,7 +41,7 @@ export default function App() {
   };
 
   const readSampleData = () => {
-    readRecords('activeCaloriesBurned', {
+    readRecords('ActiveCaloriesBurned', {
       timeRangeFilter: {
         operator: 'between',
         startTime: '2023-01-09T12:00:00.405Z',
@@ -54,7 +54,7 @@ export default function App() {
 
   const aggreagetSampleData = () => {
     aggregateRecord({
-      recordType: 'activeCaloriesBurned',
+      recordType: 'ActiveCaloriesBurned',
       timeRangeFilter: {
         operator: 'between',
         startTime: '2023-01-09T12:00:00.405Z',
@@ -69,11 +69,11 @@ export default function App() {
     requestPermission([
       {
         accessType: 'read',
-        recordType: 'activeCaloriesBurned',
+        recordType: 'ActiveCaloriesBurned',
       },
       {
         accessType: 'write',
-        recordType: 'activeCaloriesBurned',
+        recordType: 'ActiveCaloriesBurned',
       },
     ]).then((permissions) => {
       console.log('Granted permissions ', { permissions });

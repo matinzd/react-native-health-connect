@@ -1,7 +1,7 @@
 import type { TimeRangeFilter } from './base.types';
 
 interface ActiveCaloriesBurnedAggregateResult {
-  recordType: 'activeCaloriesBurned';
+  recordType: 'ActiveCaloriesBurned';
   inCalories: number;
   inKilojoules: number;
   inKilocalories: number;
@@ -9,7 +9,7 @@ interface ActiveCaloriesBurnedAggregateResult {
 }
 
 interface BasalMetabolicRateAggregateResult {
-  recordType: 'basalMetabolicRate';
+  recordType: 'BasalMetabolicRate';
   inCalories: number;
   inKilojoules: number;
   inKilocalories: number;
@@ -17,7 +17,7 @@ interface BasalMetabolicRateAggregateResult {
 }
 
 interface BloodPressureAggregateResult {
-  recordType: 'bloodPressure';
+  recordType: 'BloodPressure';
   SYSTOLIC_AVG: number;
   SYSTOLIC_MIN: number;
   DIASTOLIC_AVG: number;

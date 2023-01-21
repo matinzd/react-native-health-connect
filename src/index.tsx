@@ -111,7 +111,7 @@ export function aggregateRecord<T extends AggregateResultRecordType>(
 }
 
 export function deleteRecordsByUuids(
-  recordType: string,
+  recordType: RecordType,
   recordIdsList: string[],
   clientRecordIdsList: string[]
 ): Promise<void> {
@@ -123,7 +123,7 @@ export function deleteRecordsByUuids(
 }
 
 export function deleteRecordsByTimeRange(
-  recordType: string,
+  recordType: RecordType,
   timeRangeFilter: TimeRangeFilter
 ): Promise<void> {
   return HealthConnect.deleteRecordsByTimeRange(recordType, timeRangeFilter);
