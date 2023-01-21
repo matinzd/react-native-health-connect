@@ -42,8 +42,11 @@ export default function App() {
 
   const readSampleData = () => {
     readRecords('activeCaloriesBurned', {
-      startTime: '2023-01-09T12:00:00.405Z',
-      endTime: '2023-01-09T23:53:15.405Z',
+      timeRangeFilter: {
+        operator: 'between',
+        startTime: '2023-01-09T12:00:00.405Z',
+        endTime: '2023-01-09T23:53:15.405Z',
+      },
     }).then((result) => {
       console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
     });
@@ -52,8 +55,11 @@ export default function App() {
   const aggreagetSampleData = () => {
     aggregateRecord({
       recordType: 'activeCaloriesBurned',
-      startTime: '2023-01-09T12:00:00.405Z',
-      endTime: '2023-01-09T23:53:15.405Z',
+      timeRangeFilter: {
+        operator: 'between',
+        startTime: '2023-01-09T12:00:00.405Z',
+        endTime: '2023-01-09T23:53:15.405Z',
+      },
     }).then((result) => {
       console.log('Aggregated record: ', { result });
     });

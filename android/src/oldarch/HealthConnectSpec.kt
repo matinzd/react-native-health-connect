@@ -25,4 +25,10 @@ abstract class HealthConnectSpec internal constructor(context: ReactApplicationC
 
   @ReactMethod
   abstract fun aggregateRecord(record: ReadableMap, promise: Promise);
+  
+  @ReactMethod
+  abstract fun deleteRecordsByUuids(recordType: String, recordIdsList: ReadableArray, clientRecordIdsList: ReadableArray, promise: Promise);
+
+  @ReactMethod
+  abstract fun deleteRecordsByTimeRange(recordType: String, timeRangeFilter: ReadableMap, promise: Promise);
 }

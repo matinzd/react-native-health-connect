@@ -50,6 +50,23 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
     return manager.aggregateRecord(record, promise)
   }
 
+  override fun deleteRecordsByUuids(
+    recordType: String,
+    recordIdsList: ReadableArray,
+    clientRecordIdsList: ReadableArray,
+    promise: Promise
+  ) {
+    return manager.deleteRecordsByUuids(recordType, recordIdsList, clientRecordIdsList, promise)
+  }
+
+  override fun deleteRecordsByTimeRange(
+    recordType: String,
+    timeRangeFilter: ReadableMap,
+    promise: Promise
+  ) {
+    return manager.deleteRecordsByTimeRange(recordType, timeRangeFilter, promise)
+  }
+
   companion object {
     const val NAME = "HealthConnect"
   }

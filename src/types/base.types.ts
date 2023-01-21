@@ -49,3 +49,18 @@ export interface Metadata {
   // see: https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/metadata/Device
   device: number;
 }
+
+export type TimeRangeFilter =
+  | {
+      operator: 'between';
+      startTime?: string;
+      endTime?: string;
+    }
+  | {
+      operator: 'after';
+      startTime: string;
+    }
+  | {
+      operator: 'before';
+      endTime: string;
+    };

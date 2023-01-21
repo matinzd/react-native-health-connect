@@ -1,3 +1,5 @@
+import type { TimeRangeFilter } from './base.types';
+
 interface ActiveCaloriesBurnedAggregateResult {
   recordType: 'activeCaloriesBurned';
   inCalories: number;
@@ -37,7 +39,6 @@ export type AggregateResult<T extends AggregateResultRecordType> = Omit<
 
 export interface AggregateRequest<T extends AggregateResultRecordType> {
   recordType: T;
-  startTime: string;
-  endTime: string;
+  timeRangeFilter: TimeRangeFilter;
   dataOriginFilter?: string[];
 }

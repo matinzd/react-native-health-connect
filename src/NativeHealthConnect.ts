@@ -30,6 +30,15 @@ export interface Spec extends TurboModule {
     startTime: string;
     endTime: string;
   }): Promise<{}>;
+  deleteRecordsByUuids(
+    recordType: string,
+    recordIdsList: string[],
+    clientRecordIdsList: string[]
+  ): Promise<void>;
+  deleteRecordsByTimeRange(
+    recordType: string,
+    timeRangeFilter: Object
+  ): Promise<void>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('HealthConnect');

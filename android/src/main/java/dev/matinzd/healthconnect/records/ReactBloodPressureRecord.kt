@@ -61,10 +61,7 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
         BloodPressureRecord.DIASTOLIC_MIN,
         BloodPressureRecord.DIASTOLIC_MAX
       ),
-      timeRangeFilter = TimeRangeFilter.between(
-        Instant.parse(record.getString("startTime")),
-        Instant.parse(record.getString("endTime"))
-      ),
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }

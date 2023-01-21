@@ -45,10 +45,7 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
     return AggregateRequest(
       metrics = setOf(BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL),
-      timeRangeFilter = TimeRangeFilter.between(
-        Instant.parse(record.getString("startTime")),
-        Instant.parse(record.getString("endTime"))
-      ),
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }

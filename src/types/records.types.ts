@@ -6,6 +6,7 @@ import type {
   Power,
   Pressure,
   Temperature,
+  TimeRangeFilter,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -50,8 +51,7 @@ export type HealthConnectRecord =
 export type RecordType = HealthConnectRecord['recordType'];
 
 export interface ReadRecordsOptions {
-  startTime: string;
-  endTime: string;
+  timeRangeFilter: TimeRangeFilter;
   dataOriginFilter?: string[];
   ascendingOrder?: boolean;
   pageSize?: number;

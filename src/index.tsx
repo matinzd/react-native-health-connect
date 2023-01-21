@@ -10,6 +10,7 @@ import type {
   RecordResult,
   RecordType,
 } from './types';
+import type { TimeRangeFilter } from './types/base.types';
 
 const LINKING_ERROR =
   `The package 'react-native-health-connect' doesn't seem to be linked. Make sure: \n\n` +
@@ -107,6 +108,25 @@ export function aggregateRecord<T extends AggregateResultRecordType>(
   request: AggregateRequest<T>
 ): Promise<AggregateResult<T>> {
   return HealthConnect.aggregateRecord(request);
+}
+
+export function deleteRecordsByUuids(
+  recordType: string,
+  recordIdsList: string[],
+  clientRecordIdsList: string[]
+): Promise<void> {
+  return HealthConnect.deleteRecordsByUuids(
+    recordType,
+    recordIdsList,
+    clientRecordIdsList
+  );
+}
+
+export function deleteRecordsByTimeRange(
+  recordType: string,
+  timeRangeFilter: TimeRangeFilter
+): Promise<void> {
+  return HealthConnect.deleteRecordsByTimeRange(recordType, timeRangeFilter);
 }
 
 export * from './constants';
