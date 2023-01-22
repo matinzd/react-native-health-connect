@@ -152,5 +152,7 @@ val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "Vo2Max" to Vo2MaxRecord::class,
   "WaistCircumference" to WaistCircumferenceRecord::class,
   "Weight" to WeightRecord::class,
-  "WheelchairPushes" to WheelchairPushesRecord::class
+  "WheelchairPushes" to WheelchairPushesRecord::class,
+  "IntermenstrualBleedingRecord" to IntermenstrualBleedingRecord::class,
+  "MenstruationPeriodRecord" to MenstruationPeriodRecord::class
 )
