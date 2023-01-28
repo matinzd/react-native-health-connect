@@ -7,6 +7,7 @@ import type {
   Pressure,
   Temperature,
   TimeRangeFilter,
+  Mass,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -52,6 +53,11 @@ export interface BodyTemperatureRecord extends InstantaneousRecord {
   measurementLocation?: number;
 }
 
+export interface BodyWaterMassRecord extends InstantaneousRecord {
+  recordType: 'BodyWaterMass';
+  mass: Mass;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -59,7 +65,8 @@ export type HealthConnectRecord =
   | BloodGlucoseRecord
   | BloodPressureRecord
   | BodyFatRecord
-  | BodyTemperatureRecord;
+  | BodyTemperatureRecord
+  | BodyWaterMassRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

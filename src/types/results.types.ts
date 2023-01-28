@@ -4,6 +4,9 @@ import type {
   BasalMetabolicRateRecord,
   BloodGlucoseRecord,
   BloodPressureRecord,
+  BodyFatRecord,
+  BodyTemperatureRecord,
+  BodyWaterMassRecord,
   RecordType,
 } from './records.types';
 
@@ -50,12 +53,36 @@ interface BloodPressureRecordResult
   };
 }
 
+interface BodyTemperatureRecordResult
+  extends Omit<BodyTemperatureRecord, 'temperature'> {
+  temperature: {
+    inFahrenheit: number;
+    inCelsius: number;
+  };
+}
+
+interface BodyFatRecordResult extends BodyFatRecord {}
+
+interface BodyWaterMassRecordResult extends Omit<BodyWaterMassRecord, 'mass'> {
+  mass: {
+    inGrams: number;
+    inKilograms: number;
+    inMilligrams: number;
+    inMicrograms: number;
+    inOunces: number;
+    inPounds: number;
+  };
+}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
   | BasalMetabolicRateRecordResult
   | BloodGlucoseRecordResult
-  | BloodPressureRecordResult;
+  | BloodPressureRecordResult
+  | BodyFatRecordResult
+  | BodyTemperatureRecordResult
+  | BodyWaterMassRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,

@@ -9,9 +9,10 @@ class InvalidRecordType : Exception("Record type is not valid")
 class InvalidTemperature : Exception("Temperature is not valid")
 class InvalidEnergy : Exception("Energy is not valid")
 class InvalidPower : Exception("Power is not valid")
-class InvalidBloodGlucoseLevel: Exception("Blood glucose level is not valid")
-class InvalidBloodPressure: Exception("Blood pressure is not valid")
-class AggregationNotSupported: Exception("Aggregation is not supported for this record")
+class InvalidBloodGlucoseLevel : Exception("Blood glucose level is not valid")
+class InvalidBloodPressure : Exception("Blood pressure is not valid")
+class InvalidMass : Exception("Mass is not valid")
+class AggregationNotSupported : Exception("Aggregation is not supported for this record")
 
 fun Promise.rejectWithException(exception: Exception) {
   val code = when (exception) {

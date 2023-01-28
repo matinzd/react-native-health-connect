@@ -5,6 +5,7 @@ import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
+import androidx.health.connect.client.units.Mass
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
@@ -209,3 +210,31 @@ val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<
     "IntermenstrualBleeding" to ReactIntermenstrualBleedingRecord::class.java,
     "MenstruationPeriod" to ReactMenstruationPeriodRecord::class.java
   )
+
+fun massToJsMap(mass: Mass): WritableNativeMap {
+  return WritableNativeMap().apply {
+    putDouble("inGrams", mass.inGrams)
+    putDouble("inKilograms", mass.inKilograms)
+    putDouble("inMilligrams", mass.inMilligrams)
+    putDouble("inMicrograms", mass.inMicrograms)
+    putDouble("inOunces", mass.inOunces)
+    putDouble("inPounds", mass.inPounds)
+  }
+}
+
+fun getMassFromJsMap(massMap: ReadableMap?): Mass {
+  if (massMap == null) {
+    throw InvalidMass()
+  }
+
+  val value = massMap.getDouble("value")
+  return when (massMap.getString("unit")) {
+    "grams" -> Mass.grams(value)
+    "kilograms" -> Mass.kilograms(value)
+    "milligrams" -> Mass.milligrams(value)
+    "micrograms" -> Mass.micrograms(value)
+    "ounces" -> Mass.ounces(value)
+    "pounds" -> Mass.pounds(value)
+    else -> Mass.grams(value)
+  }
+}

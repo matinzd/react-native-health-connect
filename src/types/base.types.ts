@@ -1,28 +1,3 @@
-export interface Energy {
-  value: number;
-  unit: 'calories' | 'joules' | 'kilocalories' | 'kilojoules';
-}
-
-export interface BloodGlucose {
-  value: number;
-  unit: 'milligramsPerDeciliter' | 'millimolesPerLiter';
-}
-
-export interface Power {
-  value: number;
-  unit: 'watts' | 'kilocaloriesPerDay';
-}
-
-export interface Temperature {
-  value: number;
-  unit: 'celsius' | 'fahrenheit';
-}
-
-export interface Pressure {
-  value: number;
-  unit: 'millimetersOfMercury';
-}
-
 export interface BaseRecord {
   metadata?: Metadata;
 }
@@ -64,3 +39,39 @@ export type TimeRangeFilter =
       operator: 'before';
       endTime: string;
     };
+
+export interface Energy {
+  value: number;
+  unit: 'calories' | 'joules' | 'kilocalories' | 'kilojoules';
+}
+
+export interface BloodGlucose {
+  value: number;
+  unit: 'milligramsPerDeciliter' | 'millimolesPerLiter';
+}
+
+export interface Power {
+  value: number;
+  unit: 'watts' | 'kilocaloriesPerDay';
+}
+
+export interface Temperature {
+  value: number;
+  unit: 'celsius' | 'fahrenheit';
+}
+
+export interface Pressure {
+  value: number;
+  unit: 'millimetersOfMercury';
+}
+
+export interface Mass {
+  value: number;
+  unit:
+    | 'grams'
+    | 'kilograms'
+    | 'milligrams'
+    | 'micrograms'
+    | 'ounces'
+    | 'pounds';
+}
