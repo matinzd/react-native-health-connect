@@ -11,18 +11,10 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidRecordType
+import dev.matinzd.healthconnect.utils.reactRecordTypeToReactClassMap
 
 class ReactHealthRecord {
   companion object {
-    private val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<*>>> =
-      mapOf(
-        "ActiveCaloriesBurned" to ReactActiveCaloriesBurnedRecord::class.java,
-        "BasalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
-        "BasalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,
-        "BloodGlucose" to ReactBloodGlucoseRecord::class.java,
-        "BloodPressure" to ReactBloodPressureRecord::class.java
-      )
-
     private fun <T : Record> createReactHealthRecordInstance(recordType: String?): ReactHealthRecordImpl<T> {
       if (!reactRecordTypeToReactClassMap.containsKey(recordType)) {
         throw InvalidRecordType()
