@@ -46,13 +46,20 @@ export interface BodyFatRecord extends InstantaneousRecord {
   percentage: number;
 }
 
+export interface BodyTemperatureRecord extends InstantaneousRecord {
+  recordType: 'BodyTemperature';
+  temperature: Temperature;
+  measurementLocation?: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
   | BasalMetabolicRateRecord
   | BloodGlucoseRecord
   | BloodPressureRecord
-  | BodyFatRecord;
+  | BodyFatRecord
+  | BodyTemperatureRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
