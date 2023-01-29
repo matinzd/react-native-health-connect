@@ -33,7 +33,7 @@ const insertSampleData = () => {
       endTime: '2023-01-09T23:53:15.405Z',
     },
   ]).then((ids) => {
-    console.log('Records inserted ', { ids });
+    console.log('Records inserted ', { ids }); // Records inserted  {"ids": ["06bef46e-9383-4cc1-94b6-07a5045b764a", "a7bdea65-86ce-4eb2-a9ef-a87e6a7d9df2"]}
   });
 };
 ```

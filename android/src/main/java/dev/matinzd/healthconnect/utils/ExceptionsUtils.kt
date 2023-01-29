@@ -29,6 +29,7 @@ fun Promise.rejectWithException(exception: Exception) {
     is InvalidPower -> "INVALID_POWER"
     is InvalidBloodGlucoseLevel -> "INVALID_BLOOD_GLUCOSE_LEVEL"
     is InvalidBloodPressure -> "INVALID_BLOOD_PRESSURE"
+    is InvalidMass -> "INVALID_MASS"
     is AggregationNotSupported -> "AGGREGATION_NOT_SUPPORTED"
     else -> "UNKNOWN_ERROR"
   }

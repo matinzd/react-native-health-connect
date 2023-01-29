@@ -23,16 +23,18 @@ To access health data from the Health Connect app in your own app, you need to a
           <action android:name="android.intent.action.MAIN" />
           <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
+      // highlight-start
 +     <intent-filter>
 +       <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
 +     </intent-filter>
 +     <meta-data android:name="health_permissions" android:resource="@array/health_permissions" />
+      // highlight-end
     </activity>
 ```
 
 - Create a new values resource file at `/res/values/health_permissions.xml` and add the necessary permissions:
 
-```xml title="android/src/main/res/values/health_permissions"
+```xml title="android/src/main/res/values/health_permissions" showLineNumbers
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <array name="health_permissions">
