@@ -113,13 +113,17 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
   fun aggregateRecord(record: ReadableMap, promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
-        val recordType = record.getString("recordType") ?: ""
-        val response = healthConnectClient.aggregate(
-          ReactHealthRecord.getAggregateRequest(
-            recordType, record
+        try {
+          val recordType = record.getString("recordType") ?: ""
+          val response = healthConnectClient.aggregate(
+            ReactHealthRecord.getAggregateRequest(
+              recordType, record
+            )
           )
-        )
-        promise.resolve(ReactHealthRecord.parseAggregationResult(recordType, response))
+          promise.resolve(ReactHealthRecord.parseAggregationResult(recordType, response))
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
+        }
       }
     }
   }
@@ -146,17 +150,14 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
   }
 
   fun deleteRecordsByTimeRange(
-    recordType: String,
-    timeRangeFilter: ReadableMap,
-    promise: Promise
+    recordType: String, timeRangeFilter: ReadableMap, promise: Promise
   ) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
         val record = reactRecordTypeToClassMap[recordType]
         if (record != null) {
           healthConnectClient.deleteRecords(
-            recordType = record,
-            timeRangeFilter = timeRangeFilter.getTimeRangeFilter()
+            recordType = record, timeRangeFilter = timeRangeFilter.getTimeRangeFilter()
           )
         }
       }
