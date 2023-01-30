@@ -93,7 +93,8 @@ export type HealthConnectRecord =
   | BodyWaterMassRecord
   | BoneMassRecord
   | CervicalMucusRecord
-  | ElevationGainedRecord;
+  | ElevationGainedRecord
+  | ExerciseSessionRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
