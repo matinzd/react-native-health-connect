@@ -75,3 +75,12 @@ export interface Mass {
     | 'ounces'
     | 'pounds';
 }
+
+export interface MassResult {
+  inGrams: number;
+  inKilograms: number;
+  inMilligrams: number;
+  inMicrograms: number;
+  inOunces: number;
+  inPounds: number;
+}

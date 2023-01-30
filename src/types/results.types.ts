@@ -1,3 +1,4 @@
+import type { MassResult } from './base.types';
 import type {
   ActiveCaloriesBurnedRecord,
   BasalBodyTemperatureRecord,
@@ -7,6 +8,7 @@ import type {
   BodyFatRecord,
   BodyTemperatureRecord,
   BodyWaterMassRecord,
+  BoneMassRecord,
   RecordType,
 } from './records.types';
 
@@ -64,14 +66,11 @@ interface BodyTemperatureRecordResult
 interface BodyFatRecordResult extends BodyFatRecord {}
 
 interface BodyWaterMassRecordResult extends Omit<BodyWaterMassRecord, 'mass'> {
-  mass: {
-    inGrams: number;
-    inKilograms: number;
-    inMilligrams: number;
-    inMicrograms: number;
-    inOunces: number;
-    inPounds: number;
-  };
+  mass: MassResult;
+}
+
+interface BoneMassRecordResult extends Omit<BoneMassRecord, 'mass'> {
+  mass: MassResult;
 }
 
 type HealthConnectRecordResult =
@@ -82,7 +81,8 @@ type HealthConnectRecordResult =
   | BloodPressureRecordResult
   | BodyFatRecordResult
   | BodyTemperatureRecordResult
-  | BodyWaterMassRecordResult;
+  | BodyWaterMassRecordResult
+  | BoneMassRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,
