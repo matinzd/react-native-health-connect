@@ -1,4 +1,9 @@
-import type { LengthResult, MassResult } from './base.types';
+import type {
+  EnergyResult,
+  LengthResult,
+  MassResult,
+  PressureResult,
+} from './base.types';
 import type {
   ActiveCaloriesBurnedRecord,
   BasalBodyTemperatureRecord,
@@ -16,12 +21,7 @@ import type {
 
 interface ActiveCaloriesBurnedRecordResult
   extends Omit<ActiveCaloriesBurnedRecord, 'energy'> {
-  energy: {
-    inCalories: number;
-    inJoules: number;
-    inKilocalories: number;
-    inKilojoules: number;
-  };
+  energy: EnergyResult;
 }
 
 interface BasalBodyTemperatureRecordResult
@@ -49,12 +49,8 @@ interface BloodGlucoseRecordResult extends Omit<BloodGlucoseRecord, 'level'> {
 
 interface BloodPressureRecordResult
   extends Omit<BloodPressureRecord, 'systolic' | 'diastolic'> {
-  systolic: {
-    inMillimetersOfMercury: number;
-  };
-  diastolic: {
-    inMillimetersOfMercury: number;
-  };
+  systolic: PressureResult;
+  diastolic: PressureResult;
 }
 
 interface BodyTemperatureRecordResult

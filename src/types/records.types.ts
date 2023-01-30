@@ -75,6 +75,13 @@ export interface ElevationGainedRecord extends IntervalRecord {
   elevation: Length;
 }
 
+export interface ExerciseSessionRecord extends IntervalRecord {
+  recordType: 'ExerciseSession';
+  exerciseType: number;
+  title?: string;
+  notes?: string;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord

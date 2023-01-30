@@ -1,34 +1,44 @@
-import type { TimeRangeFilter } from './base.types';
+import type {
+  EnergyResult,
+  PressureResult,
+  TimeRangeFilter,
+} from './base.types';
 
-interface ActiveCaloriesBurnedAggregateResult {
+interface BaseAggregate {
+  dataOrigins: string[];
+}
+
+interface ActiveCaloriesBurnedAggregateResult extends BaseAggregate {
   recordType: 'ActiveCaloriesBurned';
-  inCalories: number;
-  inKilojoules: number;
-  inKilocalories: number;
-  inJoules: number;
+  ACTIVE_CALORIES_TOTAL: EnergyResult;
 }
 
-interface BasalMetabolicRateAggregateResult {
+interface BasalMetabolicRateAggregateResult extends BaseAggregate {
   recordType: 'BasalMetabolicRate';
-  inCalories: number;
-  inKilojoules: number;
-  inKilocalories: number;
-  inJoules: number;
+  BASAL_CALORIES_TOTAL: EnergyResult;
 }
 
-interface BloodPressureAggregateResult {
+interface BloodPressureAggregateResult extends BaseAggregate {
   recordType: 'BloodPressure';
-  SYSTOLIC_AVG: number;
-  SYSTOLIC_MIN: number;
-  DIASTOLIC_AVG: number;
-  DIASTOLIC_MIN: number;
-  DIASTOLIC_MAX: number;
+  SYSTOLIC_AVG: PressureResult;
+  SYSTOLIC_MIN: PressureResult;
+  DIASTOLIC_AVG: PressureResult;
+  DIASTOLIC_MIN: PressureResult;
+  DIASTOLIC_MAX: PressureResult;
+}
+
+interface ExerciseSessionAggregateResult extends BaseAggregate {
+  recordType: 'ExerciseSession';
+  EXERCISE_DURATION_TOTAL: {
+    inSeconds: number;
+  };
 }
 
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
-  | BloodPressureAggregateResult;
+  | BloodPressureAggregateResult
+  | ExerciseSessionAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 

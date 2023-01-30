@@ -2,11 +2,9 @@ package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
-import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
-import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Energy
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -55,24 +53,26 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
   }
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
-    record.dataOrigins
     return WritableNativeMap().apply {
-      putDouble(
-        "inCalories",
-        record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inCalories ?: 0.0
-      )
-      putDouble(
-        "inKilojoules",
-        record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inKilojoules ?: 0.0
-      )
-      putDouble(
-        "inKilocalories",
-        record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inKilocalories ?: 0.0
-      )
-      putDouble(
-        "inJoules",
-        record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inJoules ?: 0.0
-      )
+      val map = WritableNativeMap().apply {
+        putDouble(
+          "inCalories",
+          record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inCalories ?: 0.0
+        )
+        putDouble(
+          "inKilojoules",
+          record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inKilojoules ?: 0.0
+        )
+        putDouble(
+          "inKilocalories",
+          record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inKilocalories ?: 0.0
+        )
+        putDouble(
+          "inJoules",
+          record[ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL]?.inJoules ?: 0.0
+        )
+      }
+      putMap("ACTIVE_CALORIES_TOTAL", map)
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
   }

@@ -5,7 +5,6 @@ import androidx.health.connect.client.records.BloodPressureRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
-import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Pressure
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -68,26 +67,26 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
     return WritableNativeMap().apply {
-      record[BloodPressureRecord.SYSTOLIC_AVG]
-      putDouble(
+
+      putMap(
         "SYSTOLIC_AVG",
-        record[BloodPressureRecord.SYSTOLIC_AVG]?.inMillimetersOfMercury ?: 0.0
+        getPressureMap(record[BloodPressureRecord.SYSTOLIC_AVG]?.inMillimetersOfMercury ?: 0.0)
       )
-      putDouble(
+      putMap(
         "SYSTOLIC_MIN",
-        record[BloodPressureRecord.SYSTOLIC_MIN]?.inMillimetersOfMercury ?: 0.0
+        getPressureMap(record[BloodPressureRecord.SYSTOLIC_MIN]?.inMillimetersOfMercury ?: 0.0)
       )
-      putDouble(
+      putMap(
         "DIASTOLIC_AVG",
-        record[BloodPressureRecord.DIASTOLIC_AVG]?.inMillimetersOfMercury ?: 0.0
+        getPressureMap(record[BloodPressureRecord.DIASTOLIC_AVG]?.inMillimetersOfMercury ?: 0.0)
       )
-      putDouble(
+      putMap(
         "DIASTOLIC_MIN",
-        record[BloodPressureRecord.DIASTOLIC_MIN]?.inMillimetersOfMercury ?: 0.0
+        getPressureMap(record[BloodPressureRecord.DIASTOLIC_MIN]?.inMillimetersOfMercury ?: 0.0)
       )
-      putDouble(
+      putMap(
         "DIASTOLIC_MAX",
-        record[BloodPressureRecord.DIASTOLIC_MAX]?.inMillimetersOfMercury ?: 0.0
+        getPressureMap(record[BloodPressureRecord.DIASTOLIC_MAX]?.inMillimetersOfMercury ?: 0.0)
       )
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
@@ -106,5 +105,11 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
 
     val value = bloodPressureMap.getDouble("value")
     return Pressure.millimetersOfMercury(value)
+  }
+
+  private fun getPressureMap(inMillimetersOfMercury: Double): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putDouble("inMillimetersOfMercury", inMillimetersOfMercury)
+    }
   }
 }

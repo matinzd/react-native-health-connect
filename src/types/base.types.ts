@@ -45,6 +45,13 @@ export interface Energy {
   unit: 'calories' | 'joules' | 'kilocalories' | 'kilojoules';
 }
 
+export interface EnergyResult {
+  inCalories: number;
+  inJoules: number;
+  inKilocalories: number;
+  inKilojoules: number;
+}
+
 export interface BloodGlucose {
   value: number;
   unit: 'milligramsPerDeciliter' | 'millimolesPerLiter';
@@ -63,6 +70,10 @@ export interface Temperature {
 export interface Pressure {
   value: number;
   unit: 'millimetersOfMercury';
+}
+
+export interface PressureResult {
+  inMillimetersOfMercury: number;
 }
 
 export interface Mass {
