@@ -8,6 +8,7 @@ import type {
   Temperature,
   TimeRangeFilter,
   Mass,
+  Length,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -69,6 +70,11 @@ export interface CervicalMucusRecord extends InstantaneousRecord {
   sensation?: number;
 }
 
+export interface ElevationGainedRecord extends IntervalRecord {
+  recordType: 'ElevationGained';
+  elevation: Length;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -79,7 +85,8 @@ export type HealthConnectRecord =
   | BodyTemperatureRecord
   | BodyWaterMassRecord
   | BoneMassRecord
-  | CervicalMucusRecord;
+  | CervicalMucusRecord
+  | ElevationGainedRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

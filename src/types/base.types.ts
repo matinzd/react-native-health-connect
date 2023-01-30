@@ -84,3 +84,16 @@ export interface MassResult {
   inOunces: number;
   inPounds: number;
 }
+
+export interface Length {
+  value: number;
+  unit: 'meters' | 'kilometers' | 'miles' | 'inches' | 'feet';
+}
+
+export interface LengthResult {
+  inMeters: number;
+  inKilometers: number;
+  inMiles: number;
+  inInches: number;
+  inFeet: number;
+}

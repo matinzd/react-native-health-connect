@@ -5,6 +5,7 @@ import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
+import androidx.health.connect.client.units.Length
 import androidx.health.connect.client.units.Mass
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -236,5 +237,31 @@ fun getMassFromJsMap(massMap: ReadableMap?): Mass {
     "ounces" -> Mass.ounces(value)
     "pounds" -> Mass.pounds(value)
     else -> Mass.grams(value)
+  }
+}
+
+fun getLengthFromJsMap(length: ReadableMap?): Length {
+  if (length == null) {
+    throw InvalidLength()
+  }
+
+  val value = length.getDouble("value")
+  return when (length.getString("unit")) {
+    "meters" -> Length.meters(value)
+    "kilometers" -> Length.kilometers(value)
+    "miles" -> Length.miles(value)
+    "inches" -> Length.inches(value)
+    "feet" -> Length.feet(value)
+    else -> Length.meters(value)
+  }
+}
+
+fun lengthToJsMap(length: Length): WritableNativeMap {
+  return WritableNativeMap().apply {
+    putDouble("inMeters", length.inMeters)
+    putDouble("inKilometers", length.inKilometers)
+    putDouble("inMiles", length.inMiles)
+    putDouble("inInches", length.inInches)
+    putDouble("inFeet", length.inFeet)
   }
 }
