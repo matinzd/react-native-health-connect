@@ -12,7 +12,7 @@ import {
 } from 'react-native-health-connect';
 
 export default function App() {
-  const onInitialize = async () => {
+  const initializeHealthConnect = async () => {
     const result = await initialize();
     console.log({ result });
   };
@@ -82,7 +82,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Button title="Initialize" onPress={onInitialize} />
+      <Button title="Initialize" onPress={initializeHealthConnect} />
       <Button title="Check availability" onPress={checkAvailability} />
       <Button
         title="Request sample permissions"

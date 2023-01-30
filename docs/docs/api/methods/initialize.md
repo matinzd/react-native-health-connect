@@ -18,7 +18,7 @@ initialize(providerPackageNames: string[] = [DEFAULT_PROVIDER_PACKAGE_NAME]): Pr
 ```ts
 import { initialize } from 'react-native-health-connect';
 
-const onInitialize = async () => {
+const initializeHealthConnect = async () => {
   const isInitialized = await initialize();
   console.log({ isInitialized });
 };
