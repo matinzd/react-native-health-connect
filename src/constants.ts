@@ -52,3 +52,20 @@ export const BloodPressureMeasurementLocation = {
   LEFT_UPPER_ARM: 3,
   RIGHT_UPPER_ARM: 4,
 };
+
+export const CervicalMucusAppearance = {
+  UNKNOWN: 0,
+  DRY: 1,
+  STICKY: 2,
+  CREAMY: 3,
+  WATERY: 4,
+  EGG_WHITE: 5,
+  APPEARANCE_UNUSUAL: 6,
+};
+
+export const CervicalMucusSensation = {
+  UNKNOWN: 0,
+  LIGHT: 1,
+  MEDIUM: 2,
+  HEAVY: 3,
+};

@@ -63,6 +63,12 @@ export interface BoneMassRecord extends InstantaneousRecord {
   mass: Mass;
 }
 
+export interface CervicalMucusRecord extends InstantaneousRecord {
+  recordType: 'CervicalMucus';
+  appearance: number;
+  sensation: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -72,7 +78,8 @@ export type HealthConnectRecord =
   | BodyFatRecord
   | BodyTemperatureRecord
   | BodyWaterMassRecord
-  | BoneMassRecord;
+  | BoneMassRecord
+  | CervicalMucusRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

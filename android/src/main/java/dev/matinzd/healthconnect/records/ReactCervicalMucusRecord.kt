@@ -9,25 +9,47 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
+import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
+import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
+import dev.matinzd.healthconnect.utils.toMapList
+import java.time.Instant
 
-class ReactCervicalMucusRecord: ReactHealthRecordImpl<CervicalMucusRecord> {
+class ReactCervicalMucusRecord : ReactHealthRecordImpl<CervicalMucusRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<CervicalMucusRecord> {
-    TODO("Not yet implemented")
+    return records.toMapList().map {
+      CervicalMucusRecord(
+        time = Instant.parse(it.getString("time")),
+        appearance = it.getInt("appearance"),
+        sensation = it.getInt("sensation"),
+        zoneOffset = null,
+      )
+    }
   }
 
   override fun parseReadResponse(response: ReadRecordsResponse<out CervicalMucusRecord>): WritableNativeArray {
-    TODO("Not yet implemented")
+    return WritableNativeArray().apply {
+      for (record in response.records) {
+        val reactMap = WritableNativeMap().apply {
+          putString("time", record.time.toString())
+          putInt("appearance", record.appearance)
+          putInt("sensation", record.sensation)
+          putMap("metadata", convertMetadataToJSMap(record.metadata))
+        }
+        pushMap(reactMap)
+      }
+    }
   }
 
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<CervicalMucusRecord> {
-    TODO("Not yet implemented")
+    return convertReactRequestOptionsFromJS(CervicalMucusRecord::class, options)
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
-    TODO("Not yet implemented")
+    throw AggregationNotSupported()
   }
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
-    TODO("Not yet implemented")
+    throw AggregationNotSupported()
   }
 }
