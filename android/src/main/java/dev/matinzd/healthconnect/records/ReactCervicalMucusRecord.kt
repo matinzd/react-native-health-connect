@@ -9,10 +9,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.AggregationNotSupported
-import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
-import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
-import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactCervicalMucusRecord : ReactHealthRecordImpl<CervicalMucusRecord> {
@@ -20,8 +17,8 @@ class ReactCervicalMucusRecord : ReactHealthRecordImpl<CervicalMucusRecord> {
     return records.toMapList().map {
       CervicalMucusRecord(
         time = Instant.parse(it.getString("time")),
-        appearance = it.getInt("appearance"),
-        sensation = it.getInt("sensation"),
+        appearance = it.getSafeInt("appearance", CervicalMucusRecord.APPEARANCE_UNKNOWN),
+        sensation = it.getSafeInt("sensation", CervicalMucusRecord.SENSATION_UNKNOWN),
         zoneOffset = null,
       )
     }

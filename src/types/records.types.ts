@@ -65,8 +65,8 @@ export interface BoneMassRecord extends InstantaneousRecord {
 
 export interface CervicalMucusRecord extends InstantaneousRecord {
   recordType: 'CervicalMucus';
-  appearance: number;
-  sensation: number;
+  appearance?: number;
+  sensation?: number;
 }
 
 export type HealthConnectRecord =
