@@ -17,6 +17,7 @@ import type {
   CervicalMucusRecord,
   ElevationGainedRecord,
   ExerciseSessionRecord,
+  FloorsClimbedRecord,
   RecordType,
 } from './records.types';
 
@@ -81,6 +82,8 @@ interface ElevationGainedRecordResult
 
 interface ExerciseSessionRecordResult extends ExerciseSessionRecord {}
 
+interface FloorsClimbedRecordResult extends FloorsClimbedRecord {}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -93,7 +96,8 @@ type HealthConnectRecordResult =
   | BoneMassRecordResult
   | CervicalMucusRecordResult
   | ElevationGainedRecordResult
-  | ExerciseSessionRecordResult;
+  | ExerciseSessionRecordResult
+  | FloorsClimbedRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,

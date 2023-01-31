@@ -34,11 +34,17 @@ interface ExerciseSessionAggregateResult extends BaseAggregate {
   };
 }
 
+interface FloorsClimbedAggregateResult extends BaseAggregate {
+  recordType: 'FloorsClimbed';
+  FLOORS_CLIMBED_TOTAL: number;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
   | BloodPressureAggregateResult
-  | ExerciseSessionAggregateResult;
+  | ExerciseSessionAggregateResult
+  | FloorsClimbedAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 

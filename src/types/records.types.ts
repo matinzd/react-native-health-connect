@@ -82,6 +82,11 @@ export interface ExerciseSessionRecord extends IntervalRecord {
   notes?: string;
 }
 
+export interface FloorsClimbedRecord extends IntervalRecord {
+  recordType: 'FloorsClimbed';
+  floors: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -94,7 +99,8 @@ export type HealthConnectRecord =
   | BoneMassRecord
   | CervicalMucusRecord
   | ElevationGainedRecord
-  | ExerciseSessionRecord;
+  | ExerciseSessionRecord
+  | FloorsClimbedRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
