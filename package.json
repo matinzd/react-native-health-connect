@@ -1,7 +1,7 @@
 {
   "name": "react-native-health-connect",
   "version": "0.1.0-alpha.1",
-  "description": "test",
+  "description": "React native library for health connect (Android only)",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
