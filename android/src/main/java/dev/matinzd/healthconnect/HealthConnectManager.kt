@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.health.connect.client.HealthConnectClient
-import androidx.health.connect.client.permission.HealthPermission
 import com.facebook.react.bridge.*
 import dev.matinzd.healthconnect.permissions.HCPermissionManager
 import dev.matinzd.healthconnect.records.ReactHealthRecord
@@ -17,7 +16,7 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
   private lateinit var healthConnectClient: HealthConnectClient
   private val coroutineScope = CoroutineScope(Dispatchers.IO)
   private var pendingPromise: Promise? = null
-  private var latestPermissions: Set<HealthPermission>? = null
+  private var latestPermissions: Set<String>? = null
 
   private val isInitialized get() = this::healthConnectClient.isInitialized
 

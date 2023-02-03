@@ -129,15 +129,11 @@ val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "CyclingPedalingCadence" to CyclingPedalingCadenceRecord::class,
   "Distance" to DistanceRecord::class,
   "ElevationGained" to ElevationGainedRecord::class,
-  "ExerciseEvent" to ExerciseEventRecord::class, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
-  "ExerciseLap" to ExerciseLapRecord::class, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
-  "ExerciseRepetitions" to ExerciseRepetitionsRecord::class, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
   "ExerciseSession" to ExerciseSessionRecord::class,
   "FloorsClimbed" to FloorsClimbedRecord::class,
   "HeartRate" to HeartRateRecord::class,
   "HeartRateVariabilityRmssd" to HeartRateVariabilityRmssdRecord::class,
   "Height" to HeightRecord::class,
-  "HipCircumference" to HipCircumferenceRecord::class, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
   "Hydration" to HydrationRecord::class,
   "LeanBodyMass" to LeanBodyMassRecord::class,
   "MenstruationFlow" to MenstruationFlowRecord::class,
@@ -153,10 +149,8 @@ val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "Speed" to SpeedRecord::class,
   "StepsCadence" to StepsCadenceRecord::class,
   "Steps" to StepsRecord::class,
-  "SwimmingStrokes" to SwimmingStrokesRecord::class,  //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
   "TotalCaloriesBurned" to TotalCaloriesBurnedRecord::class,
   "Vo2Max" to Vo2MaxRecord::class,
-  "WaistCircumference" to WaistCircumferenceRecord::class, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
   "Weight" to WeightRecord::class,
   "WheelchairPushes" to WheelchairPushesRecord::class,
   "IntermenstrualBleeding" to IntermenstrualBleedingRecord::class,
@@ -178,15 +172,11 @@ val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<
     "CyclingPedalingCadence" to ReactCyclingPedalingCadenceRecord::class.java,
     "Distance" to ReactDistanceRecord::class.java,
     "ElevationGained" to ReactElevationGainedRecord::class.java,
-//    "ExerciseEvent" to ExerciseEventRecord::class.java, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
-//    "ExerciseLap" to ExerciseLapRecord::class.java, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
-//    "ExerciseRepetitions" to ExerciseRepetitionsRecord::class.java, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
     "ExerciseSession" to ReactExerciseSessionRecord::class.java,
     "FloorsClimbed" to ReactFloorsClimbedRecord::class.java,
     "HeartRate" to ReactHeartRateRecord::class.java,
     "HeartRateVariabilityRmssd" to ReactHeartRateVariabilityRmssdRecord::class.java,
     "Height" to ReactHeightRecord::class.java,
-//    "HipCircumference" to ReactHipCircumferenceRecord::class.java, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
     "Hydration" to ReactHydrationRecord::class.java,
     "LeanBodyMass" to ReactLeanBodyMassRecord::class.java,
     "MenstruationFlow" to ReactMenstruationFlowRecord::class.java,
@@ -202,10 +192,8 @@ val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<
     "Speed" to ReactSpeedRecord::class.java,
     "StepsCadence" to ReactStepsCadenceRecord::class.java,
     "Steps" to ReactStepsRecord::class.java,
-//    "SwimmingStrokes" to ReactSwimmingStrokesRecord::class.java,  //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
     "TotalCaloriesBurned" to ReactTotalCaloriesBurnedRecord::class.java,
     "Vo2Max" to ReactVo2MaxRecord::class.java,
-//    "WaistCircumference" to ReactWaistCircumferenceRecord::class.java, //TODO: not registered in https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/Record
     "Weight" to ReactWeightRecord::class.java,
     "WheelchairPushes" to ReactWheelchairPushesRecord::class.java,
     "IntermenstrualBleeding" to ReactIntermenstrualBleedingRecord::class.java,

@@ -17,7 +17,7 @@ class HCPermissionManager(providerPackageName: String) {
   companion object {
     private const val DEFAULT_PROVIDER_PACKAGE_NAME = "com.google.android.apps.healthdata"
 
-    fun parsePermissions(reactPermissions: ReadableArray): Set<HealthPermission> {
+    fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
       return reactPermissions.toArrayList().mapNotNull {
         it as HashMap<*, *>
         val recordType = it["recordType"]
@@ -25,8 +25,8 @@ class HCPermissionManager(providerPackageName: String) {
           ?: throw InvalidRecordType()
 
         when (it["accessType"]) {
-          "write" -> HealthPermission.createWritePermission(recordClass)
-          "read" -> HealthPermission.createReadPermission(recordClass)
+          "write" -> HealthPermission.getWritePermission(recordClass)
+          "read" -> HealthPermission.getReadPermission(recordClass)
           else -> null
         }
       }.toSet()
@@ -48,16 +48,27 @@ class HCPermissionManager(providerPackageName: String) {
       val grantedPermissions = WritableNativeArray().apply {
         result.forEach {
           val map = WritableNativeMap()
-          // TODO: Find a way to properly parse permission result without suppression
-          @Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-          map.putString("recordType", it.recordType.simpleName)
-          @Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
-          map.putInt("accessType", it.accessType)
+
+          val (accessType, recordType) = extractPermissionResult(it)
+
+          map.putString("recordType", snakeToCamel(recordType))
+          map.putString("accessType", accessType)
           pushMap(map)
         }
       }
 
       pendingPromise?.resolve(grantedPermissions)
+    }
+
+    private fun extractPermissionResult(it: String): Pair<String, String> {
+      val accessType = it.substring(it.lastIndexOf(".") + 1, it.indexOf("_")).lowercase()
+      val recordType = it.substring(it.indexOf("_") + 1).lowercase()
+      return Pair(accessType, recordType)
+    }
+
+    private fun snakeToCamel(word: String): String {
+      val components = word.split("_")
+      return components.joinToString("") { it[0].uppercase() + it.substring(1) }
     }
   }
 }
