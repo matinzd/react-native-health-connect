@@ -1,6 +1,6 @@
 {
   "name": "react-native-health-connect",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha.1",
   "description": "test",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
