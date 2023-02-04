@@ -1,9 +1,15 @@
 <div align="center">
   <a href="https://developer.android.com/guide/health-and-fitness/health-connect">
     <img src="https://developer.android.com/static/guide/health-and-fitness/health-connect/images/health_connect_logo_192pxnew.png"><br/>
+    <h1>React Native Health Connect</h1>
   </a>
-  <h1 align="center">React Native Health Connect</h1>
+  <div align="center">
+    <a href="http://www.npmjs.com/package/react-native-health-connect"><img src="https://img.shields.io/npm/v/react-native-health-connect.svg?style=for-the-badge&color=4284F3" /></a>
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" /></a>
+  </div>
 </div>
+
+---
 
 This library is a wrapper around Health Connect for react native. Health Connect is an Android API and platform. It unifies data from multiple devices and apps into an ecosystem. For Android developers, it provides a single interface for reading and writing a user’s health and fitness data. For Android users, it offers a place for control over which apps have read and/or write access to different types of data. Health Connect also provides on-device storage. Read more [here](https://developer.android.com/guide/health-and-fitness/health-connect).
 
