@@ -87,6 +87,7 @@ dependencies {
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
   implementation "androidx.health.connect:connect-client:1.0.0-alpha10"
 
+  // Issue: https://youtrack.jetbrains.com/issue/KT-54136/Duplicated-classes-cause-build-failure-if-a-dependency-to-kotlin-stdlib-specified-in-an-android-project
   constraints {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
       because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
