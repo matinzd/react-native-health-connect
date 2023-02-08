@@ -20,6 +20,63 @@ Health Connect requires the user to have screen lock enabled with a PIN, pattern
 
 1. Install react-native-health-connect by running:  
 ```bash
-yarn add react-native-health-connect
+yarn add react-native-health-connect@alpha
 ```
 Since this module is Android-only, you do not need to run `pod install`.
+
+**Note:**
+We are actively working to implement all records in the `alpha` tag. In the meantime, you can check our code to see which records have already been implemented by visiting [here](https://github.com/matinzd/react-native-health-connect/tree/main/android/src/main/java/dev/matinzd/healthconnect/records).
+
+## Example
+
+A quick example at a glance:
+
+```ts
+import {
+  initialize,
+  requestPermission,
+  readRecords,
+} from 'react-native-health-connect';
+
+const readSampleData = async () => {
+  // initialize the client
+  const isInitialized = await initialize();
+
+  // request permissions
+  const grantedPermissions = await requestPermission([
+    { accessType: 'read', recordType: 'ActiveCaloriesBurned' },
+  ]);
+
+  // check if granted
+
+  const result = await readRecords('ActiveCaloriesBurned', {
+    timeRangeFilter: {
+      operator: 'between',
+      startTime: '2023-01-09T12:00:00.405Z',
+      endTime: '2023-01-09T23:53:15.405Z',
+    },
+  });
+  // {
+  //   result: [
+  //     {
+  //       startTime: '2023-01-09T12:00:00.405Z',
+  //       endTime: '2023-01-09T23:53:15.405Z',
+  //       energy: {
+  //         inCalories: 15000000,
+  //         inJoules: 62760000.00989097,
+  //         inKilojoules: 62760.00000989097,
+  //         inKilocalories: 15000,
+  //       },
+  //       metadata: {
+  //         id: '239a8cfd-990d-42fc-bffc-c494b829e8e1',
+  //         lastModifiedTime: '2023-01-17T21:06:23.335Z',
+  //         clientRecordId: null,
+  //         dataOrigin: 'com.healthconnectexample',
+  //         clientRecordVersion: 0,
+  //         device: 0,
+  //       },
+  //     },
+  //   ],
+  // }
+};
+```
