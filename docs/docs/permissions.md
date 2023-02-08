@@ -9,7 +9,19 @@ title: Permissions
 
 To access health data from the Health Connect app in your own app, you need to add the necessary permissions and filters to the app manifest.
 
-- Add the following code inside the activity tag in `AndroidManifest.xml`:
+- Add the necessary permissions to `AndroidManifest.xml`:
+
+```diff title="android/src/main/AndroidManifest.xml"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
++   <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
++   <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
++   <uses-permission android:name="android.permission.health.READ_STEPS"/>
++   <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
+</manifest>
+```
+
+- Add the following highlighted code inside the activity tag as well:
 
 ```diff title="android/src/main/AndroidManifest.xml"
     <activity
@@ -27,69 +39,49 @@ To access health data from the Health Connect app in your own app, you need to a
 +     <intent-filter>
 +       <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
 +     </intent-filter>
-+     <meta-data android:name="health_permissions" android:resource="@array/health_permissions" />
       // highlight-end
     </activity>
 ```
 
-- Create a new values resource file at `/res/values/health_permissions.xml` and add the necessary permissions:
-
-```xml title="android/src/main/res/values/health_permissions" showLineNumbers
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <array name="health_permissions">
-    <item>androidx.health.permission.HeartRate.READ</item>
-    <item>androidx.health.permission.HeartRate.WRITE</item>
-    <item>androidx.health.permission.Steps.READ</item>
-    <item>androidx.health.permission.Steps.WRITE</item>
-  </array>
-</resources>
-```
-
 ## Complete list of permissions
 
-|Record class type     |Read permission declaration                           |Write permission declaration                           |
-|----------------------|------------------------------------------------------|-------------------------------------------------------|
-|ActiveCaloriesBurned  |androidx.health.permission.ActiveCaloriesBurned.READ  |androidx.health.permission.ActiveCaloriesBurned.WRITE  |
-|BasalBodyTemperature  |androidx.health.permission.BasalBodyTemperature.READ  |androidx.health.permission.BasalBodyTemperature.WRITE  |
-|BasalMetabolicRate    |androidx.health.permission.BasalMetabolicRate.READ    |androidx.health.permission.BasalMetabolicRate.WRITE    |
-|BloodGlucose          |androidx.health.permission.BloodGlucose.READ          |androidx.health.permission.BloodGlucose.WRITE          |
-|BloodPressure         |androidx.health.permission.BloodPressure.READ         |androidx.health.permission.BloodPressure.WRITE         |
-|BodyFat               |androidx.health.permission.BodyFat.READ               |androidx.health.permission.BodyFat.WRITE               |
-|BodyTemperature       |androidx.health.permission.BodyTemperature.READ       |androidx.health.permission.BodyTemperature.WRITE       |
-|BoneMass              |androidx.health.permission.BoneMass.READ              |androidx.health.permission.BoneMass.WRITE              |
-|CervicalMucus         |androidx.health.permission.CervicalMucus.READ         |androidx.health.permission.CervicalMucus.WRITE         |
-|CyclingPedalingCadence|androidx.health.permission.CyclingPedalingCadence.READ|androidx.health.permission.CyclingPedalingCadence.WRITE|
-|Distance              |androidx.health.permission.Distance.READ              |androidx.health.permission.Distance.WRITE              |
-|ElevationGained       |androidx.health.permission.ElevationGained.READ       |androidx.health.permission.ElevationGained.WRITE       |
-|ExerciseEvent         |androidx.health.permission.ExerciseSession.READ       |androidx.health.permission.ExerciseSession.WRITE       |
-|ExerciseLap           |androidx.health.permission.ExerciseSession.READ       |androidx.health.permission.ExerciseSession.WRITE       |
-|ExerciseRepetitions   |androidx.health.permission.ExerciseSession.READ       |androidx.health.permission.ExerciseSession.WRITE       |
-|ExerciseSession       |androidx.health.permission.ExerciseSession.READ       |androidx.health.permission.ExerciseSession.WRITE       |
-|FloorsClimbed         |androidx.health.permission.FloorsClimbed.READ         |androidx.health.permission.FloorsClimbed.WRITE         |
-|HeartRate             |androidx.health.permission.HeartRate.READ             |androidx.health.permission.HeartRate.WRITE             |
-|Height                |androidx.health.permission.Height.READ                |androidx.health.permission.Height.WRITE                |
-|HipCircumference      |androidx.health.permission.HipCircumference.READ      |androidx.health.permission.HipCircumference.WRITE      |
-|Hydration             |androidx.health.permission.Hydration.READ             |androidx.health.permission.Hydration.WRITE             |
-|LeanBodyMass          |androidx.health.permission.LeanBodyMass.READ          |androidx.health.permission.LeanBodyMass.WRITE          |
-|MenstruationFlow      |androidx.health.permission.MenstruationFlow.READ      |androidx.health.permission.MenstruationFlow.WRITE      |
-|Nutrition             |androidx.health.permission.Nutrition.READ             |androidx.health.permission.Nutrition.WRITE             |
-|OvulationTest         |androidx.health.permission.OvulationTest.READ         |androidx.health.permission.OvulationTest.WRITE         |
-|OxygenSaturation      |androidx.health.permission.OxygenSaturation.READ      |androidx.health.permission.OxygenSaturation.WRITE      |
-|Power                 |androidx.health.permission.Power.READ                 |androidx.health.permission.Power.WRITE                 |
-|RespiratoryRate       |androidx.health.permission.RespiratoryRate.READ       |androidx.health.permission.RespiratoryRate.WRITE       |
-|RestingHeartRate      |androidx.health.permission.RestingHeartRate.READ      |androidx.health.permission.RestingHeartRate.WRITE      |
-|SexualActivity        |androidx.health.permission.SexualActivity.READ        |androidx.health.permission.SexualActivity.WRITE        |
-|SleepSession          |androidx.health.permission.SleepSession.READ          |androidx.health.permission.SleepSession.WRITE          |
-|SleepStage            |androidx.health.permission.SleepSession.READ          |androidx.health.permission.SleepSession.WRITE          |
-|Speed                 |androidx.health.permission.Speed.READ                 |androidx.health.permission.Speed.WRITE                 |
-|StepsCadence          |androidx.health.permission.StepsCadence.READ          |androidx.health.permission.StepsCadence.WRITE          |
-|Steps                 |androidx.health.permission.Steps.READ                 |androidx.health.permission.Steps.WRITE                 |
-|SwimmingStrokes       |androidx.health.permission.SwimmingStrokes.READ       |androidx.health.permission.SwimmingStrokes.WRITE       |
-|TotalCaloriesBurned   |androidx.health.permission.TotalCaloriesBurned.READ   |androidx.health.permission.TotalCaloriesBurned.WRITE   |
-|Vo2Max                |androidx.health.permission.Vo2Max.READ                |androidx.health.permission.Vo2Max.WRITE                |
-|WaistCircumference    |androidx.health.permission.WaistCircumference.READ    |androidx.health.permission.WaistCircumference.WRITE    |
-|Weight                |androidx.health.permission.Weight.READ                |androidx.health.permission.Weight.WRITE                |
-|WheelchairPushes      |androidx.health.permission.WheelchairPushes.READ      |androidx.health.permission.WheelchairPushes.WRITE      |
+| Record class type      | Read permission declaration                            | Write permission declaration                            |
+| ---------------------- | ------------------------------------------------------ | ------------------------------------------------------- |
+|ActiveCaloriesBurned  | android.permission.health.READ_ACTIVE_CALORIES_BURNED |  android.permission.health.WRITE_ACTIVE_CALORIES_BURNED|
+|BasalBodyTemperature  | android.permission.health.READ_BASAL_BODY_TEMPERATURE |  android.permission.health.WRITE_BASAL_BODY_TEMPERATURE|
+|BasalMetabolicRate  | android.permission.health.READ_BASAL_METABOLIC_RATE |  android.permission.health.WRITE_BASAL_METABOLIC_RATE|
+|BloodGlucose  | android.permission.health.READ_BLOOD_GLUCOSE  |  android.permission.health.WRITE_BLOOD_GLUCOSE|
+|BloodPressure | android.permission.health.READ_BLOOD_PRESSURE  | android.permission.health.WRITE_BLOOD_PRESSURE|
+|BodyFat | android.permission.health.READ_BODY_FAT  | android.permission.health.WRITE_BODY_FAT|
+|BodyTemperature | android.permission.health.READ_BODY_TEMPERATURE  | android.permission.health.WRITE_BODY_TEMPERATURE|
+|BoneMass  | android.permission.health.READ_BONE_MASS  |  android.permission.health.WRITE_BONE_MASS|
+|CervicalMucus | android.permission.health.READ_CERVICAL_MUCUS  | android.permission.health.WRITE_CERVICAL_MUCUS|
+|CyclingPedalingCadence  | android.permission.health.READ_EXERCISE |  android.permission.health.WRITE_EXERCISE|
+|Distance  | android.permission.health.READ_DISTANCE |  android.permission.health.WRITE_DISTANCE|
+|ElevationGained | android.permission.health.READ_ELEVATION_GAINED  | android.permission.health.WRITE_ELEVATION_GAINED|
+|ExerciseSession | android.permission.health.READ_EXERCISE  | android.permission.health.WRITE_EXERCISE|
+|FloorsClimbed | android.permission.health.READ_FLOORS_CLIMBED  | android.permission.health.WRITE_FLOORS_CLIMBED|
+|HeartRate | android.permission.health.READ_HEART_RATE  | android.permission.health.WRITE_HEART_RATE|
+|Height  | android.permission.health.READ_HEIGHT |  android.permission.health.WRITE_HEIGHT|
+Hydration | android.permission.health.READ_HYDRATION | android.permission.health.WRITE_HYDRATION
+|LeanBodyMass  | android.permission.health.READ_LEAN_BODY_MASS |  android.permission.health.WRITE_LEAN_BODY_MASS|
+|MenstruationFlow  | android.permission.health.READ_MENSTRUATION |  android.permission.health.WRITE_MENSTRUATION|
+|MenstruationPeriod  | android.permission.health.READ_MENSTRUATION |  android.permission.health.WRITE_MENSTRUATION|
+|Nutrition | android.permission.health.READ_NUTRITION | android.permission.health.WRITE_NUTRITION|
+|OvulationTest | android.permission.health.READ_OVULATION_TEST  | android.permission.health.WRITE_OVULATION_TEST|
+|OxygenSaturation  | android.permission.health.READ_OXYGEN_SATURATION  |  android.permission.health.WRITE_OXYGEN_SATURATION|
+|Power | android.permission.health.READ_POWER | android.permission.health.WRITE_POWER|
+|RespiratoryRate | android.permission.health.READ_RESPIRATORY_RATE  | android.permission.health.WRITE_RESPIRATORY_RATE|
+|RestingHeartRate  | android.permission.health.READ_RESTING_HEART_RATE |  android.permission.health.WRITE_RESTING_HEART_RATE|
+|SexualActivity  | android.permission.health.READ_SEXUAL_ACTIVITY  |  android.permission.health.WRITE_SEXUAL_ACTIVITY|
+|SleepSession  | android.permission.health.READ_SLEEP  |  android.permission.health.WRITE_SLEEP|
+|SleepStage  | android.permission.health.READ_SLEEP  |  android.permission.health.WRITE_SLEEP|
+|Speed | android.permission.health.READ_SPEED | android.permission.health.WRITE_SPEED|
+|StepsCadence  | android.permission.health.READ_STEPS  |  android.permission.health.WRITE_STEPS|
+|Steps | android.permission.health.READ_STEPS | android.permission.health.WRITE_STEPS|
+|TotalCaloriesBurned | android.permission.health.READ_TOTAL_CALORIES_BURNED | android.permission.health.WRITE_TOTAL_CALORIES_BURNED|
+|Vo2Max  | android.permission.health.READ_VO2_MAX  |  android.permission.health.WRITE_VO2_MAX|
+|Weight  | android.permission.health.READ_WEIGHT |  android.permission.health.WRITE_WEIGHT|
+|WheelchairPushes  | android.permission.health.READ_WHEELCHAIR_PUSHES  |  android.permission.health.WRITE_WHEELCHAIR_PUSHES|
 
 You can read more about data types and permissions [here](https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/data-types).
