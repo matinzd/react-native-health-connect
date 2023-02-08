@@ -31,6 +31,11 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
+  override fun getGrantedPermissions(promise: Promise) {
+    return manager.getGrantedPermissions(promise)
+  }
+
+  @ReactMethod
   override fun revokeAllPermissions(promise: Promise) {
     return manager.revokeAllPermissions(promise)
   }

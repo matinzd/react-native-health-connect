@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import {
   aggregateRecord,
+  getGrantedPermissions,
   initialize,
   insertRecords,
   isAvailable,
@@ -26,14 +27,14 @@ export default function App() {
       {
         recordType: 'ActiveCaloriesBurned',
         energy: { unit: 'kilocalories', value: 10000 },
-        startTime: '2023-01-09T10:00:00.405Z',
-        endTime: '2023-01-09T11:53:15.405Z',
+        startTime: '2023-01-09T09:00:00.000Z',
+        endTime: '2023-01-09T10:00:00.000Z',
       },
       {
         recordType: 'ActiveCaloriesBurned',
         energy: { unit: 'kilocalories', value: 15000 },
-        startTime: '2023-01-09T12:00:00.405Z',
-        endTime: '2023-01-09T23:53:15.405Z',
+        startTime: '2023-01-09T12:00:00.000Z',
+        endTime: '2023-01-09T14:00:00.000Z',
       },
     ]).then((ids) => {
       console.log('Records inserted ', { ids });
@@ -44,8 +45,8 @@ export default function App() {
     readRecords('ActiveCaloriesBurned', {
       timeRangeFilter: {
         operator: 'between',
-        startTime: '2023-01-09T12:00:00.405Z',
-        endTime: '2023-01-09T23:53:15.405Z',
+        startTime: '2023-01-09T00:00:00.000Z',
+        endTime: '2023-01-09T23:59:59.999Z',
       },
     }).then((result) => {
       console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
@@ -57,8 +58,8 @@ export default function App() {
       recordType: 'ActiveCaloriesBurned',
       timeRangeFilter: {
         operator: 'between',
-        startTime: '2023-01-09T12:00:00.405Z',
-        endTime: '2023-01-09T23:53:15.405Z',
+        startTime: '2023-01-09T00:00:00.000Z',
+        endTime: '2023-01-09T23:59:59.999Z',
       },
     }).then((result) => {
       console.log('Aggregated record: ', { result });
@@ -76,6 +77,12 @@ export default function App() {
         recordType: 'ActiveCaloriesBurned',
       },
     ]).then((permissions) => {
+      console.log('Granted permissions on request ', { permissions });
+    });
+  };
+
+  const grantedPermissions = () => {
+    getGrantedPermissions().then((permissions) => {
       console.log('Granted permissions ', { permissions });
     });
   };
@@ -88,6 +95,7 @@ export default function App() {
         title="Request sample permissions"
         onPress={requestSamplePermissions}
       />
+      <Button title="Get granted permissions" onPress={grantedPermissions} />
       <Button title="Revoke all permissions" onPress={revokeAllPermissions} />
       <Button title="Insert sample data" onPress={insertSampleData} />
       <Button title="Read sample data" onPress={readSampleData} />

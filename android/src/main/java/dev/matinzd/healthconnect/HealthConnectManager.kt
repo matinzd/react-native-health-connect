@@ -81,6 +81,14 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
     }
   }
 
+  fun getGrantedPermissions(promise: Promise) {
+    throwUnlessClientIsAvailable(promise) {
+      coroutineScope.launch {
+        promise.resolve(HCPermissionManager.getGrantedPermissions(healthConnectClient.permissionController))
+      }
+    }
+  }
+
   fun insertRecords(reactRecords: ReadableArray, promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {

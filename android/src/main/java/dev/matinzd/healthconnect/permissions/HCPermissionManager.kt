@@ -45,8 +45,16 @@ class HCPermissionManager(providerPackageName: String) {
         intent
       )
 
-      val grantedPermissions = WritableNativeArray().apply {
-        result.forEach {
+      pendingPromise?.resolve(mapPermissionResult(result))
+    }
+
+    suspend fun getGrantedPermissions(permissionController: PermissionController): WritableNativeArray {
+      return mapPermissionResult(permissionController.getGrantedPermissions())
+    }
+
+    private fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
+      return WritableNativeArray().apply {
+        grantedPermissions.forEach {
           val map = WritableNativeMap()
 
           val (accessType, recordType) = extractPermissionResult(it)
@@ -56,8 +64,6 @@ class HCPermissionManager(providerPackageName: String) {
           pushMap(map)
         }
       }
-
-      pendingPromise?.resolve(grantedPermissions)
     }
 
     private fun extractPermissionResult(it: String): Pair<String, String> {

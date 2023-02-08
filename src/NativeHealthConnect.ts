@@ -19,6 +19,7 @@ export interface Spec extends TurboModule {
     permissions: Permission[],
     providerPackageName: string
   ): Promise<Permission[]>;
+  getGrantedPermissions(): Promise<Permission[]>;
   revokeAllPermissions(): Promise<void>;
   insertRecords(records: HealthConnectRecord[]): Promise<string[]>;
   readRecords(
