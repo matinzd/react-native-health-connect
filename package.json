@@ -8,7 +8,7 @@
   "react-native": "src/index",
   "source": "src/index",
   "repository": "https://github.com/matinzd/react-native-health-connect",
-  "author": "matinzd <zadehdolatabad@gmail.com> (https://github.com/matinzd)",
+  "author": "matinzd <me@matinzd.dev> (https://github.com/matinzd)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/matinzd/react-native-health-connect/issues"
