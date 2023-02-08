@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_poition: 4
 title: revokeAllPermissions
 ---
 
