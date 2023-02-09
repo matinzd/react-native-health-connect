@@ -53,8 +53,10 @@
   },
   "keywords": [
     "react-native",
-    "ios",
-    "android"
+    "health-connect",
+    "health-sdk",
+    "android",
+    "fitness"
   ],
   "files": [
     "src",

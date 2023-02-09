@@ -1,11 +1,15 @@
 <div align="center">
-  <a href="https://developer.android.com/guide/health-and-fitness/health-connect">
-    <img src="https://developer.android.com/static/guide/health-and-fitness/health-connect/images/health_connect_logo_192pxnew.png"><br/>
-    <h1>React Native Health Connect</h1>
-  </a>
+  <img src="https://developer.android.com/static/guide/health-and-fitness/health-connect/images/health_connect_logo_192pxnew.png" />
   <div align="center">
-    <a href="http://www.npmjs.com/package/react-native-health-connect"><img src="https://img.shields.io/npm/v/react-native-health-connect.svg?style=for-the-badge&color=4284F3" /></a>
-    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" /></a>
+    <h1>React Native Health Connect</h1>
+  </div>
+  <div align="center">
+    <a href="https://www.npmjs.com/package/react-native-health-connect/v/alpha">
+      <img src="https://img.shields.io/npm/v/react-native-health-connect/alpha.svg?style=for-the-badge&color=4284F3" />
+    </a>
+    <a href="https://opensource.org/licenses/MIT">
+      <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" />
+    </a>
   </div>
 </div>
 
