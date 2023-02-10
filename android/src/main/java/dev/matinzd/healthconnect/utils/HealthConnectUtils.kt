@@ -22,8 +22,8 @@ fun <T : Record> convertReactRequestOptionsFromJS(
     recordType,
     timeRangeFilter = options.getTimeRangeFilter("timeRangeFilter"),
     dataOriginFilter = convertJsToDataOriginSet(options.getArray("dataOriginFilter")),
-    ascendingOrder = if (options.hasKey("ascendingOrder")) options.getBoolean("ascendingOrder") else true,
-    pageSize = if (options.hasKey("pageSize")) options.getInt("pageSize") else 1000,
+    ascendingOrder = options.getSafeBoolean("ascendingOrder", true),
+    pageSize = options.getSafeInt("pageSize", 1000),
     pageToken = if (options.hasKey("pageToken")) options.getString("pageToken") else null,
   )
 }
@@ -57,7 +57,15 @@ fun ReadableArray.toMapList(): List<ReadableMap> {
 }
 
 fun ReadableMap.getSafeInt(key: String, default: Int): Int {
-  return if (this.hasKey(key)) this.getInt("measurementLocation") else default
+  return if (this.hasKey(key)) this.getInt(key) else default
+}
+
+fun ReadableMap.getSafeBoolean(key: String, default: Boolean): Boolean {
+  return if (this.hasKey(key)) this.getBoolean(key) else default
+}
+
+fun ReadableMap.getSafeString(key: String, default: String): String {
+  return if (this.hasKey(key)) this.getString(key) ?: default else default
 }
 
 fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
