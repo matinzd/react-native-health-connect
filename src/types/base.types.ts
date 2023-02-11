@@ -108,3 +108,9 @@ export interface LengthResult {
   inInches: number;
   inFeet: number;
 }
+
+export interface CyclingPedalingCadenceSample {
+  time: string;
+  // from 0 to 10_000
+  revolutionsPerMinute: number;
+}

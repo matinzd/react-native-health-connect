@@ -15,6 +15,7 @@ import type {
   BodyWaterMassRecord,
   BoneMassRecord,
   CervicalMucusRecord,
+  CyclingPedalingCadenceRecord,
   ElevationGainedRecord,
   ExerciseSessionRecord,
   FloorsClimbedRecord,
@@ -75,6 +76,9 @@ interface BoneMassRecordResult extends Omit<BoneMassRecord, 'mass'> {
 
 interface CervicalMucusRecordResult extends CervicalMucusRecord {}
 
+interface CyclingPedalingCadenceRecordResult
+  extends CyclingPedalingCadenceRecord {}
+
 interface ElevationGainedRecordResult
   extends Omit<ElevationGainedRecord, 'elevation'> {
   elevation: LengthResult;
@@ -97,7 +101,8 @@ type HealthConnectRecordResult =
   | CervicalMucusRecordResult
   | ElevationGainedRecordResult
   | ExerciseSessionRecordResult
-  | FloorsClimbedRecordResult;
+  | FloorsClimbedRecordResult
+  | CyclingPedalingCadenceRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,

@@ -9,6 +9,7 @@ import type {
   TimeRangeFilter,
   Mass,
   Length,
+  CyclingPedalingCadenceSample,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -70,6 +71,11 @@ export interface CervicalMucusRecord extends InstantaneousRecord {
   sensation?: number;
 }
 
+export interface CyclingPedalingCadenceRecord extends IntervalRecord {
+  recordType: 'CyclingPedalingCadence';
+  samples: CyclingPedalingCadenceSample[];
+}
+
 export interface ElevationGainedRecord extends IntervalRecord {
   recordType: 'ElevationGained';
   elevation: Length;
@@ -100,7 +106,8 @@ export type HealthConnectRecord =
   | CervicalMucusRecord
   | ElevationGainedRecord
   | ExerciseSessionRecord
-  | FloorsClimbedRecord;
+  | FloorsClimbedRecord
+  | CyclingPedalingCadenceRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

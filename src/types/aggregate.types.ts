@@ -39,12 +39,20 @@ interface FloorsClimbedAggregateResult extends BaseAggregate {
   FLOORS_CLIMBED_TOTAL: number;
 }
 
+interface CyclingPedalingCadenceAggregateResult extends BaseAggregate {
+  recordType: 'CyclingPedalingCadence';
+  RPM_AVG: number;
+  RPM_MAX: number;
+  RPM_MIN: number;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
   | BloodPressureAggregateResult
   | ExerciseSessionAggregateResult
-  | FloorsClimbedAggregateResult;
+  | FloorsClimbedAggregateResult
+  | CyclingPedalingCadenceAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
