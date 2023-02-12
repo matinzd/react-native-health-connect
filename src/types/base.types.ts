@@ -109,8 +109,16 @@ export interface LengthResult {
   inFeet: number;
 }
 
-export interface CyclingPedalingCadenceSample {
+interface BaseSample {
   time: string;
-  // from 0 to 10_000
+}
+
+export interface CyclingPedalingCadenceSample extends BaseSample {
+  // Cycling revolutions per minute. Valid range: 0-10000.
   revolutionsPerMinute: number;
+}
+
+export interface HeartRateSample extends BaseSample {
+  // Heart beats per minute. Validation range: 1-300.
+  beatsPerMinute: number;
 }

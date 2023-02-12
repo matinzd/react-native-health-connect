@@ -46,13 +46,22 @@ interface CyclingPedalingCadenceAggregateResult extends BaseAggregate {
   RPM_MIN: number;
 }
 
+interface HeartRateAggregateResult extends BaseAggregate {
+  recordType: 'HeartRate';
+  BPM_AVG: number;
+  BPM_MAX: number;
+  BPM_MIN: number;
+  MEASUREMENTS_COUNT: number;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
   | BloodPressureAggregateResult
   | ExerciseSessionAggregateResult
   | FloorsClimbedAggregateResult
-  | CyclingPedalingCadenceAggregateResult;
+  | CyclingPedalingCadenceAggregateResult
+  | HeartRateAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
