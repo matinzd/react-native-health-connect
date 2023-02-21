@@ -54,6 +54,11 @@ interface HeartRateAggregateResult extends BaseAggregate {
   MEASUREMENTS_COUNT: number;
 }
 
+interface StepsAggregateResult extends BaseAggregate {
+  recordType: 'Steps';
+  COUNT_TOTAL: number;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -61,7 +66,8 @@ export type AggregateRecordResult =
   | ExerciseSessionAggregateResult
   | FloorsClimbedAggregateResult
   | CyclingPedalingCadenceAggregateResult
-  | HeartRateAggregateResult;
+  | HeartRateAggregateResult
+  | StepsAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 

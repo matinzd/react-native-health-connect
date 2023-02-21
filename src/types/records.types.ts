@@ -99,6 +99,11 @@ export interface HeartRateRecord extends IntervalRecord {
   samples: HeartRateSample[];
 }
 
+export interface StepsRecord extends IntervalRecord {
+  recordType: 'Steps';
+  count: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -114,7 +119,8 @@ export type HealthConnectRecord =
   | ElevationGainedRecord
   | ExerciseSessionRecord
   | FloorsClimbedRecord
-  | HeartRateRecord;
+  | HeartRateRecord
+  | StepsRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
