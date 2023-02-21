@@ -78,6 +78,8 @@ repositories {
 
 def kotlin_version = getExtOrDefault("kotlinVersion")
 
+def work_version = "2.8.0"
+
 dependencies {
   // For < 0.71, this will be from the local maven repo
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
@@ -86,6 +88,7 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
   implementation "androidx.health.connect:connect-client:1.0.0-alpha10"
+  implementation "androidx.work:work-runtime-ktx:$work_version"
 
   // Issue: https://youtrack.jetbrains.com/issue/KT-54136/Duplicated-classes-cause-build-failure-if-a-dependency-to-kotlin-stdlib-specified-in-an-android-project
   constraints {

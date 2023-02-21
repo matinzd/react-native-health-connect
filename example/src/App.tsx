@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import {
   aggregateRecord,
+  cancelPeriodicBackgroundWorker,
   getGrantedPermissions,
   initialize,
   insertRecords,
@@ -10,6 +11,7 @@ import {
   readRecords,
   requestPermission,
   revokeAllPermissions,
+  startPeriodicBackgroundWorker,
 } from 'react-native-health-connect';
 
 export default function App() {
@@ -100,6 +102,14 @@ export default function App() {
       <Button title="Insert sample data" onPress={insertSampleData} />
       <Button title="Read sample data" onPress={readSampleData} />
       <Button title="Aggregate sample data" onPress={aggreagetSampleData} />
+      <Button
+        title="Enqueue periodic worker"
+        onPress={startPeriodicBackgroundWorker}
+      />
+      <Button
+        title="Cancel periodic worker"
+        onPress={cancelPeriodicBackgroundWorker}
+      />
     </View>
   );
 }

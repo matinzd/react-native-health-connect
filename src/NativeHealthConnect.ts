@@ -40,6 +40,8 @@ export interface Spec extends TurboModule {
     recordType: string,
     timeRangeFilter: Object
   ): Promise<void>;
+  startPeriodicBackgroundWorker(): Promise<void>;
+  cancelPeriodicBackgroundWorker(): Promise<void>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('HealthConnect');

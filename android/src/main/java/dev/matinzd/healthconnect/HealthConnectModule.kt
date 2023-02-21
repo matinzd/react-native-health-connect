@@ -1,14 +1,33 @@
 package dev.matinzd.healthconnect
 
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.facebook.react.bridge.*
+import java.util.concurrent.TimeUnit
+
 
 class HealthConnectModule internal constructor(context: ReactApplicationContext) :
   HealthConnectSpec(context) {
 
   private val manager = HealthConnectManager(context)
+  private val WORK_NAME = "HealthConnectTask"
 
   override fun getName(): String {
     return NAME
+  }
+
+  @ReactMethod
+  override fun startPeriodicBackgroundWorker(promise: Promise) {
+    val workRequest =
+      PeriodicWorkRequest.Builder(HealthConnectWorker::class.java, 15, TimeUnit.MINUTES).build()
+    WorkManager.getInstance(reactApplicationContext)
+      .enqueueUniquePeriodicWork(WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, workRequest)
+  }
+
+  @ReactMethod
+  override fun cancelPeriodicBackgroundWorker(promise: Promise) {
+    WorkManager.getInstance(reactApplicationContext).cancelUniqueWork(WORK_NAME)
   }
 
   @ReactMethod
