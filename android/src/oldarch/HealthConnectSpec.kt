@@ -12,7 +12,11 @@ abstract class HealthConnectSpec internal constructor(context: ReactApplicationC
   abstract fun initialize(providerPackageNames: ReadableArray, promise: Promise);
 
   @ReactMethod
-  abstract fun requestPermission(permissions: ReadableArray, providerPackageName: String, promise: Promise);
+  abstract fun requestPermission(
+    permissions: ReadableArray,
+    providerPackageName: String,
+    promise: Promise
+  );
 
   @ReactMethod
   abstract fun getGrantedPermissions(promise: Promise);
@@ -28,10 +32,25 @@ abstract class HealthConnectSpec internal constructor(context: ReactApplicationC
 
   @ReactMethod
   abstract fun aggregateRecord(record: ReadableMap, promise: Promise);
-  
-  @ReactMethod
-  abstract fun deleteRecordsByUuids(recordType: String, recordIdsList: ReadableArray, clientRecordIdsList: ReadableArray, promise: Promise);
 
   @ReactMethod
-  abstract fun deleteRecordsByTimeRange(recordType: String, timeRangeFilter: ReadableMap, promise: Promise);
+  abstract fun deleteRecordsByUuids(
+    recordType: String,
+    recordIdsList: ReadableArray,
+    clientRecordIdsList: ReadableArray,
+    promise: Promise
+  );
+
+  @ReactMethod
+  abstract fun deleteRecordsByTimeRange(
+    recordType: String,
+    timeRangeFilter: ReadableMap,
+    promise: Promise
+  );
+
+  @ReactMethod
+  abstract fun startPeriodicBackgroundWorker(promise: Promise);
+
+  @ReactMethod
+  abstract fun cancelPeriodicBackgroundWorker(promise: Promise);
 }
