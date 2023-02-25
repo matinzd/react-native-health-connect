@@ -44,10 +44,6 @@ fun convertJsToDataOriginSet(readableArray: ReadableArray?): Set<DataOrigin> {
   return readableArray.toArrayList().mapNotNull { DataOrigin(it.toString()) }.toSet()
 }
 
-fun convertProviderPackageNamesFromJS(providerPackageNames: ReadableArray): List<String> {
-  return providerPackageNames.toArrayList().map { it.toString() }.toList()
-}
-
 fun ReadableArray.toMapList(): List<ReadableMap> {
   val list = mutableListOf<ReadableMap>()
   for (i in 0 until size()) {

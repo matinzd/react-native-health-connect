@@ -6,10 +6,12 @@ import {
   getGrantedPermissions,
   initialize,
   insertRecords,
-  isAvailable,
+  getSdkStatus,
   readRecords,
   requestPermission,
   revokeAllPermissions,
+  SdkAvailabilityStatus,
+  openHealthConnectSettings,
 } from 'react-native-health-connect';
 
 export default function App() {
@@ -17,9 +19,22 @@ export default function App() {
     const result = await initialize();
     console.log({ result });
   };
+
   const checkAvailability = async () => {
-    const available = await isAvailable();
-    console.log({ available });
+    const status = await getSdkStatus();
+    if (status === SdkAvailabilityStatus.SDK_AVAILABLE) {
+      console.log('SDK is available');
+    }
+
+    if (status === SdkAvailabilityStatus.SDK_UNAVAILABLE) {
+      console.log('SDK is not available');
+    }
+
+    if (
+      status === SdkAvailabilityStatus.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED
+    ) {
+      console.log('SDK is not available, provider update required');
+    }
   };
 
   const insertSampleData = () => {
@@ -90,6 +105,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Button title="Initialize" onPress={initializeHealthConnect} />
+      <Button
+        title="Open Health Connect settings"
+        onPress={openHealthConnectSettings}
+      />
       <Button title="Check availability" onPress={checkAvailability} />
       <Button
         title="Request sample permissions"

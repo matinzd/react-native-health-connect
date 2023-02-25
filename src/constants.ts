@@ -1,3 +1,9 @@
+export const SdkAvailabilityStatus = {
+  SDK_UNAVAILABLE: 1,
+  SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED: 2,
+  SDK_AVAILABLE: 3,
+} as const;
+
 export const TemperatureMeasurementLocation = {
   ARMPIT: 1,
   EAR: 8,
@@ -9,7 +15,7 @@ export const TemperatureMeasurementLocation = {
   TOE: 7,
   UNKNOWN: 0,
   VAGINA: 10,
-};
+} as const;
 
 export const MealType = {
   BREAKFAST: 1,
@@ -17,7 +23,7 @@ export const MealType = {
   LUNCH: 2,
   SNACK: 4,
   UNKNOWN: 0,
-};
+} as const;
 
 export const RelationToMeal = {
   AFTER_MEAL: 4,
@@ -25,7 +31,7 @@ export const RelationToMeal = {
   FASTING: 2,
   GENERAL: 1,
   UNKNOWN: 0,
-};
+} as const;
 
 export const SpecimenSource = {
   CAPILLARY_BLOOD: 2,
@@ -35,7 +41,7 @@ export const SpecimenSource = {
   TEARS: 5,
   UNKNOWN: 0,
   WHOLE_BLOOD: 6,
-};
+} as const;
 
 export const BloodPressureBodyPosition = {
   UNKNOWN: 0,
@@ -43,7 +49,7 @@ export const BloodPressureBodyPosition = {
   SITTING_DOWN: 2,
   LYING_DOWN: 3,
   RECLINING: 4,
-};
+} as const;
 
 export const BloodPressureMeasurementLocation = {
   UNKNOWN: 0,
@@ -51,7 +57,7 @@ export const BloodPressureMeasurementLocation = {
   RIGHT_WRIST: 2,
   LEFT_UPPER_ARM: 3,
   RIGHT_UPPER_ARM: 4,
-};
+} as const;
 
 export const CervicalMucusAppearance = {
   UNKNOWN: 0,
@@ -61,14 +67,14 @@ export const CervicalMucusAppearance = {
   WATERY: 4,
   EGG_WHITE: 5,
   APPEARANCE_UNUSUAL: 6,
-};
+} as const;
 
 export const CervicalMucusSensation = {
   UNKNOWN: 0,
   LIGHT: 1,
   MEDIUM: 2,
   HEAVY: 3,
-};
+} as const;
 
 export const ExeciseType = {
   OTHER_WORKOUT: 0,
@@ -154,4 +160,4 @@ export const ExeciseType = {
   WEIGHTLIFTING: 81,
   WHEELCHAIR: 82,
   YOGA: 83,
-};
+} as const;

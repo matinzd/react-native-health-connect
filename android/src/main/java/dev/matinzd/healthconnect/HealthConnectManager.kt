@@ -7,7 +7,10 @@ import androidx.health.connect.client.HealthConnectClient
 import com.facebook.react.bridge.*
 import dev.matinzd.healthconnect.permissions.HCPermissionManager
 import dev.matinzd.healthconnect.records.ReactHealthRecord
-import dev.matinzd.healthconnect.utils.*
+import dev.matinzd.healthconnect.utils.ClientNotInitialized
+import dev.matinzd.healthconnect.utils.getTimeRangeFilter
+import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
+import dev.matinzd.healthconnect.utils.rejectWithException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,18 +40,20 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
 
   override fun onNewIntent(intent: Intent?) {}
 
-  fun isAvailable(providerPackageNames: ReadableArray, promise: Promise) {
-    val available = HealthConnectClient.isProviderAvailable(
-      context, convertProviderPackageNamesFromJS(providerPackageNames)
-    )
-    return promise.resolve(available)
+  fun openHealthConnectSettings() {
+    val intent = Intent(HealthConnectClient.ACTION_HEALTH_CONNECT_SETTINGS)
+    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    context.startActivity(intent)
   }
 
-  fun initialize(providerPackageNames: ReadableArray, promise: Promise) {
+  fun getSdkStatus(providerPackageName: String, promise: Promise) {
+    val status = HealthConnectClient.sdkStatus(context, providerPackageName)
+    return promise.resolve(status)
+  }
+
+  fun initialize(providerPackageName: String, promise: Promise) {
     try {
-      healthConnectClient = HealthConnectClient.getOrCreate(
-        context, convertProviderPackageNamesFromJS(providerPackageNames)
-      )
+      healthConnectClient = HealthConnectClient.getOrCreate(context, providerPackageName)
       promise.resolve(true)
     } catch (e: Exception) {
       promise.rejectWithException(e)

@@ -47,16 +47,33 @@ const HealthConnect = HealthConnectModule
 
 const DEFAULT_PROVIDER_PACKAGE_NAME = 'com.google.android.apps.healthdata';
 
-export function isAvailable(
-  providerPackageNames: string[] = [DEFAULT_PROVIDER_PACKAGE_NAME]
-): Promise<boolean> {
-  return HealthConnect.isAvailable(providerPackageNames);
+/**
+ * Gets the status of the Health Connect SDK
+ * @param providerPackageName the package name of the Health Connect provider
+ * @returns the status of the SDK - check SdkAvailabilityStatus constants
+ */
+export function getSdkStatus(
+  providerPackageName = DEFAULT_PROVIDER_PACKAGE_NAME
+): Promise<number> {
+  return HealthConnect.getSdkStatus(providerPackageName);
 }
 
+/**
+ * Initializes the Health Connect SDK
+ * @param providerPackageName the package name of the Health Connect provider
+ * @returns true if the SDK was initialized successfully
+ */
 export function initialize(
-  providerPackageNames: string[] = [DEFAULT_PROVIDER_PACKAGE_NAME]
+  providerPackageName = DEFAULT_PROVIDER_PACKAGE_NAME
 ): Promise<boolean> {
-  return HealthConnect.initialize(providerPackageNames);
+  return HealthConnect.initialize(providerPackageName);
+}
+
+/**
+ * Opens Health Connect settings app
+ */
+export function openHealthConnectSettings(): void {
+  return HealthConnect.openHealthConnectSettings();
 }
 
 /**

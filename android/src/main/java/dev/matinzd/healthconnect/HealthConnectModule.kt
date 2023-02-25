@@ -12,13 +12,18 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
-  override fun isAvailable(providerPackageNames: ReadableArray, promise: Promise) {
-    return manager.isAvailable(providerPackageNames, promise)
+  override fun getSdkStatus(providerPackageName: String, promise: Promise) {
+    return manager.getSdkStatus(providerPackageName, promise)
   }
 
   @ReactMethod
-  override fun initialize(providerPackageNames: ReadableArray, promise: Promise) {
-    return manager.initialize(providerPackageNames, promise)
+  override fun openHealthConnectSettings() {
+    manager.openHealthConnectSettings()
+  }
+
+  @ReactMethod
+  override fun initialize(providerPackageName: String, promise: Promise) {
+    return manager.initialize(providerPackageName, promise)
   }
 
   @ReactMethod
@@ -55,6 +60,7 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
     return manager.aggregateRecord(record, promise)
   }
 
+  @ReactMethod
   override fun deleteRecordsByUuids(
     recordType: String,
     recordIdsList: ReadableArray,
@@ -64,6 +70,7 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
     return manager.deleteRecordsByUuids(recordType, recordIdsList, clientRecordIdsList, promise)
   }
 
+  @ReactMethod
   override fun deleteRecordsByTimeRange(
     recordType: String,
     timeRangeFilter: ReadableMap,
