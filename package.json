@@ -1,6 +1,6 @@
 {
   "name": "react-native-health-connect",
-  "version": "0.1.0-alpha.6",
+  "version": "0.1.0-alpha.7",
   "description": "React native library for health connect (Android only)",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
