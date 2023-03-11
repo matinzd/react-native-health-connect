@@ -16,10 +16,12 @@ import type {
   BoneMassRecord,
   CervicalMucusRecord,
   CyclingPedalingCadenceRecord,
+  DistanceRecord,
   ElevationGainedRecord,
   ExerciseSessionRecord,
   FloorsClimbedRecord,
   HeartRateRecord,
+  HeightRecord,
   RecordType,
   StepsRecord,
 } from './records.types';
@@ -94,6 +96,14 @@ interface HeartRateRecordResult extends HeartRateRecord {}
 
 interface StepsRecordResult extends StepsRecord {}
 
+interface DistanceRecordResult extends Omit<DistanceRecord, 'distance'> {
+  distance: LengthResult;
+}
+
+interface HeightRecordResult extends Omit<HeightRecord, 'height'> {
+  height: LengthResult;
+}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -110,7 +120,9 @@ type HealthConnectRecordResult =
   | FloorsClimbedRecordResult
   | CyclingPedalingCadenceRecordResult
   | HeartRateRecordResult
-  | StepsRecordResult;
+  | StepsRecordResult
+  | DistanceRecordResult
+  | HeightRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,

@@ -1,5 +1,6 @@
 import type {
   EnergyResult,
+  LengthResult,
   PressureResult,
   TimeRangeFilter,
 } from './base.types';
@@ -59,6 +60,18 @@ interface StepsAggregateResult extends BaseAggregate {
   COUNT_TOTAL: number;
 }
 
+interface DistanceAggregateResult extends BaseAggregate {
+  recordType: 'Distance';
+  DISTANCE: LengthResult;
+}
+
+interface HeightAggregateResult extends BaseAggregate {
+  recordType: 'Height';
+  HEIGHT_AVG: LengthResult;
+  HEIGHT_MIN: LengthResult;
+  HEIGHT_MAX: LengthResult;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -67,7 +80,9 @@ export type AggregateRecordResult =
   | FloorsClimbedAggregateResult
   | CyclingPedalingCadenceAggregateResult
   | HeartRateAggregateResult
-  | StepsAggregateResult;
+  | StepsAggregateResult
+  | DistanceAggregateResult
+  | HeightAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
