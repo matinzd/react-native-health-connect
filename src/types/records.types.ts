@@ -104,6 +104,16 @@ export interface StepsRecord extends IntervalRecord {
   count: number;
 }
 
+export interface DistanceRecord extends IntervalRecord {
+  recordType: 'Distance';
+  distance: Length;
+}
+
+export interface HeightRecord extends InstantaneousRecord {
+  recordType: 'Height';
+  height: Length;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -120,7 +130,9 @@ export type HealthConnectRecord =
   | ExerciseSessionRecord
   | FloorsClimbedRecord
   | HeartRateRecord
-  | StepsRecord;
+  | StepsRecord
+  | DistanceRecord
+  | HeightRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
