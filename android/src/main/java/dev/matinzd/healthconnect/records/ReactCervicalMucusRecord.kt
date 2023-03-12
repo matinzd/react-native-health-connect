@@ -23,23 +23,18 @@ class ReactCervicalMucusRecord : ReactHealthRecordImpl<CervicalMucusRecord> {
       )
     }
   }
-
-  override fun parseReadResponse(response: ReadRecordsResponse<out CervicalMucusRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("time", record.time.toString())
-          putInt("appearance", record.appearance)
-          putInt("sensation", record.sensation)
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
-        }
-        pushMap(reactMap)
-      }
-    }
-  }
-
+  
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<CervicalMucusRecord> {
     return convertReactRequestOptionsFromJS(CervicalMucusRecord::class, options)
+  }
+
+  override fun parseRecord(record: CervicalMucusRecord): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putString("time", record.time.toString())
+      putInt("appearance", record.appearance)
+      putInt("sensation", record.sensation)
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
+    }
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {

@@ -4,22 +4,20 @@ import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.WheelchairPushesRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
-import androidx.health.connect.client.response.ReadRecordsResponse
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 
-class ReactWheelchairPushesRecord: ReactHealthRecordImpl<WheelchairPushesRecord> {
+class ReactWheelchairPushesRecord : ReactHealthRecordImpl<WheelchairPushesRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<WheelchairPushesRecord> {
     TODO("Not yet implemented")
   }
 
-  override fun parseReadResponse(response: ReadRecordsResponse<out WheelchairPushesRecord>): WritableNativeArray {
+  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<WheelchairPushesRecord> {
     TODO("Not yet implemented")
   }
 
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<WheelchairPushesRecord> {
+  override fun parseRecord(record: WheelchairPushesRecord): WritableNativeMap {
     TODO("Not yet implemented")
   }
 

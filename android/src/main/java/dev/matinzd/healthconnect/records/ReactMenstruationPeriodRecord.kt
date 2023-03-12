@@ -10,16 +10,16 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 
-class ReactMenstruationPeriodRecord: ReactHealthRecordImpl<MenstruationPeriodRecord> {
+class ReactMenstruationPeriodRecord : ReactHealthRecordImpl<MenstruationPeriodRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<MenstruationPeriodRecord> {
     TODO("Not yet implemented")
   }
-
-  override fun parseReadResponse(response: ReadRecordsResponse<out MenstruationPeriodRecord>): WritableNativeArray {
+  
+  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<MenstruationPeriodRecord> {
     TODO("Not yet implemented")
   }
 
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<MenstruationPeriodRecord> {
+  override fun parseRecord(record: MenstruationPeriodRecord): WritableNativeMap {
     TODO("Not yet implemented")
   }
 

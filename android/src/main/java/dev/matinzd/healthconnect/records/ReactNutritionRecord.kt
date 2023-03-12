@@ -5,10 +5,8 @@ import androidx.health.connect.client.records.MealType
 import androidx.health.connect.client.records.NutritionRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
-import androidx.health.connect.client.response.ReadRecordsResponse
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
@@ -69,65 +67,60 @@ class ReactNutritionRecord : ReactHealthRecordImpl<NutritionRecord> {
     }
   }
 
-  override fun parseReadResponse(response: ReadRecordsResponse<out NutritionRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("startTime", record.startTime.toString())
-          putString("endTime", record.endTime.toString())
-          putMap("biotin", massToJsMap(record.biotin))
-          putMap("caffeine", massToJsMap(record.caffeine))
-          putMap("calcium", massToJsMap(record.calcium))
-          putMap("energy", energyToJsMap(record.energy))
-          putMap("energyFromFat", energyToJsMap(record.energyFromFat))
-          putMap("chloride", massToJsMap(record.chloride))
-          putMap("cholesterol", massToJsMap(record.cholesterol))
-          putMap("chromium", massToJsMap(record.chromium))
-          putMap("copper", massToJsMap(record.copper))
-          putMap("dietaryFiber", massToJsMap(record.dietaryFiber))
-          putMap("folate", massToJsMap(record.folate))
-          putMap("folicAcid", massToJsMap(record.folicAcid))
-          putMap("iodine", massToJsMap(record.iodine))
-          putMap("iron", massToJsMap(record.iron))
-          putMap("magnesium", massToJsMap(record.magnesium))
-          putMap("manganese", massToJsMap(record.manganese))
-          putMap("molybdenum", massToJsMap(record.molybdenum))
-          putMap("monounsaturatedFat", massToJsMap(record.monounsaturatedFat))
-          putMap("niacin", massToJsMap(record.niacin))
-          putMap("pantothenicAcid", massToJsMap(record.pantothenicAcid))
-          putMap("phosphorus", massToJsMap(record.phosphorus))
-          putMap("polyunsaturatedFat", massToJsMap(record.polyunsaturatedFat))
-          putMap("potassium", massToJsMap(record.potassium))
-          putMap("protein", massToJsMap(record.protein))
-          putMap("riboflavin", massToJsMap(record.riboflavin))
-          putMap("saturatedFat", massToJsMap(record.saturatedFat))
-          putMap("selenium", massToJsMap(record.selenium))
-          putMap("sodium", massToJsMap(record.sodium))
-          putMap("sugar", massToJsMap(record.sugar))
-          putMap("thiamin", massToJsMap(record.thiamin))
-          putMap("totalCarbohydrate", massToJsMap(record.totalCarbohydrate))
-          putMap("totalFat", massToJsMap(record.totalFat))
-          putMap("transFat", massToJsMap(record.transFat))
-          putMap("unsaturatedFat", massToJsMap(record.unsaturatedFat))
-          putMap("vitaminA", massToJsMap(record.vitaminA))
-          putMap("vitaminB12", massToJsMap(record.vitaminB12))
-          putMap("vitaminB6", massToJsMap(record.vitaminB6))
-          putMap("vitaminC", massToJsMap(record.vitaminC))
-          putMap("vitaminD", massToJsMap(record.vitaminD))
-          putMap("vitaminE", massToJsMap(record.vitaminE))
-          putMap("vitaminK", massToJsMap(record.vitaminK))
-          putMap("zinc", massToJsMap(record.zinc))
-          putString("name", record.name)
-          putInt("mealType", record.mealType)
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
-        }
-        pushMap(reactMap)
-      }
-    }
-  }
-
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<NutritionRecord> {
     return convertReactRequestOptionsFromJS(NutritionRecord::class, options)
+  }
+
+  override fun parseRecord(record: NutritionRecord): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putString("startTime", record.startTime.toString())
+      putString("endTime", record.endTime.toString())
+      putMap("biotin", massToJsMap(record.biotin))
+      putMap("caffeine", massToJsMap(record.caffeine))
+      putMap("calcium", massToJsMap(record.calcium))
+      putMap("energy", energyToJsMap(record.energy))
+      putMap("energyFromFat", energyToJsMap(record.energyFromFat))
+      putMap("chloride", massToJsMap(record.chloride))
+      putMap("cholesterol", massToJsMap(record.cholesterol))
+      putMap("chromium", massToJsMap(record.chromium))
+      putMap("copper", massToJsMap(record.copper))
+      putMap("dietaryFiber", massToJsMap(record.dietaryFiber))
+      putMap("folate", massToJsMap(record.folate))
+      putMap("folicAcid", massToJsMap(record.folicAcid))
+      putMap("iodine", massToJsMap(record.iodine))
+      putMap("iron", massToJsMap(record.iron))
+      putMap("magnesium", massToJsMap(record.magnesium))
+      putMap("manganese", massToJsMap(record.manganese))
+      putMap("molybdenum", massToJsMap(record.molybdenum))
+      putMap("monounsaturatedFat", massToJsMap(record.monounsaturatedFat))
+      putMap("niacin", massToJsMap(record.niacin))
+      putMap("pantothenicAcid", massToJsMap(record.pantothenicAcid))
+      putMap("phosphorus", massToJsMap(record.phosphorus))
+      putMap("polyunsaturatedFat", massToJsMap(record.polyunsaturatedFat))
+      putMap("potassium", massToJsMap(record.potassium))
+      putMap("protein", massToJsMap(record.protein))
+      putMap("riboflavin", massToJsMap(record.riboflavin))
+      putMap("saturatedFat", massToJsMap(record.saturatedFat))
+      putMap("selenium", massToJsMap(record.selenium))
+      putMap("sodium", massToJsMap(record.sodium))
+      putMap("sugar", massToJsMap(record.sugar))
+      putMap("thiamin", massToJsMap(record.thiamin))
+      putMap("totalCarbohydrate", massToJsMap(record.totalCarbohydrate))
+      putMap("totalFat", massToJsMap(record.totalFat))
+      putMap("transFat", massToJsMap(record.transFat))
+      putMap("unsaturatedFat", massToJsMap(record.unsaturatedFat))
+      putMap("vitaminA", massToJsMap(record.vitaminA))
+      putMap("vitaminB12", massToJsMap(record.vitaminB12))
+      putMap("vitaminB6", massToJsMap(record.vitaminB6))
+      putMap("vitaminC", massToJsMap(record.vitaminC))
+      putMap("vitaminD", massToJsMap(record.vitaminD))
+      putMap("vitaminE", massToJsMap(record.vitaminE))
+      putMap("vitaminK", massToJsMap(record.vitaminK))
+      putMap("zinc", massToJsMap(record.zinc))
+      putString("name", record.name)
+      putInt("mealType", record.mealType)
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
+    }
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {

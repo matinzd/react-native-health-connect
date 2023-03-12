@@ -10,16 +10,16 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 
-class ReactRestingHeartRateRecord: ReactHealthRecordImpl<RestingHeartRateRecord> {
+class ReactRestingHeartRateRecord : ReactHealthRecordImpl<RestingHeartRateRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<RestingHeartRateRecord> {
     TODO("Not yet implemented")
   }
-
-  override fun parseReadResponse(response: ReadRecordsResponse<out RestingHeartRateRecord>): WritableNativeArray {
+  
+  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<RestingHeartRateRecord> {
     TODO("Not yet implemented")
   }
 
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<RestingHeartRateRecord> {
+  override fun parseRecord(record: RestingHeartRateRecord): WritableNativeMap {
     TODO("Not yet implemented")
   }
 
