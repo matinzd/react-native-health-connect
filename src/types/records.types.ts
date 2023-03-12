@@ -130,6 +130,11 @@ export interface SexualActivityRecord extends InstantaneousRecord {
   protectionUsed: number; // ProtectionUsed constant
 }
 
+export interface WeightRecord extends InstantaneousRecord {
+  recordType: 'Weight';
+  weight: Mass; // ProtectionUsed constant
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -151,7 +156,8 @@ export type HealthConnectRecord =
   | HeightRecord
   | HydrationRecord
   | HeartRateVariabilityRmssdRecord
-  | SexualActivityRecord;
+  | SexualActivityRecord
+  | WeightRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

@@ -1,6 +1,7 @@
 import type {
   EnergyResult,
   LengthResult,
+  MassResult,
   PressureResult,
   TimeRangeFilter,
   VolumeResult,
@@ -78,6 +79,13 @@ interface HydrationAggregateResult extends BaseAggregate {
   VOLUME_TOTAL: VolumeResult;
 }
 
+interface WeightAggregateResult extends BaseAggregate {
+  recordType: 'Weight';
+  WEIGHT_AVG: MassResult;
+  WEIGHT_MAX: MassResult;
+  WEIGHT_MIN: MassResult;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -89,7 +97,8 @@ export type AggregateRecordResult =
   | StepsAggregateResult
   | DistanceAggregateResult
   | HeightAggregateResult
-  | HydrationAggregateResult;
+  | HydrationAggregateResult
+  | WeightAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
