@@ -54,9 +54,9 @@ class ReactWeightRecord : ReactHealthRecordImpl<WeightRecord> {
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
     return WritableNativeMap().apply {
-      putMap("WEIGHT_AVG", massToJsMap(record[WeightRecord.WEIGHT_AVG]!!))
-      putMap("WEIGHT_MAX", massToJsMap(record[WeightRecord.WEIGHT_MAX]!!))
-      putMap("WEIGHT_MIN", massToJsMap(record[WeightRecord.WEIGHT_MIN]!!))
+      putMap("WEIGHT_AVG", massToJsMap(record[WeightRecord.WEIGHT_AVG]))
+      putMap("WEIGHT_MAX", massToJsMap(record[WeightRecord.WEIGHT_MAX]))
+      putMap("WEIGHT_MIN", massToJsMap(record[WeightRecord.WEIGHT_MIN]))
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
   }

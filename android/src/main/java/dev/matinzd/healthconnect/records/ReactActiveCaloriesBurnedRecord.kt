@@ -5,7 +5,6 @@ import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.ReadRecordsResponse
-import androidx.health.connect.client.units.Energy
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
@@ -74,30 +73,6 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
       }
       putMap("ACTIVE_CALORIES_TOTAL", map)
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
-    }
-  }
-
-  private fun getEnergyFromJsMap(energyMap: ReadableMap?): Energy {
-    if (energyMap == null) {
-      throw InvalidEnergy()
-    }
-
-    val value = energyMap.getDouble("value")
-    return when (energyMap.getString("unit")) {
-      "kilojoules" -> Energy.kilocalories(value)
-      "kilocalories" -> Energy.kilojoules(value)
-      "joules" -> Energy.joules(value)
-      "calories" -> Energy.calories(value)
-      else -> Energy.calories(value)
-    }
-  }
-
-  private fun energyToJsMap(energy: Energy): WritableNativeMap {
-    return WritableNativeMap().apply {
-      putDouble("inCalories", energy.inCalories)
-      putDouble("inJoules", energy.inJoules)
-      putDouble("inKilocalories", energy.inKilocalories)
-      putDouble("inKilojoules", energy.inKilojoules)
     }
   }
 }

@@ -54,9 +54,9 @@ class ReactHeightRecord : ReactHealthRecordImpl<HeightRecord> {
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
     return WritableNativeMap().apply {
-      putMap("HEIGHT_AVG", lengthToJsMap(record[HeightRecord.HEIGHT_AVG]!!))
-      putMap("HEIGHT_MIN", lengthToJsMap(record[HeightRecord.HEIGHT_MIN]!!))
-      putMap("HEIGHT_MAX", lengthToJsMap(record[HeightRecord.HEIGHT_MAX]!!))
+      putMap("HEIGHT_AVG", lengthToJsMap(record[HeightRecord.HEIGHT_AVG]))
+      putMap("HEIGHT_MIN", lengthToJsMap(record[HeightRecord.HEIGHT_MIN]))
+      putMap("HEIGHT_MAX", lengthToJsMap(record[HeightRecord.HEIGHT_MAX]))
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
   }

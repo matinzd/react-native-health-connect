@@ -86,6 +86,50 @@ interface WeightAggregateResult extends BaseAggregate {
   WEIGHT_MIN: MassResult;
 }
 
+interface NutritionAggregateResult extends BaseAggregate {
+  recordType: 'Nutrition';
+  BIOTIN_TOTAL: MassResult;
+  CAFFEINE_TOTAL: MassResult;
+  CALCIUM_TOTAL: MassResult;
+  ENERGY_TOTAL: EnergyResult;
+  ENERGY_FROM_FAT_TOTAL: EnergyResult;
+  CHLORIDE_TOTAL: MassResult;
+  CHOLESTEROL_TOTAL: MassResult;
+  CHROMIUM_TOTAL: MassResult;
+  COPPER_TOTAL: MassResult;
+  DIETARY_FIBER_TOTAL: MassResult;
+  FOLATE_TOTAL: MassResult;
+  FOLIC_ACID_TOTAL: MassResult;
+  IODINE_TOTAL: MassResult;
+  IRON_TOTAL: MassResult;
+  MAGNESIUM_TOTAL: MassResult;
+  MANGANESE_TOTAL: MassResult;
+  MOLYBDENUM_TOTAL: MassResult;
+  MONOUNSATURATED_FAT_TOTAL: MassResult;
+  NIACIN_TOTAL: MassResult;
+  PANTOTHENIC_ACID_TOTAL: MassResult;
+  PHOSPHORUS_TOTAL: MassResult;
+  POLYUNSATURATED_FAT_TOTAL: MassResult;
+  POTASSIUM_TOTAL: MassResult;
+  PROTEIN_TOTAL: MassResult;
+  RIBOFLAVIN_TOTAL: MassResult;
+  SATURATED_FAT_TOTAL: MassResult;
+  SELENIUM_TOTAL: MassResult;
+  SODIUM_TOTAL: MassResult;
+  SUGAR_TOTAL: MassResult;
+  THIAMIN_TOTAL: MassResult;
+  TOTAL_CARBOHYDRATE_TOTAL: MassResult;
+  TOTAL_FAT_TOTAL: MassResult;
+  ZINC_TOTAL: MassResult;
+  VITAMIN_A_TOTAL: MassResult;
+  VITAMIN_B12_TOTAL: MassResult;
+  VITAMIN_B6_TOTAL: MassResult;
+  VITAMIN_C_TOTAL: MassResult;
+  VITAMIN_D_TOTAL: MassResult;
+  VITAMIN_E_TOTAL: MassResult;
+  VITAMIN_K_TOTAL: MassResult;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -98,7 +142,8 @@ export type AggregateRecordResult =
   | DistanceAggregateResult
   | HeightAggregateResult
   | HydrationAggregateResult
-  | WeightAggregateResult;
+  | WeightAggregateResult
+  | NutritionAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
