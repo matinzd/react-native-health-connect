@@ -5,6 +5,7 @@ import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
+import androidx.health.connect.client.units.Energy
 import androidx.health.connect.client.units.Length
 import androidx.health.connect.client.units.Mass
 import androidx.health.connect.client.units.Volume
@@ -162,57 +163,56 @@ val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "MenstruationPeriod" to MenstruationPeriodRecord::class
 )
 
-val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<*>>> =
-  mapOf(
-    "ActiveCaloriesBurned" to ReactActiveCaloriesBurnedRecord::class.java,
-    "BasalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
-    "BasalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,
-    "BloodGlucose" to ReactBloodGlucoseRecord::class.java,
-    "BloodPressure" to ReactBloodPressureRecord::class.java,
-    "BodyFat" to ReactBodyFatRecord::class.java,
-    "BodyTemperature" to ReactBodyTemperatureRecord::class.java,
-    "BodyWaterMass" to ReactBodyWaterMassRecord::class.java,
-    "BoneMass" to ReactBoneMassRecord::class.java,
-    "CervicalMucus" to ReactCervicalMucusRecord::class.java,
-    "CyclingPedalingCadence" to ReactCyclingPedalingCadenceRecord::class.java,
-    "Distance" to ReactDistanceRecord::class.java,
-    "ElevationGained" to ReactElevationGainedRecord::class.java,
-    "ExerciseSession" to ReactExerciseSessionRecord::class.java,
-    "FloorsClimbed" to ReactFloorsClimbedRecord::class.java,
-    "HeartRate" to ReactHeartRateRecord::class.java,
-    "HeartRateVariabilityRmssd" to ReactHeartRateVariabilityRmssdRecord::class.java,
-    "Height" to ReactHeightRecord::class.java,
-    "Hydration" to ReactHydrationRecord::class.java,
-    "LeanBodyMass" to ReactLeanBodyMassRecord::class.java,
-    "MenstruationFlow" to ReactMenstruationFlowRecord::class.java,
-    "Nutrition" to ReactNutritionRecord::class.java,
-    "OvulationTest" to ReactOvulationTestRecord::class.java,
-    "OxygenSaturation" to ReactOxygenSaturationRecord::class.java,
-    "Power" to ReactPowerRecord::class.java,
-    "RespiratoryRate" to ReactRespiratoryRateRecord::class.java,
-    "RestingHeartRate" to ReactRestingHeartRateRecord::class.java,
-    "SexualActivity" to ReactSexualActivityRecord::class.java,
-    "SleepSession" to ReactSleepSessionRecord::class.java,
-    "SleepStage" to ReactSleepStageRecord::class.java,
-    "Speed" to ReactSpeedRecord::class.java,
-    "StepsCadence" to ReactStepsCadenceRecord::class.java,
-    "Steps" to ReactStepsRecord::class.java,
-    "TotalCaloriesBurned" to ReactTotalCaloriesBurnedRecord::class.java,
-    "Vo2Max" to ReactVo2MaxRecord::class.java,
-    "Weight" to ReactWeightRecord::class.java,
-    "WheelchairPushes" to ReactWheelchairPushesRecord::class.java,
-    "IntermenstrualBleeding" to ReactIntermenstrualBleedingRecord::class.java,
-    "MenstruationPeriod" to ReactMenstruationPeriodRecord::class.java
-  )
+val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<*>>> = mapOf(
+  "ActiveCaloriesBurned" to ReactActiveCaloriesBurnedRecord::class.java,
+  "BasalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
+  "BasalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,
+  "BloodGlucose" to ReactBloodGlucoseRecord::class.java,
+  "BloodPressure" to ReactBloodPressureRecord::class.java,
+  "BodyFat" to ReactBodyFatRecord::class.java,
+  "BodyTemperature" to ReactBodyTemperatureRecord::class.java,
+  "BodyWaterMass" to ReactBodyWaterMassRecord::class.java,
+  "BoneMass" to ReactBoneMassRecord::class.java,
+  "CervicalMucus" to ReactCervicalMucusRecord::class.java,
+  "CyclingPedalingCadence" to ReactCyclingPedalingCadenceRecord::class.java,
+  "Distance" to ReactDistanceRecord::class.java,
+  "ElevationGained" to ReactElevationGainedRecord::class.java,
+  "ExerciseSession" to ReactExerciseSessionRecord::class.java,
+  "FloorsClimbed" to ReactFloorsClimbedRecord::class.java,
+  "HeartRate" to ReactHeartRateRecord::class.java,
+  "HeartRateVariabilityRmssd" to ReactHeartRateVariabilityRmssdRecord::class.java,
+  "Height" to ReactHeightRecord::class.java,
+  "Hydration" to ReactHydrationRecord::class.java,
+  "LeanBodyMass" to ReactLeanBodyMassRecord::class.java,
+  "MenstruationFlow" to ReactMenstruationFlowRecord::class.java,
+  "Nutrition" to ReactNutritionRecord::class.java,
+  "OvulationTest" to ReactOvulationTestRecord::class.java,
+  "OxygenSaturation" to ReactOxygenSaturationRecord::class.java,
+  "Power" to ReactPowerRecord::class.java,
+  "RespiratoryRate" to ReactRespiratoryRateRecord::class.java,
+  "RestingHeartRate" to ReactRestingHeartRateRecord::class.java,
+  "SexualActivity" to ReactSexualActivityRecord::class.java,
+  "SleepSession" to ReactSleepSessionRecord::class.java,
+  "SleepStage" to ReactSleepStageRecord::class.java,
+  "Speed" to ReactSpeedRecord::class.java,
+  "StepsCadence" to ReactStepsCadenceRecord::class.java,
+  "Steps" to ReactStepsRecord::class.java,
+  "TotalCaloriesBurned" to ReactTotalCaloriesBurnedRecord::class.java,
+  "Vo2Max" to ReactVo2MaxRecord::class.java,
+  "Weight" to ReactWeightRecord::class.java,
+  "WheelchairPushes" to ReactWheelchairPushesRecord::class.java,
+  "IntermenstrualBleeding" to ReactIntermenstrualBleedingRecord::class.java,
+  "MenstruationPeriod" to ReactMenstruationPeriodRecord::class.java
+)
 
-fun massToJsMap(mass: Mass): WritableNativeMap {
+fun massToJsMap(mass: Mass?): WritableNativeMap {
   return WritableNativeMap().apply {
-    putDouble("inGrams", mass.inGrams)
-    putDouble("inKilograms", mass.inKilograms)
-    putDouble("inMilligrams", mass.inMilligrams)
-    putDouble("inMicrograms", mass.inMicrograms)
-    putDouble("inOunces", mass.inOunces)
-    putDouble("inPounds", mass.inPounds)
+    putDouble("inGrams", mass?.inGrams ?: 0.0)
+    putDouble("inKilograms", mass?.inKilograms ?: 0.0)
+    putDouble("inMilligrams", mass?.inMilligrams ?: 0.0)
+    putDouble("inMicrograms", mass?.inMicrograms ?: 0.0)
+    putDouble("inOunces", mass?.inOunces ?: 0.0)
+    putDouble("inPounds", mass?.inPounds ?: 0.0)
   }
 }
 
@@ -249,13 +249,13 @@ fun getLengthFromJsMap(length: ReadableMap?): Length {
   }
 }
 
-fun lengthToJsMap(length: Length): WritableNativeMap {
+fun lengthToJsMap(length: Length?): WritableNativeMap {
   return WritableNativeMap().apply {
-    putDouble("inMeters", length.inMeters)
-    putDouble("inKilometers", length.inKilometers)
-    putDouble("inMiles", length.inMiles)
-    putDouble("inInches", length.inInches)
-    putDouble("inFeet", length.inFeet)
+    putDouble("inMeters", length?.inMeters ?: 0.0)
+    putDouble("inKilometers", length?.inKilometers ?: 0.0)
+    putDouble("inMiles", length?.inMiles ?: 0.0)
+    putDouble("inInches", length?.inInches ?: 0.0)
+    putDouble("inFeet", length?.inFeet ?: 0.0)
   }
 }
 
@@ -273,11 +273,34 @@ fun getVolumeFromJsMap(volume: ReadableMap?): Volume {
   }
 }
 
-fun volumeToJsMap(volume: Volume): WritableNativeMap {
+fun volumeToJsMap(volume: Volume?): WritableNativeMap {
   return WritableNativeMap().apply {
-    putDouble("inLiters", volume.inLiters)
-    putDouble("inFluidOuncesUs", volume.inFluidOuncesUs)
-    putDouble("inMilliliters", volume.inMilliliters)
+    putDouble("inLiters", volume?.inLiters ?: 0.0)
+    putDouble("inFluidOuncesUs", volume?.inFluidOuncesUs ?: 0.0)
+    putDouble("inMilliliters", volume?.inMilliliters ?: 0.0)
   }
 }
 
+fun getEnergyFromJsMap(energyMap: ReadableMap?): Energy {
+  if (energyMap == null) {
+    throw InvalidEnergy()
+  }
+
+  val value = energyMap.getDouble("value")
+  return when (energyMap.getString("unit")) {
+    "kilojoules" -> Energy.kilocalories(value)
+    "kilocalories" -> Energy.kilojoules(value)
+    "joules" -> Energy.joules(value)
+    "calories" -> Energy.calories(value)
+    else -> Energy.calories(value)
+  }
+}
+
+fun energyToJsMap(energy: Energy?): WritableNativeMap {
+  return WritableNativeMap().apply {
+    putDouble("inCalories", energy?.inCalories ?: 0.0)
+    putDouble("inJoules", energy?.inJoules ?: 0.0)
+    putDouble("inKilocalories", energy?.inKilocalories ?: 0.0)
+    putDouble("inKilojoules", energy?.inKilojoules ?: 0.0)
+  }
+}

@@ -55,8 +55,7 @@ class ReactDistanceRecord : ReactHealthRecordImpl<DistanceRecord> {
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
     return WritableNativeMap().apply {
-      val length = record[DistanceRecord.DISTANCE_TOTAL]!!
-      putMap("DISTANCE", lengthToJsMap(length))
+      putMap("DISTANCE", lengthToJsMap(record[DistanceRecord.DISTANCE_TOTAL]))
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
   }

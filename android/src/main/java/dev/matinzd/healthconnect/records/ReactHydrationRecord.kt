@@ -55,7 +55,7 @@ class ReactHydrationRecord : ReactHealthRecordImpl<HydrationRecord> {
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
     return WritableNativeMap().apply {
-      putMap("VOLUME_TOTAL", volumeToJsMap(record[HydrationRecord.VOLUME_TOTAL]!!))
+      putMap("VOLUME_TOTAL", volumeToJsMap(record[HydrationRecord.VOLUME_TOTAL]))
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
   }

@@ -135,6 +135,97 @@ export interface WeightRecord extends InstantaneousRecord {
   weight: Mass; // ProtectionUsed constant
 }
 
+export interface NutritionRecord extends IntervalRecord {
+  /** Biotin in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  biotin?: Mass;
+  /** Caffeine in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  caffeine?: Mass;
+  /** Calcium in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  calcium?: Mass;
+  /** Energy in [Energy] unit. Optional field. Valid range: 0-100000 kcal. */
+  energy?: Energy;
+  /** Energy from fat in [Energy] unit. Optional field. Valid range: 0-100000 kcal. */
+  energyFromFat?: Energy;
+  /** Chloride in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  chloride?: Mass;
+  /** Cholesterol in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  cholesterol?: Mass;
+  /** Chromium in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  chromium?: Mass;
+  /** Copper in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  copper?: Mass;
+  /** Dietary fiber in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  dietaryFiber?: Mass;
+  /** Folate in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  folate?: Mass;
+  /** Folic acid in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  folicAcid?: Mass;
+  /** Iodine in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  iodine?: Mass;
+  /** Iron in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  iron?: Mass;
+  /** Magnesium in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  magnesium?: Mass;
+  /** Manganese in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  manganese?: Mass;
+  /** Molybdenum in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  molybdenum?: Mass;
+  /** Monounsaturated fat in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  monounsaturatedFat?: Mass;
+  /** Niacin in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  niacin?: Mass;
+  /** Pantothenic acid in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  pantothenicAcid?: Mass;
+  /** Phosphorus in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  phosphorus?: Mass;
+  /** Polyunsaturated fat in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  polyunsaturatedFat?: Mass;
+  /** Potassium in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  potassium?: Mass;
+  /** Protein in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  protein?: Mass;
+  /** Riboflavin in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  riboflavin?: Mass;
+  /** Saturated fat in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  saturatedFat?: Mass;
+  /** Selenium in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  selenium?: Mass;
+  /** Sodium in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  sodium?: Mass;
+  /** Sugar in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  sugar?: Mass;
+  /** Thiamin in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  thiamin?: Mass;
+  /** Total carbohydrate in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  totalCarbohydrate?: Mass;
+  /** Total fat in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  totalFat?: Mass;
+  /** Trans fat in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  transFat?: Mass;
+  /** Unsaturated fat in [Mass] unit. Optional field. Valid range: 0-100000 grams. */
+  unsaturatedFat?: Mass;
+  /** Vitamin A in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  vitaminA?: Mass;
+  /** Vitamin B12 in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  vitaminB12?: Mass;
+  /** Vitamin B6 in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  vitaminB6?: Mass;
+  /** Vitamin C in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  vitaminC?: Mass;
+  /** Vitamin D in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  vitaminD?: Mass;
+  /** Vitamin E in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  vitaminE?: Mass;
+  /** Vitamin K in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  vitaminK?: Mass;
+  /** Zinc in [Mass] unit. Optional field. Valid range: 0-100 grams. */
+  zinc?: Mass;
+  /** Name for food or drink, provided by the user. Optional field. */
+  name?: String;
+  /** Check MealType constant */
+  mealType: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
