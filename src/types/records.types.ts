@@ -226,6 +226,15 @@ export interface NutritionRecord extends IntervalRecord {
   mealType: number;
 }
 
+export interface LeanBodyMassRecord extends InstantaneousRecord {
+  recordType: 'LeanBodyMass';
+  mass: Mass;
+}
+
+export interface IntermenstrualBleedingRecord extends InstantaneousRecord {
+  recordType: 'IntermenstrualBleeding';
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -248,7 +257,9 @@ export type HealthConnectRecord =
   | HydrationRecord
   | HeartRateVariabilityRmssdRecord
   | SexualActivityRecord
-  | WeightRecord;
+  | WeightRecord
+  | LeanBodyMassRecord
+  | IntermenstrualBleedingRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

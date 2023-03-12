@@ -26,6 +26,8 @@ import type {
   HeartRateVariabilityRmssdRecord,
   HeightRecord,
   HydrationRecord,
+  IntermenstrualBleedingRecord,
+  LeanBodyMassRecord,
   RecordType,
   SexualActivityRecord,
   StepsRecord,
@@ -223,6 +225,12 @@ interface NutritionRecordResult extends IntervalRecord {
   mealType: number;
 }
 
+interface IntermenstrualBleedingRecordResult
+  extends IntermenstrualBleedingRecord {}
+
+interface LeanBodyMassRecordResult
+  extends Replace<LeanBodyMassRecord, 'mass', MassResult> {}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -247,7 +255,9 @@ type HealthConnectRecordResult =
   | SexualActivityRecordResult
   | WeightRecordResult
   | WeightRecordResult
-  | NutritionRecordResult;
+  | NutritionRecordResult
+  | LeanBodyMassRecordResult
+  | IntermenstrualBleedingRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,
