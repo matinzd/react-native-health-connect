@@ -31,33 +31,46 @@ import type {
   WeightRecord,
 } from './records.types';
 
+type Identity<T> = { [P in keyof T]: T[P] };
+
+type Replace<T, K extends keyof T, TReplace> = Identity<
+  Pick<T, Exclude<keyof T, K>> & {
+    [P in K]: TReplace;
+  }
+>;
+
 interface ActiveCaloriesBurnedRecordResult
-  extends Omit<ActiveCaloriesBurnedRecord, 'energy'> {
-  energy: EnergyResult;
-}
+  extends Replace<ActiveCaloriesBurnedRecord, 'energy', EnergyResult> {}
 
 interface BasalBodyTemperatureRecordResult
-  extends Omit<BasalBodyTemperatureRecord, 'temperature'> {
-  temperature: {
-    inFahrenheit: number;
-    inCelsius: number;
-  };
-}
+  extends Replace<
+    BasalBodyTemperatureRecord,
+    'temperature',
+    {
+      inFahrenheit: number;
+      inCelsius: number;
+    }
+  > {}
 
 interface BasalMetabolicRateRecordResult
-  extends Omit<BasalMetabolicRateRecord, 'basalMetabolicRate'> {
-  basalMetabolicRate: {
-    inKilocaloriesPerDay: number;
-    inWatts: number;
-  };
-}
+  extends Replace<
+    BasalMetabolicRateRecord,
+    'basalMetabolicRate',
+    {
+      inKilocaloriesPerDay: number;
+      inWatts: number;
+    }
+  > {}
 
-interface BloodGlucoseRecordResult extends Omit<BloodGlucoseRecord, 'level'> {
-  level: {
-    inMillimolesPerLiter: number;
-    inMilligramsPerDeciliter: number;
-  };
-}
+interface BloodGlucoseRecordResult
+  extends Replace<
+    BloodGlucoseRecord,
+    'level',
+    {
+      inMillimolesPerLiter: number;
+      inMilligramsPerDeciliter: number;
+    }
+  > {}
 
 interface BloodPressureRecordResult
   extends Omit<BloodPressureRecord, 'systolic' | 'diastolic'> {
@@ -66,22 +79,22 @@ interface BloodPressureRecordResult
 }
 
 interface BodyTemperatureRecordResult
-  extends Omit<BodyTemperatureRecord, 'temperature'> {
-  temperature: {
-    inFahrenheit: number;
-    inCelsius: number;
-  };
-}
+  extends Replace<
+    BodyTemperatureRecord,
+    'temperature',
+    {
+      inFahrenheit: number;
+      inCelsius: number;
+    }
+  > {}
 
 interface BodyFatRecordResult extends BodyFatRecord {}
 
-interface BodyWaterMassRecordResult extends Omit<BodyWaterMassRecord, 'mass'> {
-  mass: MassResult;
-}
+interface BodyWaterMassRecordResult
+  extends Replace<BodyWaterMassRecord, 'mass', MassResult> {}
 
-interface BoneMassRecordResult extends Omit<BoneMassRecord, 'mass'> {
-  mass: MassResult;
-}
+interface BoneMassRecordResult
+  extends Replace<BoneMassRecord, 'mass', MassResult> {}
 
 interface CervicalMucusRecordResult extends CervicalMucusRecord {}
 
@@ -101,26 +114,22 @@ interface HeartRateRecordResult extends HeartRateRecord {}
 
 interface StepsRecordResult extends StepsRecord {}
 
-interface DistanceRecordResult extends Omit<DistanceRecord, 'distance'> {
-  distance: LengthResult;
-}
+interface DistanceRecordResult
+  extends Replace<DistanceRecord, 'distance', LengthResult> {}
 
-interface HeightRecordResult extends Omit<HeightRecord, 'height'> {
-  height: LengthResult;
-}
+interface HeightRecordResult
+  extends Replace<HeightRecord, 'height', LengthResult> {}
 
-interface HydrationRecordResult extends Omit<HydrationRecord, 'volume'> {
-  volume: VolumeResult;
-}
+interface HydrationRecordResult
+  extends Replace<HydrationRecord, 'volume', VolumeResult> {}
 
 interface HeartRateVariabilityRmssdRecordResult
   extends HeartRateVariabilityRmssdRecord {}
 
 interface SexualActivityRecordResult extends SexualActivityRecord {}
 
-interface WeightRecordResult extends Omit<WeightRecord, 'weight'> {
-  weight: MassResult;
-}
+interface WeightRecordResult
+  extends Replace<WeightRecord, 'weight', MassResult> {}
 
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
