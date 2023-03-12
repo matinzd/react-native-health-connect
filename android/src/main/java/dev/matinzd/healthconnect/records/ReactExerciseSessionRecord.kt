@@ -4,10 +4,8 @@ import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
-import androidx.health.connect.client.response.ReadRecordsResponse
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
@@ -29,24 +27,19 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
     }
   }
 
-  override fun parseReadResponse(response: ReadRecordsResponse<out ExerciseSessionRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("startTime", record.startTime.toString())
-          putString("endTime", record.endTime.toString())
-          putString("notes", record.notes)
-          putString("title", record.title)
-          putInt("exerciseType", record.exerciseType)
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
-        }
-        pushMap(reactMap)
-      }
-    }
-  }
-
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<ExerciseSessionRecord> {
     return convertReactRequestOptionsFromJS(ExerciseSessionRecord::class, options)
+  }
+
+  override fun parseRecord(record: ExerciseSessionRecord): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putString("startTime", record.startTime.toString())
+      putString("endTime", record.endTime.toString())
+      putString("notes", record.notes)
+      putString("title", record.title)
+      putInt("exerciseType", record.exerciseType)
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
+    }
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {

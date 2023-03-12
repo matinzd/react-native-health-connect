@@ -4,10 +4,8 @@ import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
-import androidx.health.connect.client.response.ReadRecordsResponse
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 
 class ReactSleepSessionRecord : ReactHealthRecordImpl<SleepSessionRecord> {
@@ -15,11 +13,11 @@ class ReactSleepSessionRecord : ReactHealthRecordImpl<SleepSessionRecord> {
     TODO("Not yet implemented")
   }
 
-  override fun parseReadResponse(response: ReadRecordsResponse<out SleepSessionRecord>): WritableNativeArray {
+  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<SleepSessionRecord> {
     TODO("Not yet implemented")
   }
 
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<SleepSessionRecord> {
+  override fun parseRecord(record: SleepSessionRecord): WritableNativeMap {
     TODO("Not yet implemented")
   }
 

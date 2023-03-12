@@ -28,23 +28,18 @@ class ReactBodyTemperatureRecord : ReactHealthRecordImpl<BodyTemperatureRecord> 
       )
     }
   }
-
-  override fun parseReadResponse(response: ReadRecordsResponse<out BodyTemperatureRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("time", record.time.toString())
-          putInt("measurementLocation", record.measurementLocation)
-          putMap("temperature", temperatureToJsMap(record.temperature))
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
-        }
-        pushMap(reactMap)
-      }
-    }
-  }
-
+  
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BodyTemperatureRecord> {
     return convertReactRequestOptionsFromJS(BodyTemperatureRecord::class, options)
+  }
+
+  override fun parseRecord(record: BodyTemperatureRecord): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putString("time", record.time.toString())
+      putInt("measurementLocation", record.measurementLocation)
+      putMap("temperature", temperatureToJsMap(record.temperature))
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
+    }
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {

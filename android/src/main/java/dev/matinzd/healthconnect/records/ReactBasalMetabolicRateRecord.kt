@@ -23,22 +23,17 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
       )
     }
   }
-
-  override fun parseReadResponse(response: ReadRecordsResponse<out BasalMetabolicRateRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("time", record.time.toString())
-          putMap("basalMetabolicRate", powerToJsMap(record.basalMetabolicRate))
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
-        }
-        pushMap(reactMap)
-      }
-    }
-  }
-
+  
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BasalMetabolicRateRecord> {
     return convertReactRequestOptionsFromJS(BasalMetabolicRateRecord::class, options)
+  }
+
+  override fun parseRecord(record: BasalMetabolicRateRecord): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putString("time", record.time.toString())
+      putMap("basalMetabolicRate", powerToJsMap(record.basalMetabolicRate))
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
+    }
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {

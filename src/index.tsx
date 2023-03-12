@@ -103,6 +103,13 @@ export function readRecords<T extends RecordType>(
   return HealthConnect.readRecords(recordType, options);
 }
 
+export function readRecord<T extends RecordType>(
+  recordType: T,
+  recordId: string
+): Promise<RecordResult<T>> {
+  return HealthConnect.readRecord(recordType, recordId);
+}
+
 export function insertRecords(
   records: HealthConnectRecord[]
 ): Promise<string[]> {
