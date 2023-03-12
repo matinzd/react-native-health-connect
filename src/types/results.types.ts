@@ -218,7 +218,7 @@ interface NutritionRecordResult extends IntervalRecord {
   /** Zinc in [MassResult] unit. Optional field. Valid range: 0-100 grams. */
   zinc?: MassResult;
   /** Name for food or drink, provided by the user. Optional field. */
-  name?: String;
+  name?: string;
   /** Check MealType constant */
   mealType: number;
 }
