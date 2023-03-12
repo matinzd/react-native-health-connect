@@ -4,12 +4,9 @@ import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BasalBodyTemperatureRecord
 import androidx.health.connect.client.records.BodyTemperatureMeasurementLocation
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
-import androidx.health.connect.client.response.ReadRecordsResponse
 import androidx.health.connect.client.units.Temperature
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
@@ -29,22 +26,13 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
     }
   }
 
-  override fun parseReadResponse(response: ReadRecordsResponse<out BasalBodyTemperatureRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("time", record.time.toString())
-          putInt("measurementLocation", record.measurementLocation)
-          putMap("temperature", temperatureToJsMap(record.temperature))
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
-        }
-        pushMap(reactMap)
-      }
+  override fun parseRecord(record: BasalBodyTemperatureRecord): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putString("time", record.time.toString())
+      putInt("measurementLocation", record.measurementLocation)
+      putMap("temperature", temperatureToJsMap(record.temperature))
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BasalBodyTemperatureRecord> {
-    return convertReactRequestOptionsFromJS(BasalBodyTemperatureRecord::class, options)
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {

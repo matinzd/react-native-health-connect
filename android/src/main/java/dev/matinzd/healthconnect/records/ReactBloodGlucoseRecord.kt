@@ -4,12 +4,9 @@ import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BloodGlucoseRecord
 import androidx.health.connect.client.records.MealType.MEAL_TYPE_UNKNOWN
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
-import androidx.health.connect.client.response.ReadRecordsResponse
 import androidx.health.connect.client.units.BloodGlucose
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
@@ -21,37 +18,26 @@ class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
         time = Instant.parse(it.getString("time")),
         level = getBloodGlucoseFromJsMap(it.getMap("level")),
         specimenSource = it.getSafeInt(
-          "specimenSource",
-          BloodGlucoseRecord.SPECIMEN_SOURCE_UNKNOWN
+          "specimenSource", BloodGlucoseRecord.SPECIMEN_SOURCE_UNKNOWN
         ),
         mealType = it.getSafeInt("mealType", MEAL_TYPE_UNKNOWN),
         relationToMeal = it.getSafeInt(
-          "relationToMeal",
-          BloodGlucoseRecord.RELATION_TO_MEAL_UNKNOWN
+          "relationToMeal", BloodGlucoseRecord.RELATION_TO_MEAL_UNKNOWN
         ),
         zoneOffset = null
       )
     }
   }
 
-  override fun parseReadResponse(response: ReadRecordsResponse<out BloodGlucoseRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("time", record.time.toString())
-          putMap("level", bloodGlucoseToJsMap(record.level))
-          putInt("specimenSource", record.specimenSource)
-          putInt("mealType", record.mealType)
-          putInt("relationToMeal", record.relationToMeal)
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
-        }
-        pushMap(reactMap)
-      }
+  override fun parseRecord(record: BloodGlucoseRecord): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putString("time", record.time.toString())
+      putMap("level", bloodGlucoseToJsMap(record.level))
+      putInt("specimenSource", record.specimenSource)
+      putInt("mealType", record.mealType)
+      putInt("relationToMeal", record.relationToMeal)
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BloodGlucoseRecord> {
-    return convertReactRequestOptionsFromJS(BloodGlucoseRecord::class, options)
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {

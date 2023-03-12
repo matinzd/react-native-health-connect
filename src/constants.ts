@@ -161,3 +161,9 @@ export const ExeciseType = {
   WHEELCHAIR: 82,
   YOGA: 83,
 } as const;
+
+export const ProtectionUsed = {
+  UNKNOWN: 0,
+  PROTECTED: 1,
+  UNPROTECTED: 2,
+} as const;

@@ -3,11 +3,8 @@ package dev.matinzd.healthconnect.records
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.FloorsClimbedRecord
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
-import androidx.health.connect.client.response.ReadRecordsResponse
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
@@ -25,22 +22,13 @@ class ReactFloorsClimbedRecord : ReactHealthRecordImpl<FloorsClimbedRecord> {
     }
   }
 
-  override fun parseReadResponse(response: ReadRecordsResponse<out FloorsClimbedRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("startTime", record.startTime.toString())
-          putString("endTime", record.endTime.toString())
-          putDouble("floors", record.floors)
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
-        }
-        pushMap(reactMap)
-      }
+  override fun parseRecord(record: FloorsClimbedRecord): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putString("startTime", record.startTime.toString())
+      putString("endTime", record.endTime.toString())
+      putDouble("floors", record.floors)
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<FloorsClimbedRecord> {
-    return convertReactRequestOptionsFromJS(FloorsClimbedRecord::class, options)
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {

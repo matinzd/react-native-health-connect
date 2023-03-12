@@ -56,6 +56,11 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
+  override fun readRecord(recordType: String, recordId: String, promise: Promise) {
+    return manager.readRecord(recordType, recordId, promise)
+  }
+
+  @ReactMethod
   override fun aggregateRecord(record: ReadableMap, promise: Promise) {
     return manager.aggregateRecord(record, promise)
   }

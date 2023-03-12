@@ -109,6 +109,17 @@ export interface LengthResult {
   inFeet: number;
 }
 
+export interface Volume {
+  value: number;
+  unit: 'liters' | 'fluidOuncesUs' | 'milliliters';
+}
+
+export interface VolumeResult {
+  inLiters: number;
+  inFluidOuncesUs: number;
+  inMilliliters: number;
+}
+
 interface BaseSample {
   time: string;
 }

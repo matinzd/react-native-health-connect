@@ -3,8 +3,6 @@ package dev.matinzd.healthconnect.records
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.CyclingPedalingCadenceRecord
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
-import androidx.health.connect.client.response.ReadRecordsResponse
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
@@ -30,30 +28,21 @@ class ReactCyclingPedalingCadenceRecord : ReactHealthRecordImpl<CyclingPedalingC
     }
   }
 
-  override fun parseReadResponse(response: ReadRecordsResponse<out CyclingPedalingCadenceRecord>): WritableNativeArray {
-    return WritableNativeArray().apply {
-      for (record in response.records) {
-        val reactMap = WritableNativeMap().apply {
-          putString("startTime", record.startTime.toString())
-          putString("endTime", record.endTime.toString())
-          val array = WritableNativeArray().apply {
-            record.samples.map {
-              val map = WritableNativeMap()
-              map.putString("time", it.time.toString())
-              map.putDouble("revolutionsPerMinute", it.revolutionsPerMinute)
-              this.pushMap(map)
-            }
-          }
-          putArray("samples", array)
-          putMap("metadata", convertMetadataToJSMap(record.metadata))
+  override fun parseRecord(record: CyclingPedalingCadenceRecord): WritableNativeMap {
+    return WritableNativeMap().apply {
+      putString("startTime", record.startTime.toString())
+      putString("endTime", record.endTime.toString())
+      val array = WritableNativeArray().apply {
+        record.samples.map {
+          val map = WritableNativeMap()
+          map.putString("time", it.time.toString())
+          map.putDouble("revolutionsPerMinute", it.revolutionsPerMinute)
+          this.pushMap(map)
         }
-        pushMap(reactMap)
       }
+      putArray("samples", array)
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<CyclingPedalingCadenceRecord> {
-    return convertReactRequestOptionsFromJS(CyclingPedalingCadenceRecord::class, options)
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {

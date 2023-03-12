@@ -12,6 +12,7 @@ import {
   revokeAllPermissions,
   SdkAvailabilityStatus,
   openHealthConnectSettings,
+  readRecord,
 } from 'react-native-health-connect';
 
 export default function App() {
@@ -45,12 +46,6 @@ export default function App() {
         startTime: '2023-01-09T09:00:00.000Z',
         endTime: '2023-01-09T10:00:00.000Z',
       },
-      {
-        recordType: 'ActiveCaloriesBurned',
-        energy: { unit: 'kilocalories', value: 15000 },
-        startTime: '2023-01-09T12:00:00.000Z',
-        endTime: '2023-01-09T14:00:00.000Z',
-      },
     ]).then((ids) => {
       console.log('Records inserted ', { ids });
     });
@@ -68,7 +63,16 @@ export default function App() {
     });
   };
 
-  const aggreagetSampleData = () => {
+  const readSampleDataSingle = () => {
+    readRecord(
+      'ActiveCaloriesBurned',
+      'a7bdea65-86ce-4eb2-a9ef-a87e6a7d9df2'
+    ).then((result) => {
+      console.log('Retrieved record: ', JSON.stringify({ result }, null, 2));
+    });
+  };
+
+  const aggregateSampleData = () => {
     aggregateRecord({
       recordType: 'ActiveCaloriesBurned',
       timeRangeFilter: {
@@ -118,7 +122,8 @@ export default function App() {
       <Button title="Revoke all permissions" onPress={revokeAllPermissions} />
       <Button title="Insert sample data" onPress={insertSampleData} />
       <Button title="Read sample data" onPress={readSampleData} />
-      <Button title="Aggregate sample data" onPress={aggreagetSampleData} />
+      <Button title="Read specific data" onPress={readSampleDataSingle} />
+      <Button title="Aggregate sample data" onPress={aggregateSampleData} />
     </View>
   );
 }

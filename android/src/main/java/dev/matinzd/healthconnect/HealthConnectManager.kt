@@ -114,7 +114,21 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
         try {
           val request = ReactHealthRecord.parseReadRequest(recordType, options)
           val response = healthConnectClient.readRecords(request)
-          promise.resolve(ReactHealthRecord.parseReadResponse(recordType, response))
+          promise.resolve(ReactHealthRecord.parseRecords(recordType, response))
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
+        }
+      }
+    }
+  }
+
+  fun readRecord(recordType: String, recordId: String, promise: Promise) {
+    throwUnlessClientIsAvailable(promise) {
+      coroutineScope.launch {
+        try {
+          val record = ReactHealthRecord.getRecordByType(recordType)
+          val response = healthConnectClient.readRecord(record, recordId)
+          promise.resolve(ReactHealthRecord.parseRecord(recordType, response))
         } catch (e: Exception) {
           promise.rejectWithException(e)
         }
