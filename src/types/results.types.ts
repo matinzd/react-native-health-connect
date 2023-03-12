@@ -22,6 +22,7 @@ import type {
   ExerciseSessionRecord,
   FloorsClimbedRecord,
   HeartRateRecord,
+  HeartRateVariabilityRmssdRecord,
   HeightRecord,
   HydrationRecord,
   RecordType,
@@ -110,6 +111,9 @@ interface HydrationRecordResult extends Omit<HydrationRecord, 'volume'> {
   volume: VolumeResult;
 }
 
+interface HeartRateVariabilityRmssdRecordResult
+  extends HeartRateVariabilityRmssdRecord {}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -129,7 +133,8 @@ type HealthConnectRecordResult =
   | StepsRecordResult
   | DistanceRecordResult
   | HeightRecordResult
-  | HydrationRecordResult;
+  | HydrationRecordResult
+  | HeartRateVariabilityRmssdRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,
