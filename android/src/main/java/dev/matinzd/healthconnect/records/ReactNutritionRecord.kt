@@ -4,7 +4,6 @@ import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.MealType
 import androidx.health.connect.client.records.NutritionRecord
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
@@ -65,10 +64,6 @@ class ReactNutritionRecord : ReactHealthRecordImpl<NutritionRecord> {
         mealType = map.getSafeInt("mealType", MealType.MEAL_TYPE_UNKNOWN),
       )
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<NutritionRecord> {
-    return convertReactRequestOptionsFromJS(NutritionRecord::class, options)
   }
 
   override fun parseRecord(record: NutritionRecord): WritableNativeMap {

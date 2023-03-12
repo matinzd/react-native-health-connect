@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidRecordType
+import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
 import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 import dev.matinzd.healthconnect.utils.reactRecordTypeToReactClassMap
 import kotlin.reflect.KClass
@@ -25,6 +26,14 @@ class ReactHealthRecord {
 
       val reactClass = reactRecordTypeToReactClassMap[recordType]
       return reactClass?.newInstance() as ReactHealthRecordImpl<T>
+    }
+
+    fun getRecordByType(recordType: String): KClass<out Record> {
+      if (!reactRecordTypeToClassMap.containsKey(recordType)) {
+        throw InvalidRecordType()
+      }
+
+      return reactRecordTypeToClassMap[recordType]!!
     }
 
     fun parseWriteRecords(reactRecords: ReadableArray): List<Record> {
@@ -42,17 +51,7 @@ class ReactHealthRecord {
     }
 
     fun parseReadRequest(recordType: String, reactRequest: ReadableMap): ReadRecordsRequest<*> {
-      val recordClass = createReactHealthRecordInstance<Record>(recordType)
-
-      return recordClass.parseReadRequest(reactRequest)
-    }
-
-    fun getRecordByType(recordType: String): KClass<out Record> {
-      if (!reactRecordTypeToClassMap.containsKey(recordType)) {
-        throw InvalidRecordType()
-      }
-
-      return reactRecordTypeToClassMap[recordType]!!
+      return convertReactRequestOptionsFromJS(getRecordByType(recordType), reactRequest)
     }
 
     fun getAggregateRequest(recordType: String, reactRequest: ReadableMap): AggregateRequest {

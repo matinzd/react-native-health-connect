@@ -3,13 +3,11 @@ package dev.matinzd.healthconnect.records
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.HeartRateVariabilityRmssdRecord
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.AggregationNotSupported
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
-import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
@@ -23,10 +21,6 @@ class ReactHeartRateVariabilityRmssdRecord :
         zoneOffset = null,
       )
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<HeartRateVariabilityRmssdRecord> {
-    return convertReactRequestOptionsFromJS(HeartRateVariabilityRmssdRecord::class, options)
   }
 
   override fun parseRecord(record: HeartRateVariabilityRmssdRecord): WritableNativeMap {

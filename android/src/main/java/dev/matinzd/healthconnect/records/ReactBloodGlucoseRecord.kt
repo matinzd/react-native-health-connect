@@ -4,7 +4,6 @@ import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BloodGlucoseRecord
 import androidx.health.connect.client.records.MealType.MEAL_TYPE_UNKNOWN
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.units.BloodGlucose
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -28,10 +27,6 @@ class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
         zoneOffset = null
       )
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BloodGlucoseRecord> {
-    return convertReactRequestOptionsFromJS(BloodGlucoseRecord::class, options)
   }
 
   override fun parseRecord(record: BloodGlucoseRecord): WritableNativeMap {
