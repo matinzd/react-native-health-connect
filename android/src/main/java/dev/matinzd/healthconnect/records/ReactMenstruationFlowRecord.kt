@@ -3,17 +3,12 @@ package dev.matinzd.healthconnect.records
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.MenstruationFlowRecord
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
 
 class ReactMenstruationFlowRecord : ReactHealthRecordImpl<MenstruationFlowRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<MenstruationFlowRecord> {
-    TODO("Not yet implemented")
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<MenstruationFlowRecord> {
     TODO("Not yet implemented")
   }
 

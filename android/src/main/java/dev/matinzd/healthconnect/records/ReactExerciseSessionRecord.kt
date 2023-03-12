@@ -3,7 +3,6 @@ package dev.matinzd.healthconnect.records
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
@@ -25,10 +24,6 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
         title = it.getString("title"),
       )
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<ExerciseSessionRecord> {
-    return convertReactRequestOptionsFromJS(ExerciseSessionRecord::class, options)
   }
 
   override fun parseRecord(record: ExerciseSessionRecord): WritableNativeMap {

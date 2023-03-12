@@ -3,7 +3,6 @@ package dev.matinzd.healthconnect.records
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BloodPressureRecord
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.units.Pressure
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -25,10 +24,6 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
         zoneOffset = null
       )
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BloodPressureRecord> {
-    return convertReactRequestOptionsFromJS(BloodPressureRecord::class, options)
   }
 
   override fun parseRecord(record: BloodPressureRecord): WritableNativeMap {

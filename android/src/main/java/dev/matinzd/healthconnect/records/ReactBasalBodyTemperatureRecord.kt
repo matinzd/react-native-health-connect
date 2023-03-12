@@ -4,7 +4,6 @@ import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BasalBodyTemperatureRecord
 import androidx.health.connect.client.records.BodyTemperatureMeasurementLocation
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.units.Temperature
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -25,10 +24,6 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
         )
       )
     }
-  }
-  
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BasalBodyTemperatureRecord> {
-    return convertReactRequestOptionsFromJS(BasalBodyTemperatureRecord::class, options)
   }
 
   override fun parseRecord(record: BasalBodyTemperatureRecord): WritableNativeMap {

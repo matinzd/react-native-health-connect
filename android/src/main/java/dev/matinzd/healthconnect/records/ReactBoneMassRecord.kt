@@ -3,7 +3,6 @@ package dev.matinzd.healthconnect.records
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.BoneMassRecord
 import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.ReadRecordsRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
@@ -19,10 +18,6 @@ class ReactBoneMassRecord : ReactHealthRecordImpl<BoneMassRecord> {
         zoneOffset = null,
       )
     }
-  }
-
-  override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<BoneMassRecord> {
-    return convertReactRequestOptionsFromJS(BoneMassRecord::class, options)
   }
 
   override fun parseRecord(record: BoneMassRecord): WritableNativeMap {
