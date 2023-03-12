@@ -115,9 +115,14 @@ export interface HeightRecord extends InstantaneousRecord {
   height: Length;
 }
 
-export interface HydrationRecord extends InstantaneousRecord {
+export interface HydrationRecord extends IntervalRecord {
   recordType: 'Hydration';
   volume: Volume;
+}
+
+export interface HeartRateVariabilityRmssdRecord extends InstantaneousRecord {
+  recordType: 'HeartRateVariabilityRmssd';
+  heartRateVariabilityMillis: number;
 }
 
 export type HealthConnectRecord =
@@ -139,7 +144,8 @@ export type HealthConnectRecord =
   | StepsRecord
   | DistanceRecord
   | HeightRecord
-  | HydrationRecord;
+  | HydrationRecord
+  | HeartRateVariabilityRmssdRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
