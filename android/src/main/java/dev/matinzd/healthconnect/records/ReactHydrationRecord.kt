@@ -9,25 +9,54 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
+import dev.matinzd.healthconnect.utils.*
+import java.time.Instant
 
 class ReactHydrationRecord : ReactHealthRecordImpl<HydrationRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<HydrationRecord> {
-    TODO("Not yet implemented")
+    return records.toMapList().map { map ->
+      HydrationRecord(
+        startTime = Instant.parse(map.getString("startTime")),
+        endTime = Instant.parse(map.getString("endTime")),
+        volume = getVolumeFromJsMap(map.getMap("volume")),
+        endZoneOffset = null,
+        startZoneOffset = null
+      )
+    }
   }
 
   override fun parseReadResponse(response: ReadRecordsResponse<out HydrationRecord>): WritableNativeArray {
-    TODO("Not yet implemented")
+    return WritableNativeArray().apply {
+      for (record in response.records) {
+        val reactMap = WritableNativeMap().apply {
+          putString("startTime", record.startTime.toString())
+          putString("endTime", record.endTime.toString())
+          putMap("volume", volumeToJsMap(record.volume))
+          putMap("metadata", convertMetadataToJSMap(record.metadata))
+        }
+        pushMap(reactMap)
+      }
+    }
   }
 
   override fun parseReadRequest(options: ReadableMap): ReadRecordsRequest<HydrationRecord> {
-    TODO("Not yet implemented")
+    return convertReactRequestOptionsFromJS(HydrationRecord::class, options)
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
-    TODO("Not yet implemented")
+    return AggregateRequest(
+      metrics = setOf(
+        HydrationRecord.VOLUME_TOTAL,
+      ),
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
   }
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
-    TODO("Not yet implemented")
+    return WritableNativeMap().apply {
+      putMap("VOLUME_TOTAL", volumeToJsMap(record[HydrationRecord.VOLUME_TOTAL]!!))
+      putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
   }
 }

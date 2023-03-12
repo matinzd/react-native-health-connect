@@ -3,6 +3,7 @@ import type {
   LengthResult,
   PressureResult,
   TimeRangeFilter,
+  VolumeResult,
 } from './base.types';
 
 interface BaseAggregate {
@@ -72,6 +73,11 @@ interface HeightAggregateResult extends BaseAggregate {
   HEIGHT_MAX: LengthResult;
 }
 
+interface HydrationAggregateResult extends BaseAggregate {
+  recordType: 'Hydration';
+  VOLUME_TOTAL: VolumeResult;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -82,7 +88,8 @@ export type AggregateRecordResult =
   | HeartRateAggregateResult
   | StepsAggregateResult
   | DistanceAggregateResult
-  | HeightAggregateResult;
+  | HeightAggregateResult
+  | HydrationAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
