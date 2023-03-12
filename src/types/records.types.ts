@@ -11,6 +11,7 @@ import type {
   Length,
   CyclingPedalingCadenceSample,
   HeartRateSample,
+  Volume,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -114,6 +115,11 @@ export interface HeightRecord extends InstantaneousRecord {
   height: Length;
 }
 
+export interface HydrationRecord extends InstantaneousRecord {
+  recordType: 'Hydration';
+  volume: Volume;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -132,7 +138,8 @@ export type HealthConnectRecord =
   | HeartRateRecord
   | StepsRecord
   | DistanceRecord
-  | HeightRecord;
+  | HeightRecord
+  | HydrationRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

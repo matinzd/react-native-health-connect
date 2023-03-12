@@ -7,6 +7,7 @@ import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Length
 import androidx.health.connect.client.units.Mass
+import androidx.health.connect.client.units.Volume
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
@@ -257,3 +258,26 @@ fun lengthToJsMap(length: Length): WritableNativeMap {
     putDouble("inFeet", length.inFeet)
   }
 }
+
+fun getVolumeFromJsMap(volume: ReadableMap?): Volume {
+  if (volume == null) {
+    throw InvalidLength()
+  }
+
+  val value = volume.getDouble("value")
+  return when (volume.getString("unit")) {
+    "fluidOuncesUs" -> Volume.fluidOuncesUs(value)
+    "liters" -> Volume.liters(value)
+    "milliliters" -> Volume.milliliters(value)
+    else -> Volume.liters(value)
+  }
+}
+
+fun volumeToJsMap(volume: Volume): WritableNativeMap {
+  return WritableNativeMap().apply {
+    putDouble("inLiters", volume.inLiters)
+    putDouble("inFluidOuncesUs", volume.inFluidOuncesUs)
+    putDouble("inMilliliters", volume.inMilliliters)
+  }
+}
+
