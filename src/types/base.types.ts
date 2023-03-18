@@ -52,6 +52,17 @@ export interface EnergyResult {
   inKilojoules: number;
 }
 
+export interface Velocity {
+  value: number;
+  unit: 'kilometersPerHour' | 'metersPerSecond' | 'milesPerHour';
+}
+
+export interface VelocityResult {
+  inKilometersPerHour: number;
+  inMetersPerSecond: number;
+  inMilesPerHour: number;
+}
+
 export interface BloodGlucose {
   value: number;
   unit: 'milligramsPerDeciliter' | 'millimolesPerLiter';
@@ -132,4 +143,14 @@ export interface CyclingPedalingCadenceSample extends BaseSample {
 export interface HeartRateSample extends BaseSample {
   // Heart beats per minute. Validation range: 1-300.
   beatsPerMinute: number;
+}
+
+export interface SpeedSample extends BaseSample {
+  // Speed in Velocity unit. Valid range: 0-1000000 meters/sec.
+  speed: Velocity;
+}
+
+export interface SpeedSampleResult extends BaseSample {
+  // Speed in Velocity unit. Valid range: 0-1000000 meters/sec.
+  speed: VelocityResult;
 }
