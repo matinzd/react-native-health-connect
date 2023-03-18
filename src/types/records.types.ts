@@ -12,6 +12,7 @@ import type {
   CyclingPedalingCadenceSample,
   HeartRateSample,
   Volume,
+  SpeedSample,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -235,6 +236,11 @@ export interface IntermenstrualBleedingRecord extends InstantaneousRecord {
   recordType: 'IntermenstrualBleeding';
 }
 
+export interface SpeedRecord extends IntervalRecord {
+  recordType: 'Speed';
+  samples: SpeedSample[];
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -259,7 +265,8 @@ export type HealthConnectRecord =
   | SexualActivityRecord
   | WeightRecord
   | LeanBodyMassRecord
-  | IntermenstrualBleedingRecord;
+  | IntermenstrualBleedingRecord
+  | SpeedRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

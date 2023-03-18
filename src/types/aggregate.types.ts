@@ -4,6 +4,7 @@ import type {
   MassResult,
   PressureResult,
   TimeRangeFilter,
+  VelocityResult,
   VolumeResult,
 } from './base.types';
 
@@ -130,6 +131,13 @@ interface NutritionAggregateResult extends BaseAggregate {
   VITAMIN_K_TOTAL: MassResult;
 }
 
+interface SpeedAggregateResult extends BaseAggregate {
+  recordType: 'Speed';
+  SPEED_AVG: VelocityResult;
+  SPEED_MAX: VelocityResult;
+  SPEED_MIN: VelocityResult;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -143,7 +151,8 @@ export type AggregateRecordResult =
   | HeightAggregateResult
   | HydrationAggregateResult
   | WeightAggregateResult
-  | NutritionAggregateResult;
+  | NutritionAggregateResult
+  | SpeedAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 

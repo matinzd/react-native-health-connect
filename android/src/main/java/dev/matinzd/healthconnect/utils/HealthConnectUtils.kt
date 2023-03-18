@@ -5,10 +5,7 @@ import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
-import androidx.health.connect.client.units.Energy
-import androidx.health.connect.client.units.Length
-import androidx.health.connect.client.units.Mass
-import androidx.health.connect.client.units.Volume
+import androidx.health.connect.client.units.*
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
@@ -302,5 +299,27 @@ fun energyToJsMap(energy: Energy?): WritableNativeMap {
     putDouble("inJoules", energy?.inJoules ?: 0.0)
     putDouble("inKilocalories", energy?.inKilocalories ?: 0.0)
     putDouble("inKilojoules", energy?.inKilojoules ?: 0.0)
+  }
+}
+
+fun getVelocityFromJsMap(velocityMap: ReadableMap?): Velocity {
+  if (velocityMap == null) {
+    throw InvalidEnergy()
+  }
+
+  val value = velocityMap.getDouble("value")
+  return when (velocityMap.getString("unit")) {
+    "kilometersPerHour" -> Velocity.kilometersPerHour(value)
+    "metersPerSecond" -> Velocity.metersPerSecond(value)
+    "milesPerHour" -> Velocity.milesPerHour(value)
+    else -> Velocity.kilometersPerHour(value)
+  }
+}
+
+fun velocityToJsMap(volume: Velocity?): WritableNativeMap {
+  return WritableNativeMap().apply {
+    putDouble("inKilometersPerHour", volume?.inKilometersPerHour ?: 0.0)
+    putDouble("inMetersPerSecond", volume?.inMetersPerSecond ?: 0.0)
+    putDouble("inMilesPerHour", volume?.inMilesPerHour ?: 0.0)
   }
 }
