@@ -32,6 +32,7 @@ import type {
   MenstruationFlowRecord,
   MenstruationPeriodRecord,
   RecordType,
+  RestingHeartRateRecord,
   SexualActivityRecord,
   SpeedRecord,
   StepsRecord,
@@ -118,6 +119,8 @@ interface ExerciseSessionRecordResult extends ExerciseSessionRecord {}
 interface FloorsClimbedRecordResult extends FloorsClimbedRecord {}
 
 interface HeartRateRecordResult extends HeartRateRecord {}
+
+interface RestingHeartRateRecordResult extends RestingHeartRateRecord {}
 
 interface StepsRecordResult extends StepsRecord {}
 
@@ -258,6 +261,7 @@ type HealthConnectRecordResult =
   | FloorsClimbedRecordResult
   | CyclingPedalingCadenceRecordResult
   | HeartRateRecordResult
+  | RestingHeartRateRecordResult
   | StepsRecordResult
   | DistanceRecordResult
   | HeightRecordResult

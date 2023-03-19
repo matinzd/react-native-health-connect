@@ -101,6 +101,11 @@ export interface HeartRateRecord extends IntervalRecord {
   samples: HeartRateSample[];
 }
 
+export interface RestingHeartRateRecord extends InstantaneousRecord {
+  recordType: 'RestingHeartRate';
+  beatsPerMinute: number;
+}
+
 export interface StepsRecord extends IntervalRecord {
   recordType: 'Steps';
   count: number;
@@ -266,6 +271,7 @@ export type HealthConnectRecord =
   | ExerciseSessionRecord
   | FloorsClimbedRecord
   | HeartRateRecord
+  | RestingHeartRateRecord
   | StepsRecord
   | DistanceRecord
   | HeightRecord
