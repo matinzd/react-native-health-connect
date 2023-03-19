@@ -246,6 +246,10 @@ export interface MenstruationFlowRecord extends InstantaneousRecord {
   flow?: number;
 }
 
+export interface MenstruationPeriodRecord extends InstantaneousRecord {
+  recordType: 'MenstruationPeriod';
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -272,7 +276,8 @@ export type HealthConnectRecord =
   | LeanBodyMassRecord
   | IntermenstrualBleedingRecord
   | SpeedRecord
-  | MenstruationFlowRecord;
+  | MenstruationFlowRecord
+  | MenstruationPeriodRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
