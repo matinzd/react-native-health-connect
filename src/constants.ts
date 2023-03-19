@@ -167,3 +167,10 @@ export const ProtectionUsed = {
   PROTECTED: 1,
   UNPROTECTED: 2,
 } as const;
+
+export const MenstruationFlow = {
+  UNKNOWN: 0,
+  LIGHT: 1,
+  MEDIUM: 2,
+  HEAVY: 3,
+} as const;
