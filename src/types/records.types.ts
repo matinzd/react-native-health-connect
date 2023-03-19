@@ -241,6 +241,11 @@ export interface SpeedRecord extends IntervalRecord {
   samples: SpeedSample[];
 }
 
+export interface MenstruationFlowRecord extends InstantaneousRecord {
+  recordType: 'MenstruationFlow';
+  flow?: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -266,7 +271,8 @@ export type HealthConnectRecord =
   | WeightRecord
   | LeanBodyMassRecord
   | IntermenstrualBleedingRecord
-  | SpeedRecord;
+  | SpeedRecord
+  | MenstruationFlowRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

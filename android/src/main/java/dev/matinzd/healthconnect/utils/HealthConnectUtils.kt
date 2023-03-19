@@ -304,7 +304,7 @@ fun energyToJsMap(energy: Energy?): WritableNativeMap {
 
 fun getVelocityFromJsMap(velocityMap: ReadableMap?): Velocity {
   if (velocityMap == null) {
-    throw InvalidEnergy()
+    throw InvalidVelocity()
   }
 
   val value = velocityMap.getDouble("value")
@@ -316,10 +316,10 @@ fun getVelocityFromJsMap(velocityMap: ReadableMap?): Velocity {
   }
 }
 
-fun velocityToJsMap(volume: Velocity?): WritableNativeMap {
+fun velocityToJsMap(velocity: Velocity?): WritableNativeMap {
   return WritableNativeMap().apply {
-    putDouble("inKilometersPerHour", volume?.inKilometersPerHour ?: 0.0)
-    putDouble("inMetersPerSecond", volume?.inMetersPerSecond ?: 0.0)
-    putDouble("inMilesPerHour", volume?.inMilesPerHour ?: 0.0)
+    putDouble("inKilometersPerHour", velocity?.inKilometersPerHour ?: 0.0)
+    putDouble("inMetersPerSecond", velocity?.inMetersPerSecond ?: 0.0)
+    putDouble("inMilesPerHour", velocity?.inMilesPerHour ?: 0.0)
   }
 }
