@@ -58,6 +58,13 @@ interface HeartRateAggregateResult extends BaseAggregate {
   MEASUREMENTS_COUNT: number;
 }
 
+interface RestingHeartRateAggregateResult extends BaseAggregate {
+  recordType: 'RestingHeartRate';
+  BPM_AVG: number;
+  BPM_MAX: number;
+  BPM_MIN: number;
+}
+
 interface StepsAggregateResult extends BaseAggregate {
   recordType: 'Steps';
   COUNT_TOTAL: number;
@@ -146,6 +153,7 @@ export type AggregateRecordResult =
   | FloorsClimbedAggregateResult
   | CyclingPedalingCadenceAggregateResult
   | HeartRateAggregateResult
+  | RestingHeartRateAggregateResult
   | StepsAggregateResult
   | DistanceAggregateResult
   | HeightAggregateResult
