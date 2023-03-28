@@ -145,6 +145,11 @@ interface SpeedAggregateResult extends BaseAggregate {
   SPEED_MIN: VelocityResult;
 }
 
+interface SleepSessionAggregateResult extends BaseAggregate {
+  recordType: 'SleepSession';
+  SLEEP_DURATION_TOTAL: number;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -160,7 +165,8 @@ export type AggregateRecordResult =
   | HydrationAggregateResult
   | WeightAggregateResult
   | NutritionAggregateResult
-  | SpeedAggregateResult;
+  | SpeedAggregateResult
+  | SleepSessionAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 

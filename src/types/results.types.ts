@@ -34,6 +34,7 @@ import type {
   RecordType,
   RestingHeartRateRecord,
   SexualActivityRecord,
+  SleepSessionRecord,
   SpeedRecord,
   StepsRecord,
   WeightRecord,
@@ -245,6 +246,8 @@ interface MenstruationFlowRecordResult extends MenstruationFlowRecord {}
 
 interface MenstruationPeriodRecordResult extends MenstruationPeriodRecord {}
 
+interface SleepSessionRecordResult extends SleepSessionRecord {}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -275,7 +278,8 @@ type HealthConnectRecordResult =
   | IntermenstrualBleedingRecordResult
   | SpeedRecordResult
   | MenstruationFlowRecordResult
-  | MenstruationPeriodRecordResult;
+  | MenstruationPeriodRecordResult
+  | SleepSessionRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,
