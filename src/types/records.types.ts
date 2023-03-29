@@ -266,6 +266,11 @@ export interface SleepStageRecord extends IntervalRecord {
   stage: number;
 }
 
+export interface RespiratoryRateRecord extends InstantaneousRecord {
+  recordType: 'RespiratoryRate';
+  rate: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -296,7 +301,8 @@ export type HealthConnectRecord =
   | MenstruationFlowRecord
   | MenstruationPeriodRecord
   | SleepSessionRecord
-  | SleepStageRecord;
+  | SleepStageRecord
+  | RespiratoryRateRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
