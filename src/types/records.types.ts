@@ -13,6 +13,7 @@ import type {
   HeartRateSample,
   Volume,
   SpeedSample,
+  StepsCadenceSample,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -109,6 +110,11 @@ export interface RestingHeartRateRecord extends InstantaneousRecord {
 export interface StepsRecord extends IntervalRecord {
   recordType: 'Steps';
   count: number;
+}
+
+export interface StepsCadenceRecord extends IntervalRecord {
+  recordType: 'StepsCadence';
+  samples: StepsCadenceSample[];
 }
 
 export interface DistanceRecord extends IntervalRecord {
@@ -294,6 +300,7 @@ export type HealthConnectRecord =
   | HeartRateRecord
   | RestingHeartRateRecord
   | StepsRecord
+  | StepsCadenceRecord
   | DistanceRecord
   | HeightRecord
   | HydrationRecord
