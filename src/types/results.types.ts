@@ -41,6 +41,7 @@ import type {
   SpeedRecord,
   StepsCadenceRecord,
   StepsRecord,
+  TotalCaloriesBurnedRecord,
   Vo2MaxRecord,
   WeightRecord,
   WheelchairPushesRecord,
@@ -266,6 +267,9 @@ interface Vo2MaxRecordResult extends Vo2MaxRecord {}
 
 interface OvulationTestRecordResult extends OvulationTestRecord {}
 
+interface TotalCaloriesBurnedRecordResult
+  extends Replace<TotalCaloriesBurnedRecord, 'energy', EnergyResult> {}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -303,7 +307,8 @@ type HealthConnectRecordResult =
   | RespiratoryRateRecordResult
   | WheelchairPushesRecordResult
   | Vo2MaxRecordResult
-  | OvulationTestRecordResult;
+  | OvulationTestRecordResult
+  | TotalCaloriesBurnedRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,

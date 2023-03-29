@@ -293,6 +293,11 @@ export interface OvulationTestRecord extends InstantaneousRecord {
   result: number;
 }
 
+export interface TotalCaloriesBurnedRecord extends InstantaneousRecord {
+  recordType: 'TotalCaloriesBurned';
+  energy: Energy;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -328,7 +333,8 @@ export type HealthConnectRecord =
   | RespiratoryRateRecord
   | WheelchairPushesRecord
   | Vo2MaxRecord
-  | OvulationTestRecord;
+  | OvulationTestRecord
+  | TotalCaloriesBurnedRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
