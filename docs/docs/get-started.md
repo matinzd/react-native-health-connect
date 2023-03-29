@@ -20,12 +20,9 @@ Health Connect requires the user to have screen lock enabled with a PIN, pattern
 
 1. Install react-native-health-connect by running:  
 ```bash
-yarn add react-native-health-connect@alpha
+yarn add react-native-health-connect@latest
 ```
 Since this module is Android-only, you do not need to run `pod install`.
-
-**Note:**
-We are actively working to implement all records in the `alpha` tag. In the meantime, you can check our code to see which records have already been implemented by visiting [here](https://github.com/matinzd/react-native-health-connect/tree/main/android/src/main/java/dev/matinzd/healthconnect/records).
 
 ## Example
 

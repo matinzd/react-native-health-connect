@@ -4,8 +4,8 @@
     <h1>React Native Health Connect</h1>
   </div>
   <div align="center">
-    <a href="https://www.npmjs.com/package/react-native-health-connect/v/alpha">
-      <img src="https://img.shields.io/npm/v/react-native-health-connect/alpha.svg?style=for-the-badge&color=4284F3" />
+    <a href="https://www.npmjs.com/package/react-native-health-connect">
+      <img src="https://img.shields.io/npm/v/react-native-health-connect.svg?style=for-the-badge&color=4284F3" />
     </a>
     <a href="https://opensource.org/licenses/MIT">
       <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge" />
@@ -27,13 +27,10 @@ This library is a wrapper around Health Connect for react native. Health Connect
 Install `react-native-health-connect` by running:
 
 ```bash
-yarn add react-native-health-connect@alpha
+yarn add react-native-health-connect@latest
 ```
 
 Since this module is Android-only, you do not need to run `pod install`.
-
-**Note:**
-We are actively working to implement all records in the `alpha` tag. In the meantime, you can check our code to see which records have already been implemented by visiting [here](https://github.com/matinzd/react-native-health-connect/tree/main/android/src/main/java/dev/matinzd/healthconnect/records).
 
 ## Example
 

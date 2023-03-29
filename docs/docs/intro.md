@@ -9,8 +9,8 @@ title: Introduction
     <h1>React Native Health Connect</h1>
   </div>
   <div align="center">
-    <a href="https://www.npmjs.com/package/react-native-health-connect/v/alpha">
-      <img src="https://img.shields.io/npm/v/react-native-health-connect/alpha.svg?style=for-the-badge&color=4284F3" />
+    <a href="https://www.npmjs.com/package/react-native-health-connect">
+      <img src="https://img.shields.io/npm/v/react-native-health-connect.svg?style=for-the-badge&color=4284F3" />
     </a>
     <span> </span>
     <a href="https://opensource.org/licenses/MIT">

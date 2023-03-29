@@ -9,7 +9,7 @@ Retrieves a collection of records.
 # Method
 
 ```ts
-readRecords<T extends RecordType>(
+function readRecords<T extends RecordType>(
     // record type e.g activeCaloriesBurned
     recordType: T,
 
