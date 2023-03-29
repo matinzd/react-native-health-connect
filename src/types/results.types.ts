@@ -40,6 +40,7 @@ import type {
   SpeedRecord,
   StepsRecord,
   WeightRecord,
+  WheelchairPushesRecord,
 } from './records.types';
 
 type Identity<T> = { [P in keyof T]: T[P] };
@@ -254,6 +255,8 @@ interface SleepStageRecordResult extends SleepStageRecord {}
 
 interface RespiratoryRateRecordResult extends RespiratoryRateRecord {}
 
+interface WheelchairPushesRecordResult extends WheelchairPushesRecord {}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -287,7 +290,8 @@ type HealthConnectRecordResult =
   | MenstruationPeriodRecordResult
   | SleepSessionRecordResult
   | SleepStageRecordResult
-  | RespiratoryRateRecordResult;
+  | RespiratoryRateRecordResult
+  | WheelchairPushesRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,

@@ -271,6 +271,11 @@ export interface RespiratoryRateRecord extends InstantaneousRecord {
   rate: number;
 }
 
+export interface WheelchairPushesRecord extends IntervalRecord {
+  recordType: 'WheelchairPushes';
+  count: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -302,7 +307,8 @@ export type HealthConnectRecord =
   | MenstruationPeriodRecord
   | SleepSessionRecord
   | SleepStageRecord
-  | RespiratoryRateRecord;
+  | RespiratoryRateRecord
+  | WheelchairPushesRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

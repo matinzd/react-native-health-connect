@@ -150,6 +150,11 @@ interface SleepSessionAggregateResult extends BaseAggregate {
   SLEEP_DURATION_TOTAL: number;
 }
 
+interface WheelchairPushesAggregateResult extends BaseAggregate {
+  recordType: 'WheelchairPushes';
+  COUNT_TOTAL: number;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -166,7 +171,8 @@ export type AggregateRecordResult =
   | WeightAggregateResult
   | NutritionAggregateResult
   | SpeedAggregateResult
-  | SleepSessionAggregateResult;
+  | SleepSessionAggregateResult
+  | WheelchairPushesAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
