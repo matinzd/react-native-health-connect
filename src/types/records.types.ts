@@ -14,6 +14,7 @@ import type {
   Volume,
   SpeedSample,
   StepsCadenceSample,
+  PowerSample,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -303,6 +304,11 @@ export interface OxygenSaturationRecord extends InstantaneousRecord {
   percentage: number;
 }
 
+export interface PowerRecord extends IntervalRecord {
+  recordType: 'Power';
+  samples: PowerSample[];
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -340,7 +346,8 @@ export type HealthConnectRecord =
   | Vo2MaxRecord
   | OvulationTestRecord
   | TotalCaloriesBurnedRecord
-  | OxygenSaturationRecord;
+  | OxygenSaturationRecord
+  | PowerRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

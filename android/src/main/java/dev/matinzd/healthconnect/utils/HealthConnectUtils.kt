@@ -323,3 +323,23 @@ fun velocityToJsMap(velocity: Velocity?): WritableNativeMap {
     putDouble("inMilesPerHour", velocity?.inMilesPerHour ?: 0.0)
   }
 }
+
+fun getPowerFromJsMap(powerMap: ReadableMap?): Power {
+  if (powerMap == null) {
+    throw InvalidVelocity()
+  }
+
+  val value = powerMap.getDouble("value")
+  return when (powerMap.getString("unit")) {
+    "watts" -> Power.watts(value)
+    "kilocaloriesPerDay" -> Power.kilocaloriesPerDay(value)
+    else -> Power.kilocaloriesPerDay(value)
+  }
+}
+
+fun powerToJsMap(power: Power?): WritableNativeMap {
+  return WritableNativeMap().apply {
+    putDouble("inWatts", power?.inWatts ?: 0.0)
+    putDouble("inKilocaloriesPerDay", power?.inKilocaloriesPerDay ?: 0.0)
+  }
+}
