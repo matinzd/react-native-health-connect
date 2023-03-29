@@ -288,6 +288,11 @@ export interface Vo2MaxRecord extends InstantaneousRecord {
   measurementMethod: number;
 }
 
+export interface OvulationTestRecord extends InstantaneousRecord {
+  recordType: 'OvulationTest';
+  result: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -322,7 +327,8 @@ export type HealthConnectRecord =
   | SleepStageRecord
   | RespiratoryRateRecord
   | WheelchairPushesRecord
-  | Vo2MaxRecord;
+  | Vo2MaxRecord
+  | OvulationTestRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
