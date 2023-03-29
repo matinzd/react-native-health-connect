@@ -2,6 +2,7 @@ import type {
   EnergyResult,
   LengthResult,
   MassResult,
+  PowerResult,
   PressureResult,
   TimeRangeFilter,
   VelocityResult,
@@ -167,6 +168,13 @@ interface TotalCaloriesBurnedAggregateResult extends BaseAggregate {
   ENERGY_TOTAL: EnergyResult;
 }
 
+interface PowerAggregateResult extends BaseAggregate {
+  recordType: 'Power';
+  POWER_AVG: PowerResult;
+  POWER_MIN: PowerResult;
+  POWER_MAX: PowerResult;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -186,7 +194,8 @@ export type AggregateRecordResult =
   | SleepSessionAggregateResult
   | WheelchairPushesAggregateResult
   | StepsCadenceAggregateResult
-  | TotalCaloriesBurnedAggregateResult;
+  | TotalCaloriesBurnedAggregateResult
+  | PowerAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 

@@ -73,6 +73,11 @@ export interface Power {
   unit: 'watts' | 'kilocaloriesPerDay';
 }
 
+export interface PowerResult {
+  inWatts: number;
+  inKilocaloriesPerDay: number;
+}
+
 export interface Temperature {
   value: number;
   unit: 'celsius' | 'fahrenheit';
@@ -157,5 +162,12 @@ export interface SpeedSampleResult extends BaseSample {
 
 export interface StepsCadenceSample extends BaseSample {
   rate: number;
-  time: string;
+}
+
+export interface PowerSample extends BaseSample {
+  power: Power;
+}
+
+export interface PowerSampleResult extends BaseSample {
+  power: PowerResult;
 }
