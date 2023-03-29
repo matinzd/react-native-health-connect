@@ -174,3 +174,13 @@ export const MenstruationFlow = {
   MEDIUM: 2,
   HEAVY: 3,
 } as const;
+
+export const SleepStageType = {
+  UNKNOWN: 0,
+  AWAKE: 1,
+  SLEEPING: 2,
+  OUT_OF_BED: 3,
+  LIGHT: 4,
+  DEEP: 5,
+  REM: 6,
+} as const;
