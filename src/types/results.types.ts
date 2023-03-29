@@ -38,6 +38,7 @@ import type {
   SleepSessionRecord,
   SleepStageRecord,
   SpeedRecord,
+  StepsCadenceRecord,
   StepsRecord,
   WeightRecord,
   WheelchairPushesRecord,
@@ -127,6 +128,8 @@ interface HeartRateRecordResult extends HeartRateRecord {}
 interface RestingHeartRateRecordResult extends RestingHeartRateRecord {}
 
 interface StepsRecordResult extends StepsRecord {}
+
+interface StepsCadenceRecordResult extends StepsCadenceRecord {}
 
 interface DistanceRecordResult
   extends Replace<DistanceRecord, 'distance', LengthResult> {}
@@ -275,6 +278,7 @@ type HealthConnectRecordResult =
   | HeartRateRecordResult
   | RestingHeartRateRecordResult
   | StepsRecordResult
+  | StepsCadenceRecordResult
   | DistanceRecordResult
   | HeightRecordResult
   | HydrationRecordResult

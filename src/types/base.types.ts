@@ -154,3 +154,8 @@ export interface SpeedSampleResult extends BaseSample {
   // Speed in Velocity unit. Valid range: 0-1000000 meters/sec.
   speed: VelocityResult;
 }
+
+export interface StepsCadenceSample extends BaseSample {
+  rate: number;
+  time: string;
+}

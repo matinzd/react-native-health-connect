@@ -155,6 +155,13 @@ interface WheelchairPushesAggregateResult extends BaseAggregate {
   COUNT_TOTAL: number;
 }
 
+interface StepsCadenceAggregateResult extends BaseAggregate {
+  recordType: 'StepsCadence';
+  RATE_AVG: number;
+  RATE_MAX: number;
+  RATE_MIN: number;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -172,7 +179,8 @@ export type AggregateRecordResult =
   | NutritionAggregateResult
   | SpeedAggregateResult
   | SleepSessionAggregateResult
-  | WheelchairPushesAggregateResult;
+  | WheelchairPushesAggregateResult
+  | StepsCadenceAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
