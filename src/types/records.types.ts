@@ -282,6 +282,12 @@ export interface WheelchairPushesRecord extends IntervalRecord {
   count: number;
 }
 
+export interface Vo2MaxRecord extends InstantaneousRecord {
+  recordType: 'Vo2Max';
+  vo2MillilitersPerMinuteKilogram: number;
+  measurementMethod: number;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -315,7 +321,8 @@ export type HealthConnectRecord =
   | SleepSessionRecord
   | SleepStageRecord
   | RespiratoryRateRecord
-  | WheelchairPushesRecord;
+  | WheelchairPushesRecord
+  | Vo2MaxRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 
