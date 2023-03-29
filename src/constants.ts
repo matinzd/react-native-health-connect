@@ -193,3 +193,29 @@ export const Vo2MaxMeasurementMethod = {
   MULTISTAGE_FITNESS_TEST: 4,
   ROCKPORT_FITNESS_TEST: 5,
 } as const;
+
+export const OvulationTestResult = {
+  /**
+   * Inconclusive result. Refers to ovulation test results that are indeterminate (e.g. may be
+   * testing malfunction, user error, etc.). ". Any unknown value will also be returned as
+   */
+  INCONCLUSIVE: 0,
+
+  /**
+   * Positive fertility (may also be referred as "peak" fertility). Refers to the peak of the
+   * luteinizing hormone (LH) surge and ovulation is expected to occur in 10-36 hours.
+   */
+  POSITIVE: 1,
+
+  /**
+   * High fertility. Refers to a rise in estrogen or luteinizing hormone that may signal the
+   * fertile window (time in the menstrual cycle when conception is likely to occur).
+   */
+  HIGH: 2,
+
+  /**
+   * Negative fertility (may also be referred as "low" fertility). Refers to the time in the
+   * cycle where fertility/conception is expected to be low.
+   */
+  NEGATIVE: 3,
+} as const;
