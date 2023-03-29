@@ -162,6 +162,11 @@ interface StepsCadenceAggregateResult extends BaseAggregate {
   RATE_MIN: number;
 }
 
+interface TotalCaloriesBurnedAggregateResult extends BaseAggregate {
+  recordType: 'TotalCaloriesBurned';
+  ENERGY_TOTAL: EnergyResult;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -180,7 +185,8 @@ export type AggregateRecordResult =
   | SpeedAggregateResult
   | SleepSessionAggregateResult
   | WheelchairPushesAggregateResult
-  | StepsCadenceAggregateResult;
+  | StepsCadenceAggregateResult
+  | TotalCaloriesBurnedAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
