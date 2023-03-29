@@ -32,6 +32,7 @@ import type {
   MenstruationFlowRecord,
   MenstruationPeriodRecord,
   OvulationTestRecord,
+  OxygenSaturationRecord,
   RecordType,
   RespiratoryRateRecord,
   RestingHeartRateRecord,
@@ -270,6 +271,8 @@ interface OvulationTestRecordResult extends OvulationTestRecord {}
 interface TotalCaloriesBurnedRecordResult
   extends Replace<TotalCaloriesBurnedRecord, 'energy', EnergyResult> {}
 
+interface OxygenSaturationRecordResult extends OxygenSaturationRecord {}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -308,7 +311,8 @@ type HealthConnectRecordResult =
   | WheelchairPushesRecordResult
   | Vo2MaxRecordResult
   | OvulationTestRecordResult
-  | TotalCaloriesBurnedRecordResult;
+  | TotalCaloriesBurnedRecordResult
+  | OxygenSaturationRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,
