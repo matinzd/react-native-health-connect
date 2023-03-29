@@ -6,21 +6,41 @@ import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
+import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
+import dev.matinzd.healthconnect.utils.getSafeInt
+import dev.matinzd.healthconnect.utils.toMapList
+import java.time.Instant
 
 class ReactVo2MaxRecord : ReactHealthRecordImpl<Vo2MaxRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<Vo2MaxRecord> {
-    TODO("Not yet implemented")
+    return records.toMapList().map { map ->
+      Vo2MaxRecord(
+        time = Instant.parse(map.getString("time")),
+        zoneOffset = null,
+        vo2MillilitersPerMinuteKilogram = map.getDouble("vo2Max"),
+        measurementMethod = map.getSafeInt(
+          "measurementMethod",
+          Vo2MaxRecord.MEASUREMENT_METHOD_OTHER
+        ),
+      )
+    }
   }
 
   override fun parseRecord(record: Vo2MaxRecord): WritableNativeMap {
-    TODO("Not yet implemented")
+    return WritableNativeMap().apply {
+      putString("time", record.time.toString())
+      putDouble("vo2MillilitersPerMinuteKilogram", record.vo2MillilitersPerMinuteKilogram)
+      putInt("measurementMethod", record.measurementMethod)
+      putMap("metadata", convertMetadataToJSMap(record.metadata))
+    }
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
-    TODO("Not yet implemented")
+    throw AggregationNotSupported()
   }
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
-    TODO("Not yet implemented")
+    throw AggregationNotSupported()
   }
 }

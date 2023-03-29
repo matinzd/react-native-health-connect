@@ -184,3 +184,12 @@ export const SleepStageType = {
   DEEP: 5,
   REM: 6,
 } as const;
+
+export const Vo2MaxMeasurementMethod = {
+  OTHER: 0,
+  METABOLIC_CART: 1,
+  HEART_RATE_RATIO: 2,
+  COOPER_TEST: 3,
+  MULTISTAGE_FITNESS_TEST: 4,
+  ROCKPORT_FITNESS_TEST: 5,
+} as const;

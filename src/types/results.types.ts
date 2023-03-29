@@ -40,6 +40,7 @@ import type {
   SpeedRecord,
   StepsCadenceRecord,
   StepsRecord,
+  Vo2MaxRecord,
   WeightRecord,
   WheelchairPushesRecord,
 } from './records.types';
@@ -260,6 +261,8 @@ interface RespiratoryRateRecordResult extends RespiratoryRateRecord {}
 
 interface WheelchairPushesRecordResult extends WheelchairPushesRecord {}
 
+interface Vo2MaxRecordResult extends Vo2MaxRecord {}
+
 type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -295,7 +298,8 @@ type HealthConnectRecordResult =
   | SleepSessionRecordResult
   | SleepStageRecordResult
   | RespiratoryRateRecordResult
-  | WheelchairPushesRecordResult;
+  | WheelchairPushesRecordResult
+  | Vo2MaxRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,
