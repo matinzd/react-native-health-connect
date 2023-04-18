@@ -88,7 +88,7 @@ export function requestPermission(
   return HealthConnect.requestPermission(permissions, providerPackageName);
 }
 
-export function getGrantedPermissions(): Promise<Permission> {
+export function getGrantedPermissions(): Promise<Permission[]> {
   return HealthConnect.getGrantedPermissions();
 }
 
