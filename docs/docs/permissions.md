@@ -85,3 +85,86 @@ To access health data from the Health Connect app in your own app, you need to a
 | WheelchairPushes       | android.permission.health.READ_WHEELCHAIR_PUSHES      | android.permission.health.WRITE_WHEELCHAIR_PUSHES      |
 
 You can read more about data types and permissions [here](https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/data-types).
+
+## Setting up permissions in Expo
+
+You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins](https://docs.expo.dev/config-plugins/introduction/) in your project.
+
+- Edit app.json and add the permissions you need.
+
+```json
+{
+  "expo": {
+    ...
+    "android": {
+      ...
+      "permissions": [
+        "android.permission.health.READ_STEPS",
+        "android.permission.health.WRITE_STEPS",
+        "android.permission.health.READ_ACTIVE_CALORIES_BURNED"
+      ]
+    },
+   ...
+  }
+}
+```
+
+- Create a config plugin to insert the new `intent-filter` 
+
+Add a new file in your project root (androidManifestPlugin.js)
+
+```js
+const { withAndroidManifest } = require("@expo/config-plugins")
+
+module.exports = function androidManifestPlugin(config) {
+
+    return withAndroidManifest(config, async (config) => {
+
+        let androidManifest = config.modResults.manifest;
+
+        androidManifest.application[0].activity[0]["intent-filter"].push({
+            action: [
+                {
+                    $: {
+                        'android:name': "androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"
+                    }
+                }
+            ]
+        });
+
+        return config;
+    });
+
+};
+```
+
+- Edit your app.json again and add this
+
+```json
+{
+  "expo": {
+    ...
+    "plugins": [
+      "./androidManifestPlugin.js",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "minSdkVersion": 26
+          },
+          "ios": {
+            "deploymentTarget": "13.0"
+          }
+        }
+      ]
+    ]
+   ...
+  }
+}
+```
+
+- Finally create a new EAS development build
+
+`eas build --profile development --platform android`
