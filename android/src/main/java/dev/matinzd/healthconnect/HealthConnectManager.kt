@@ -4,7 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.health.connect.client.HealthConnectClient
-import com.facebook.react.bridge.*
+import com.facebook.react.bridge.ActivityEventListener
+import com.facebook.react.bridge.Promise
+import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReadableArray
+import com.facebook.react.bridge.ReadableMap
 import dev.matinzd.healthconnect.permissions.HCPermissionManager
 import dev.matinzd.healthconnect.records.ReactHealthRecord
 import dev.matinzd.healthconnect.utils.ClientNotInitialized
@@ -15,7 +19,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HealthConnectManager(private val context: ReactApplicationContext) : ActivityEventListener {
+class HealthConnectManager(private val applicationContext: ReactApplicationContext) :
+  ActivityEventListener {
   private lateinit var healthConnectClient: HealthConnectClient
   private val coroutineScope = CoroutineScope(Dispatchers.IO)
   private var pendingPromise: Promise? = null
@@ -42,18 +47,17 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
 
   fun openHealthConnectSettings() {
     val intent = Intent(HealthConnectClient.ACTION_HEALTH_CONNECT_SETTINGS)
-    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-    context.startActivity(intent)
+    applicationContext.currentActivity?.startActivity(intent)
   }
 
   fun getSdkStatus(providerPackageName: String, promise: Promise) {
-    val status = HealthConnectClient.sdkStatus(context, providerPackageName)
+    val status = HealthConnectClient.sdkStatus(applicationContext, providerPackageName)
     return promise.resolve(status)
   }
 
   fun initialize(providerPackageName: String, promise: Promise) {
     try {
-      healthConnectClient = HealthConnectClient.getOrCreate(context, providerPackageName)
+      healthConnectClient = HealthConnectClient.getOrCreate(applicationContext, providerPackageName)
       promise.resolve(true)
     } catch (e: Exception) {
       promise.rejectWithException(e)
@@ -72,9 +76,14 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
       }
 
       val intent = HCPermissionManager(providerPackageName).healthPermissionContract.createIntent(
-        context, latestPermissions!!
+        applicationContext, latestPermissions!!
       )
-      context.startActivityForResult(intent, HealthConnectManager.REQUEST_CODE, bundle)
+      
+      applicationContext.currentActivity?.startActivityForResult(
+        intent,
+        HealthConnectManager.REQUEST_CODE,
+        bundle
+      )
     }
   }
 
@@ -195,7 +204,7 @@ class HealthConnectManager(private val context: ReactApplicationContext) : Activ
   }
 
   init {
-    context.addActivityEventListener(this)
+    applicationContext.addActivityEventListener(this)
   }
 }
 
