@@ -86,13 +86,14 @@ To access health data from the Health Connect app in your own app, you need to a
 
 You can read more about data types and permissions [here](https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/data-types).
 
-## Setting permissions in Expo
+## Setting up permissions in Expo
 
 You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins](https://docs.expo.dev/config-plugins/introduction/) in your project.
 
 - Edit app.json and add the permissions you need.
 
-```{
+```json
+{
   "expo": {
     ...
     "android": {
@@ -112,7 +113,7 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 
 Add a new file in your project root (androidManifestPlugin.js)
 
-```
+```js
 const { withAndroidManifest } = require("@expo/config-plugins")
 
 module.exports = function androidManifestPlugin(config) {
@@ -139,7 +140,8 @@ module.exports = function androidManifestPlugin(config) {
 
 - Edit your app.json again and add this
 
-```{
+```json
+{
   "expo": {
     ...
     "plugins": [
