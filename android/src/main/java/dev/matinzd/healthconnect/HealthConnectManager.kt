@@ -78,7 +78,7 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
       val intent = HCPermissionManager(providerPackageName).healthPermissionContract.createIntent(
         applicationContext, latestPermissions!!
       )
-      
+
       applicationContext.currentActivity?.startActivityForResult(
         intent,
         HealthConnectManager.REQUEST_CODE,
@@ -200,7 +200,7 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   }
 
   companion object {
-    const val REQUEST_CODE = 150
+    const val REQUEST_CODE = 4235
   }
 
   init {
