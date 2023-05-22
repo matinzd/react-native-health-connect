@@ -19,7 +19,7 @@ aggregateRecord<T extends AggregateResultRecordType>(
 ```ts
 import { aggregateRecord } from 'react-native-health-connect';
 
-const aggreagetSampleData = () => {
+const aggregateSampleData = () => {
   aggregateRecord({
     recordType: 'ActiveCaloriesBurned',
     timeRangeFilter: {
