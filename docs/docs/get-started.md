@@ -6,7 +6,7 @@ title: Get started
 ## Requirements
 
 - [Health Connect](https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata&hl=en&gl=US) needs to be installed on the user's device, However the goal is to have this app preinstalled on Android devices in the future.
-- Health Connect API requires `mindSdkVersion=26` (Android Oreo / 8.0).
+- Health Connect API requires `minSdkVersion=26` (Android Oreo / 8.0).
 
 :::note
 Health Connect does not appear on the Home screen by default. To open Health Connect, go to Settings > Apps > Health Connect, or add Health Connect to your Quick Settings menu.
