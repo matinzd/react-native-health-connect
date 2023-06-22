@@ -159,5 +159,8 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "dependencies": {
+    "@expo/config-plugins": "^6.0.2"
   }
 }
