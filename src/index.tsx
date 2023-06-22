@@ -84,7 +84,7 @@ export function openHealthConnectSettings(): void {
 export function requestPermission(
   permissions: Permission[],
   providerPackageName = DEFAULT_PROVIDER_PACKAGE_NAME
-): Promise<Permission> {
+): Promise<Permission[]> {
   return HealthConnect.requestPermission(permissions, providerPackageName);
 }
 
