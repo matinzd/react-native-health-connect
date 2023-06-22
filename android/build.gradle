@@ -91,7 +91,7 @@ dependencies {
   implementation "com.facebook.react:react-native"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-  implementation "androidx.health.connect:connect-client:1.0.0-alpha11"
+  implementation "androidx.health.connect:connect-client:1.1.0-alpha02"
 
   // Issue: https://youtrack.jetbrains.com/issue/KT-54136/Duplicated-classes-cause-build-failure-if-a-dependency-to-kotlin-stdlib-specified-in-an-android-project
   constraints {

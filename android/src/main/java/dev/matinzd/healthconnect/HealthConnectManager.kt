@@ -51,7 +51,7 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   }
 
   fun getSdkStatus(providerPackageName: String, promise: Promise) {
-    val status = HealthConnectClient.sdkStatus(applicationContext, providerPackageName)
+    val status = HealthConnectClient.getSdkStatus(applicationContext, providerPackageName)
     return promise.resolve(status)
   }
 
