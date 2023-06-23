@@ -54,6 +54,29 @@ Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins
 }
 ```
 
+- Edit your app.json again and add this
+
+```json
+{
+  "expo": {
+    ...
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "minSdkVersion": 26
+          },
+        }
+      ]
+    ]
+   ...
+  }
+}
+```
+
 Then rebuild the native app:
 
 - Run `expo prebuild`
@@ -62,6 +85,10 @@ Then rebuild the native app:
   - `yarn android` -- Build on Android.
 
 > If the project doesn't build correctly with `yarn android`, please file an issue and try setting the project up manually.
+
+Finally create a new EAS development build
+
+`eas build --profile development --platform android`
 
 ## Example
 
