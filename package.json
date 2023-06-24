@@ -69,7 +69,8 @@
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__",
-    "!**/.*"
+    "!**/.*",
+    "app.plugin.js"
   ],
   "resolutions": {
     "@types/react": "17.0.21"
