@@ -34,6 +34,12 @@ def getExtOrIntegerDefault(name) {
 }
 
 android {
+  def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+  // Check AGP version for backward compatibility reasons
+  if (agpVersion.tokenize('.')[0].toInteger() >= 7) {
+      namespace = "dev.matinzd.healthconnect"
+  }
+
   compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
 
   defaultConfig {
