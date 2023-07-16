@@ -77,7 +77,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@expo/config-plugins": ">= 6.0.2"
   },
   "engines": {
     "node": ">= 16.0.0"
@@ -160,8 +161,5 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
-  },
-  "dependencies": {
-    "@expo/config-plugins": "^6.0.2"
   }
 }
