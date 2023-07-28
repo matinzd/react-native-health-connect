@@ -76,7 +76,7 @@ export const CervicalMucusSensation = {
   HEAVY: 3,
 } as const;
 
-export const ExeciseType = {
+export const ExerciseType = {
   OTHER_WORKOUT: 0,
   BACK_EXTENSION: 1,
   BADMINTON: 2,
