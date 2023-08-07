@@ -15,6 +15,9 @@ import type {
   SpeedSample,
   StepsCadenceSample,
   PowerSample,
+  ExerciseSegment,
+  ExerciseLap,
+  SleepStage,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -25,6 +28,7 @@ export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
 export interface BasalBodyTemperatureRecord extends InstantaneousRecord {
   recordType: 'BasalBodyTemperature';
   temperature: Temperature;
+  // Use TemperatureMeasurementLocation constant
   measurementLocation?: number;
 }
 
@@ -36,8 +40,11 @@ export interface BasalMetabolicRateRecord extends InstantaneousRecord {
 export interface BloodGlucoseRecord extends InstantaneousRecord {
   recordType: 'BloodGlucose';
   level: BloodGlucose;
+  // Use SpecimenSource constant
   specimenSource: number;
+  // Use MealType constant
   mealType: number;
+  // Use RelationToMeal constant
   relationToMeal: number;
 }
 
@@ -45,7 +52,9 @@ export interface BloodPressureRecord extends InstantaneousRecord {
   recordType: 'BloodPressure';
   systolic: Pressure;
   diastolic: Pressure;
+  // Use BloodPressureBodyPosition constant
   bodyPosition: number;
+  // Use BloodPressureMeasurementLocation constant
   measurementLocation: number;
 }
 
@@ -57,6 +66,7 @@ export interface BodyFatRecord extends InstantaneousRecord {
 export interface BodyTemperatureRecord extends InstantaneousRecord {
   recordType: 'BodyTemperature';
   temperature: Temperature;
+  // Use TemperatureMeasurementLocation constant
   measurementLocation?: number;
 }
 
@@ -72,7 +82,9 @@ export interface BoneMassRecord extends InstantaneousRecord {
 
 export interface CervicalMucusRecord extends InstantaneousRecord {
   recordType: 'CervicalMucus';
+  // Use CervicalMucusAppearance constant
   appearance?: number;
+  // Use CervicalMucusSensation constant
   sensation?: number;
 }
 
@@ -88,9 +100,12 @@ export interface ElevationGainedRecord extends IntervalRecord {
 
 export interface ExerciseSessionRecord extends IntervalRecord {
   recordType: 'ExerciseSession';
+  // Use ExerciseType constant
   exerciseType: number;
   title?: string;
   notes?: string;
+  laps?: ExerciseLap[];
+  segments?: ExerciseSegment[];
 }
 
 export interface FloorsClimbedRecord extends IntervalRecord {
@@ -140,12 +155,13 @@ export interface HeartRateVariabilityRmssdRecord extends InstantaneousRecord {
 
 export interface SexualActivityRecord extends InstantaneousRecord {
   recordType: 'SexualActivity';
-  protectionUsed: number; // ProtectionUsed constant
+  // Use ProtectionUsed constant
+  protectionUsed: number;
 }
 
 export interface WeightRecord extends InstantaneousRecord {
   recordType: 'Weight';
-  weight: Mass; // ProtectionUsed constant
+  weight: Mass;
 }
 
 export interface NutritionRecord extends IntervalRecord {
@@ -255,6 +271,7 @@ export interface SpeedRecord extends IntervalRecord {
 
 export interface MenstruationFlowRecord extends InstantaneousRecord {
   recordType: 'MenstruationFlow';
+  // Use MenstruationFlow constant
   flow?: number;
 }
 
@@ -264,13 +281,9 @@ export interface MenstruationPeriodRecord extends InstantaneousRecord {
 
 export interface SleepSessionRecord extends IntervalRecord {
   recordType: 'SleepSession';
+  stages?: SleepStage[];
   title?: string;
   notes?: string;
-}
-
-export interface SleepStageRecord extends IntervalRecord {
-  recordType: 'SleepStage';
-  stage: number;
 }
 
 export interface RespiratoryRateRecord extends InstantaneousRecord {
@@ -286,11 +299,13 @@ export interface WheelchairPushesRecord extends IntervalRecord {
 export interface Vo2MaxRecord extends InstantaneousRecord {
   recordType: 'Vo2Max';
   vo2MillilitersPerMinuteKilogram: number;
+  // Use Vo2MaxMeasurementMethod constant
   measurementMethod: number;
 }
 
 export interface OvulationTestRecord extends InstantaneousRecord {
   recordType: 'OvulationTest';
+  // Use OvulationTestResult constant
   result: number;
 }
 
@@ -340,7 +355,6 @@ export type HealthConnectRecord =
   | MenstruationFlowRecord
   | MenstruationPeriodRecord
   | SleepSessionRecord
-  | SleepStageRecord
   | RespiratoryRateRecord
   | WheelchairPushesRecord
   | Vo2MaxRecord

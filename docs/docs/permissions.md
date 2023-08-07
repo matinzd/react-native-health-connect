@@ -99,7 +99,6 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | RestingHeartRate       | android.permission.health.READ_RESTING_HEART_RATE     | android.permission.health.WRITE_RESTING_HEART_RATE     |
 | SexualActivity         | android.permission.health.READ_SEXUAL_ACTIVITY        | android.permission.health.WRITE_SEXUAL_ACTIVITY        |
 | SleepSession           | android.permission.health.READ_SLEEP                  | android.permission.health.WRITE_SLEEP                  |
-| SleepStage             | android.permission.health.READ_SLEEP                  | android.permission.health.WRITE_SLEEP                  |
 | Speed                  | android.permission.health.READ_SPEED                  | android.permission.health.WRITE_SPEED                  |
 | StepsCadence           | android.permission.health.READ_STEPS                  | android.permission.health.WRITE_STEPS                  |
 | Steps                  | android.permission.health.READ_STEPS                  | android.permission.health.WRITE_STEPS                  |

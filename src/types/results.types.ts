@@ -40,7 +40,6 @@ import type {
   RestingHeartRateRecord,
   SexualActivityRecord,
   SleepSessionRecord,
-  SleepStageRecord,
   SpeedRecord,
   StepsCadenceRecord,
   StepsRecord,
@@ -260,8 +259,6 @@ interface MenstruationPeriodRecordResult extends MenstruationPeriodRecord {}
 
 interface SleepSessionRecordResult extends SleepSessionRecord {}
 
-interface SleepStageRecordResult extends SleepStageRecord {}
-
 interface RespiratoryRateRecordResult extends RespiratoryRateRecord {}
 
 interface WheelchairPushesRecordResult extends WheelchairPushesRecord {}
@@ -311,7 +308,6 @@ type HealthConnectRecordResult =
   | MenstruationFlowRecordResult
   | MenstruationPeriodRecordResult
   | SleepSessionRecordResult
-  | SleepStageRecordResult
   | RespiratoryRateRecordResult
   | WheelchairPushesRecordResult
   | Vo2MaxRecordResult

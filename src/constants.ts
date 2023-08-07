@@ -219,3 +219,206 @@ export const OvulationTestResult = {
    */
   NEGATIVE: 3,
 } as const;
+
+export const ExerciseSegmentType = {
+  /** Use this type if the type of the exercise segment is not known. */
+  UNKNOWN: 0,
+
+  /** Use this type for arm curls. */
+  ARM_CURL: 1,
+
+  /** Use this type for back extensions. */
+  BACK_EXTENSION: 2,
+
+  /** Use this type for ball slams. */
+  BALL_SLAM: 3,
+
+  /** Use this type for barbel shoulder press. */
+  BARBELL_SHOULDER_PRESS: 4,
+
+  /** Use this type for bench presses. */
+  BENCH_PRESS: 5,
+
+  /** Use this type for bench sit up. */
+  BENCH_SIT_UP: 6,
+
+  /** Use this type for biking. */
+  BIKING: 7,
+
+  /** Use this type for stationary biking. */
+  BIKING_STATIONARY: 8,
+
+  /** Use this type for burpees. */
+  BURPEE: 9,
+
+  /** Use this type for crunches. */
+  CRUNCH: 10,
+
+  /** Use this type for deadlifts. */
+  DEADLIFT: 11,
+
+  /** Use this type for double arms triceps extensions. */
+  DOUBLE_ARM_TRICEPS_EXTENSION: 12,
+
+  /** Use this type for left arm dumbbell curl. */
+  DUMBBELL_CURL_LEFT_ARM: 13,
+
+  DUMBBELL_CURL_RIGHT_ARM: 14,
+
+  /** Use this type for right arm dumbbell curl. */
+  DUMBBELL_FRONT_RAISE: 15,
+
+  /** Use this type for dumbbell lateral raises. */
+  DUMBBELL_LATERAL_RAISE: 16,
+
+  /** Use this type for dumbbells rows. */
+  DUMBBELL_ROW: 17,
+
+  /** Use this type for left arm triceps extensions. */
+  DUMBBELL_TRICEPS_EXTENSION_LEFT_ARM: 18,
+
+  /** Use this type for right arm triceps extensions. */
+  DUMBBELL_TRICEPS_EXTENSION_RIGHT_ARM: 19,
+
+  /** Use this type for two arms triceps extensions. */
+  DUMBBELL_TRICEPS_EXTENSION_TWO_ARM: 20,
+
+  /** Use this type for elliptical workout. */
+  ELLIPTICAL: 21,
+
+  /** Use this type for forward twists. */
+  FORWARD_TWIST: 22,
+
+  /** Use this type for front raises. */
+  FRONT_RAISE: 23,
+
+  /** Use this type for high intensity training. */
+  HIGH_INTENSITY_INTERVAL_TRAINING: 24,
+
+  /** Use this type for hip thrusts. */
+  HIP_THRUST: 25,
+
+  /** Use this type for hula-hoops. */
+  HULA_HOOP: 26,
+
+  /** Use this type for jumping jacks. */
+  JUMPING_JACK: 27,
+
+  /** Use this type for jump rope. */
+  JUMP_ROPE: 28,
+
+  /** Use this type for kettlebell swings. */
+  KETTLEBELL_SWING: 29,
+
+  /** Use this type for lateral raises. */
+  LATERAL_RAISE: 30,
+
+  /** Use this type for lat pull-downs. */
+  LAT_PULL_DOWN: 31,
+
+  /** Use this type for leg curls. */
+  LEG_CURL: 32,
+
+  /** Use this type for leg extensions. */
+  LEG_EXTENSION: 33,
+
+  /** Use this type for leg presses. */
+  LEG_PRESS: 34,
+
+  /** Use this type for leg raises. */
+  LEG_RAISE: 35,
+
+  /** Use this type for lunges. */
+  LUNGE: 36,
+
+  /** Use this type for mountain climber. */
+  MOUNTAIN_CLIMBER: 37,
+
+  /** Use this type for other workout. */
+  OTHER_WORKOUT: 38,
+
+  /** Use this type for the pause. */
+  PAUSE: 39,
+
+  /** Use this type for pilates. */
+  PILATES: 40,
+
+  /** Use this type for plank. */
+  PLANK: 41,
+
+  /** Use this type for pull-ups. */
+  PULL_UP: 42,
+
+  /** Use this type for punches. */
+  PUNCH: 43,
+
+  /** Use this type for the rest. */
+  REST: 44,
+
+  /** Use this type for rowing machine workout. */
+  ROWING_MACHINE: 45,
+
+  /** Use this type for running. */
+  RUNNING: 46,
+
+  /** Use this type for treadmill running. */
+  RUNNING_TREADMILL: 47,
+
+  SHOULDER_PRESS: 48,
+
+  /** Use this type for shoulder press. */
+  SINGLE_ARM_TRICEPS_EXTENSION: 49,
+
+  /** Use this type for sit-ups. */
+  SIT_UP: 50,
+
+  /** Use this type for squats. */
+  SQUAT: 51,
+
+  /** Use this type for stair climbing. */
+  STAIR_CLIMBING: 52,
+
+  /** Use this type for stair climbing machine. */
+  STAIR_CLIMBING_MACHINE: 53,
+
+  /** Use this type for stretching. */
+  STRETCHING: 54,
+
+  /** Use this type for backstroke swimming. */
+  SWIMMING_BACKSTROKE: 55,
+
+  /** Use this type for breaststroke swimming. */
+  SWIMMING_BREASTSTROKE: 56,
+
+  /** Use this type for butterfly swimming. */
+  SWIMMING_BUTTERFLY: 57,
+
+  SWIMMING_FREESTYLE: 58,
+
+  /** Use this type for mixed swimming. */
+  SWIMMING_MIXED: 59,
+
+  /** Use this type for swimming in open water. */
+  SWIMMING_OPEN_WATER: 60,
+
+  /** Use this type if other swimming styles are not suitable. */
+  SWIMMING_OTHER: 61,
+
+  /** Use this type for swimming in the pool. */
+  SWIMMING_POOL: 62,
+
+  /** Use this type for upper twists. */
+  UPPER_TWIST: 63,
+
+  /** Use this type for walking. */
+  WALKING: 64,
+
+  /** Use this type for weightlifting. */
+  WEIGHTLIFTING: 65,
+
+  /** Use this type for wheelchair. */
+  WHEELCHAIR: 66,
+
+  /** Use this type for yoga. */
+  YOGA: 67,
+};

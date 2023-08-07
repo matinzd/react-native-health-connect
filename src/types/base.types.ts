@@ -171,3 +171,24 @@ export interface PowerSample extends BaseSample {
 export interface PowerSampleResult extends BaseSample {
   power: PowerResult;
 }
+
+export interface ExerciseSegment {
+  startTime: string;
+  endTime: string;
+  // Use ExerciseSegmentType from constants
+  segmentType: number;
+  repetitions: number;
+}
+
+export interface ExerciseLap {
+  startTime: string;
+  endTime: string;
+  length: Length;
+}
+
+export interface SleepStage {
+  startTime: string;
+  endTime: string;
+  // Use SleepStageType constant
+  stage: number;
+}
