@@ -106,5 +106,6 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | Vo2Max                 | android.permission.health.READ_VO2_MAX                | android.permission.health.WRITE_VO2_MAX                |
 | Weight                 | android.permission.health.READ_WEIGHT                 | android.permission.health.WRITE_WEIGHT                 |
 | WheelchairPushes       | android.permission.health.READ_WHEELCHAIR_PUSHES      | android.permission.health.WRITE_WHEELCHAIR_PUSHES      |
+| WriteExerciseRoute       | android.permission.health.WRITE_EXERCISE_ROUTE      | N/A      |
 
 You can read more about data types and permissions [here](https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/data-types).

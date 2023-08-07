@@ -18,6 +18,7 @@ import type {
   ExerciseSegment,
   ExerciseLap,
   SleepStage,
+  ExerciseRoute,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -106,6 +107,7 @@ export interface ExerciseSessionRecord extends IntervalRecord {
   notes?: string;
   laps?: ExerciseLap[];
   segments?: ExerciseSegment[];
+  exerciseRoute?: ExerciseRoute;
 }
 
 export interface FloorsClimbedRecord extends IntervalRecord {

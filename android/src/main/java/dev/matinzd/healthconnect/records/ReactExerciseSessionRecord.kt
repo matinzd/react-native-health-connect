@@ -2,6 +2,8 @@ package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.records.ExerciseLap
+import androidx.health.connect.client.records.ExerciseRoute
+import androidx.health.connect.client.records.ExerciseRouteResult
 import androidx.health.connect.client.records.ExerciseSegment
 import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.records.PowerRecord
@@ -42,7 +44,19 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
             ),
             repetitions = sample.getSafeInt("repetitions", 0),
           )
-        } ?: emptyList()
+        } ?: emptyList(),
+        exerciseRoute = ExerciseRoute(
+          route = it.getMap("exerciseRoute")?.getArray("route")?.toMapList()?.map { sample ->
+            ExerciseRoute.Location(
+              time = Instant.parse(sample.getString("time")),
+              latitude = sample.getDouble("latitude"),
+              longitude = sample.getDouble("longitude"),
+              horizontalAccuracy = getLengthFromJsMap(sample.getMap("horizontalAccuracy")),
+              verticalAccuracy = getLengthFromJsMap(sample.getMap("verticalAccuracy")),
+              altitude = getLengthFromJsMap(sample.getMap("altitude")),
+            )
+          } ?: emptyList(),
+        )
       )
     }
   }
@@ -73,6 +87,36 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
           this.pushMap(map)
         }
       })
+
+
+      when(record.exerciseRouteResult) {
+        is ExerciseRouteResult.Data -> {
+          val exerciseRouteMap = WritableNativeMap()
+          exerciseRouteMap.putArray("route", WritableNativeArray().apply {
+            (record.exerciseRouteResult as ExerciseRouteResult.Data).exerciseRoute.route.map {
+              val map = WritableNativeMap()
+              map.putString("time", it.time.toString())
+              map.putDouble("latitude", it.latitude)
+              map.putDouble("longitude", it.longitude)
+              map.putMap("horizontalAccuracy", lengthToJsMap(it.horizontalAccuracy))
+              map.putMap("verticalAccuracy", lengthToJsMap(it.verticalAccuracy))
+              map.putMap("altitude", lengthToJsMap(it.altitude))
+              this.pushMap(map)
+            }
+          })
+          putMap("exerciseRoute", exerciseRouteMap)
+        }
+        is ExerciseRouteResult.NoData -> {
+          putMap("exerciseRoute", WritableNativeMap())
+        }
+        is ExerciseRouteResult.ConsentRequired -> {
+          throw Exception("Consent required")
+        }
+        else -> {
+          putMap("exerciseRoute", WritableNativeMap())
+        }
+      }
+
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
   }

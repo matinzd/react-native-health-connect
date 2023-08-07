@@ -192,3 +192,16 @@ export interface SleepStage {
   // Use SleepStageType constant
   stage: number;
 }
+
+export interface Location {
+  time: string;
+  latitude: number;
+  longitude: number;
+  horizontalAccuracy?: Length;
+  verticalAccuracy?: Length;
+  altitude?: Length;
+}
+
+export interface ExerciseRoute {
+  route: Location[];
+}
