@@ -99,7 +99,6 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | RestingHeartRate       | android.permission.health.READ_RESTING_HEART_RATE     | android.permission.health.WRITE_RESTING_HEART_RATE     |
 | SexualActivity         | android.permission.health.READ_SEXUAL_ACTIVITY        | android.permission.health.WRITE_SEXUAL_ACTIVITY        |
 | SleepSession           | android.permission.health.READ_SLEEP                  | android.permission.health.WRITE_SLEEP                  |
-| SleepStage             | android.permission.health.READ_SLEEP                  | android.permission.health.WRITE_SLEEP                  |
 | Speed                  | android.permission.health.READ_SPEED                  | android.permission.health.WRITE_SPEED                  |
 | StepsCadence           | android.permission.health.READ_STEPS                  | android.permission.health.WRITE_STEPS                  |
 | Steps                  | android.permission.health.READ_STEPS                  | android.permission.health.WRITE_STEPS                  |
@@ -107,5 +106,6 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | Vo2Max                 | android.permission.health.READ_VO2_MAX                | android.permission.health.WRITE_VO2_MAX                |
 | Weight                 | android.permission.health.READ_WEIGHT                 | android.permission.health.WRITE_WEIGHT                 |
 | WheelchairPushes       | android.permission.health.READ_WHEELCHAIR_PUSHES      | android.permission.health.WRITE_WHEELCHAIR_PUSHES      |
+| WriteExerciseRoute       | android.permission.health.WRITE_EXERCISE_ROUTE      | N/A      |
 
 You can read more about data types and permissions [here](https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/data-types).

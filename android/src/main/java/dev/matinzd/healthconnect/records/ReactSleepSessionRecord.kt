@@ -5,6 +5,7 @@ import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
@@ -15,6 +16,13 @@ class ReactSleepSessionRecord : ReactHealthRecordImpl<SleepSessionRecord> {
       SleepSessionRecord(
         startTime = Instant.parse(map.getString("startTime")),
         endTime = Instant.parse(map.getString("endTime")),
+        stages = map.getArray("stages")?.toMapList()?.map { stageMap ->
+          SleepSessionRecord.Stage(
+            startTime = Instant.parse(stageMap.getString("startTime")),
+            endTime = Instant.parse(stageMap.getString("endTime")),
+            stage = stageMap.getSafeInt("stage", SleepSessionRecord.STAGE_TYPE_UNKNOWN),
+          )
+        } ?: emptyList(),
         startZoneOffset = null,
         endZoneOffset = null,
         title = map.getString("title"),
@@ -29,6 +37,15 @@ class ReactSleepSessionRecord : ReactHealthRecordImpl<SleepSessionRecord> {
       putString("endTime", record.endTime.toString())
       putString("title", record.title)
       putString("notes", record.notes)
+      putArray("stages", WritableNativeArray().apply {
+        record.stages.map {
+          val map = WritableNativeMap()
+          map.putString("startTime", it.startTime.toString())
+          map.putString("endTime", it.endTime.toString())
+          map.putDouble("stage", it.stage.toDouble())
+          this.pushMap(map)
+        }
+      })
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
   }
