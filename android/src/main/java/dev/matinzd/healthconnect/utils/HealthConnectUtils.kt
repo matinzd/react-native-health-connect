@@ -115,6 +115,7 @@ fun convertMetadataToJSMap(meta: Metadata): WritableNativeMap {
     putString("dataOrigin", meta.dataOrigin.packageName)
     putString("lastModifiedTime", meta.lastModifiedTime.toString())
     putInt("device", meta.device?.type ?: 0)
+    putInt("recordingMethod", meta.recordingMethod)
   }
 }
 
