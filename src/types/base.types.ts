@@ -23,6 +23,8 @@ export interface Metadata {
   clientRecordVersion: number;
   // see: https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/metadata/Device
   device: number;
+  // Use RecordingType constant to compare
+  recordingMethod: number;
 }
 
 export type TimeRangeFilter =
