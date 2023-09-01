@@ -56,8 +56,8 @@ Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 33,
-            "targetSdkVersion": 33,
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
             "minSdkVersion": 26
           },
         }
