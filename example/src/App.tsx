@@ -17,18 +17,11 @@ import {
 } from 'react-native-health-connect';
 
 const getLastWeekDate = (): Date => {
-  const today = new Date();
-  const lastWeek = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate() - 7
-  );
-  return lastWeek;
+  return new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
 };
 
 const getTodayDate = (): Date => {
-  const today = new Date();
-  return today;
+  return new Date();
 };
 
 export default function App() {
