@@ -77,6 +77,15 @@ export function openHealthConnectSettings(): void {
 }
 
 /**
+ * Opens Health Connect data management screen
+ */
+export function openHealthConnectDataManagement(
+  providerPackageName?: string
+): void {
+  return HealthConnect.openHealthConnectDataManagement(providerPackageName);
+}
+
+/**
  * Request permissions to access Health Connect data
  * @param permissions list of permissions to request
  * @returns granted permissions

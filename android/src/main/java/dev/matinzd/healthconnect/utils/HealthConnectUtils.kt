@@ -17,6 +17,9 @@ import kotlin.reflect.KClass
 fun <T : Record> convertReactRequestOptionsFromJS(
   recordType: KClass<T>, options: ReadableMap
 ): ReadRecordsRequest<T> {
+  // Move to refined version
+  // inline fun <reified T : Record> ReadRecordsRequest()
+  // link: https://android-review.googlesource.com/#/q/If58a5c2c9acea1c22b322537daa4fa513065e393
   return ReadRecordsRequest(
     recordType,
     timeRangeFilter = options.getTimeRangeFilter("timeRangeFilter"),

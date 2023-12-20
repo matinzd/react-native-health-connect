@@ -12,8 +12,24 @@ import {
   revokeAllPermissions,
   SdkAvailabilityStatus,
   openHealthConnectSettings,
+  openHealthConnectDataManagement,
   readRecord,
 } from 'react-native-health-connect';
+
+const getLastWeekDate = (): Date => {
+  const today = new Date();
+  const lastWeek = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() - 7
+  );
+  return lastWeek;
+};
+
+const getTodayDate = (): Date => {
+  const today = new Date();
+  return today;
+};
 
 export default function App() {
   const initializeHealthConnect = async () => {
@@ -41,10 +57,10 @@ export default function App() {
   const insertSampleData = () => {
     insertRecords([
       {
-        recordType: 'ActiveCaloriesBurned',
-        energy: { unit: 'kilocalories', value: 10000 },
-        startTime: '2023-01-09T09:00:00.000Z',
-        endTime: '2023-01-09T10:00:00.000Z',
+        recordType: 'Steps',
+        count: 1000,
+        startTime: getLastWeekDate().toISOString(),
+        endTime: getTodayDate().toISOString(),
       },
     ]).then((ids) => {
       console.log('Records inserted ', { ids });
@@ -52,11 +68,11 @@ export default function App() {
   };
 
   const readSampleData = () => {
-    readRecords('ActiveCaloriesBurned', {
+    readRecords('Steps', {
       timeRangeFilter: {
         operator: 'between',
-        startTime: '2023-01-09T00:00:00.000Z',
-        endTime: '2023-01-09T23:59:59.999Z',
+        startTime: getLastWeekDate().toISOString(),
+        endTime: getTodayDate().toISOString(),
       },
     }).then((result) => {
       console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
@@ -64,21 +80,20 @@ export default function App() {
   };
 
   const readSampleDataSingle = () => {
-    readRecord(
-      'ActiveCaloriesBurned',
-      'a7bdea65-86ce-4eb2-a9ef-a87e6a7d9df2'
-    ).then((result) => {
-      console.log('Retrieved record: ', JSON.stringify({ result }, null, 2));
-    });
+    readRecord('Steps', 'a7bdea65-86ce-4eb2-a9ef-a87e6a7d9df2').then(
+      (result) => {
+        console.log('Retrieved record: ', JSON.stringify({ result }, null, 2));
+      }
+    );
   };
 
   const aggregateSampleData = () => {
     aggregateRecord({
-      recordType: 'ActiveCaloriesBurned',
+      recordType: 'Steps',
       timeRangeFilter: {
         operator: 'between',
-        startTime: '2023-01-09T00:00:00.000Z',
-        endTime: '2023-01-09T23:59:59.999Z',
+        startTime: getLastWeekDate().toISOString(),
+        endTime: getTodayDate().toISOString(),
       },
     }).then((result) => {
       console.log('Aggregated record: ', { result });
@@ -89,11 +104,11 @@ export default function App() {
     requestPermission([
       {
         accessType: 'read',
-        recordType: 'ActiveCaloriesBurned',
+        recordType: 'Steps',
       },
       {
         accessType: 'write',
-        recordType: 'ActiveCaloriesBurned',
+        recordType: 'Steps',
       },
     ]).then((permissions) => {
       console.log('Granted permissions on request ', { permissions });
@@ -112,6 +127,10 @@ export default function App() {
       <Button
         title="Open Health Connect settings"
         onPress={openHealthConnectSettings}
+      />
+      <Button
+        title="Open Health Connect data management"
+        onPress={() => openHealthConnectDataManagement()}
       />
       <Button title="Check availability" onPress={checkAvailability} />
       <Button
