@@ -22,6 +22,11 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
+  override fun openHealthConnectDataManagement(providerPackageName: String?) {
+    manager.openHealthConnectDataManagement(providerPackageName)
+  }
+
+  @ReactMethod
   override fun initialize(providerPackageName: String, promise: Promise) {
     return manager.initialize(providerPackageName, promise)
   }

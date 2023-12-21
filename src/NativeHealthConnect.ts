@@ -16,6 +16,7 @@ export interface Spec extends TurboModule {
   getSdkStatus(providerPackageName: string): Promise<number>;
   initialize(providerPackageName: string): Promise<boolean>;
   openHealthConnectSettings: () => void;
+  openHealthConnectDataManagement: (providerPackageName?: string) => void;
   requestPermission(
     permissions: Permission[],
     providerPackageName: string

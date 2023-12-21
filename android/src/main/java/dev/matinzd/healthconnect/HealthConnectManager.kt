@@ -50,6 +50,13 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     applicationContext.currentActivity?.startActivity(intent)
   }
 
+  fun openHealthConnectDataManagement(providerPackageName: String?) {
+    val intent = providerPackageName?.let {
+      HealthConnectClient.getHealthConnectManageDataIntent(applicationContext, it)
+    } ?: HealthConnectClient.getHealthConnectManageDataIntent(applicationContext)
+    applicationContext.currentActivity?.startActivity(intent)
+  }
+
   fun getSdkStatus(providerPackageName: String, promise: Promise) {
     val status = HealthConnectClient.getSdkStatus(applicationContext, providerPackageName)
     return promise.resolve(status)
