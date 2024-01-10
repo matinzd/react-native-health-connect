@@ -2,6 +2,7 @@ package dev.matinzd.healthconnect
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.health.connect.client.HealthConnectClient
 import com.facebook.react.bridge.ActivityEventListener
@@ -82,9 +83,14 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
         putString("providerPackageName", providerPackageName)
       }
 
-      val intent = HCPermissionManager(providerPackageName).healthPermissionContract.createIntent(
-        applicationContext, latestPermissions!!
-      )
+      // fix for https://github.com/matinzd/react-native-health-connect/issues/50,
+      // HealthConnect has changed in Upside Down Cake (Android 14) and the intent
+      // is different.
+      val intent = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        Intent("android.health.connect.action.MANAGE_HEALTH_PERMISSIONS")
+      } else {
+        HCPermissionManager(providerPackageName).healthPermissionContract.createIntent(applicationContext, latestPermissions!!)
+      }
 
       applicationContext.currentActivity?.startActivityForResult(
         intent,
