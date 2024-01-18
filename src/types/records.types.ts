@@ -167,6 +167,7 @@ export interface WeightRecord extends InstantaneousRecord {
 }
 
 export interface NutritionRecord extends IntervalRecord {
+  recordType: 'Nutrition';
   /** Biotin in [Mass] unit. Optional field. Valid range: 0-100 grams. */
   biotin?: Mass;
   /** Caffeine in [Mass] unit. Optional field. Valid range: 0-100 grams. */
@@ -351,6 +352,7 @@ export type HealthConnectRecord =
   | HeartRateVariabilityRmssdRecord
   | SexualActivityRecord
   | WeightRecord
+  | NutritionRecord
   | LeanBodyMassRecord
   | IntermenstrualBleedingRecord
   | SpeedRecord

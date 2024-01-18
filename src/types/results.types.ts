@@ -154,6 +154,7 @@ interface WeightRecordResult
   extends Replace<WeightRecord, 'weight', MassResult> {}
 
 interface NutritionRecordResult extends IntervalRecord {
+  recordType: 'Nutrition';
   /** Biotin in [MassResult] unit. Optional field. Valid range: 0-100 grams. */
   biotin?: MassResult;
   /** Caffeine in [MassResult] unit. Optional field. Valid range: 0-100 grams. */
