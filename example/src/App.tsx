@@ -20,6 +20,10 @@ const getLastWeekDate = (): Date => {
   return new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
 };
 
+const getLastTwoWeeksDate = (): Date => {
+  return new Date(new Date().getTime() - 2 * 7 * 24 * 60 * 60 * 1000);
+};
+
 const getTodayDate = (): Date => {
   return new Date();
 };
@@ -64,7 +68,7 @@ export default function App() {
     readRecords('Steps', {
       timeRangeFilter: {
         operator: 'between',
-        startTime: getLastWeekDate().toISOString(),
+        startTime: getLastTwoWeeksDate().toISOString(),
         endTime: getTodayDate().toISOString(),
       },
     }).then((result) => {

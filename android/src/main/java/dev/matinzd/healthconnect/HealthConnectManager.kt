@@ -1,15 +1,13 @@
 package dev.matinzd.healthconnect
 
-import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import androidx.health.connect.client.HealthConnectClient
-import com.facebook.react.bridge.ActivityEventListener
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
-import dev.matinzd.healthconnect.permissions.HCPermissionManager
+import dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate
+import dev.matinzd.healthconnect.permissions.PermissionUtils
 import dev.matinzd.healthconnect.records.ReactHealthRecord
 import dev.matinzd.healthconnect.utils.ClientNotInitialized
 import dev.matinzd.healthconnect.utils.getTimeRangeFilter
@@ -19,12 +17,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HealthConnectManager(private val applicationContext: ReactApplicationContext) :
-  ActivityEventListener {
+class HealthConnectManager(private val applicationContext: ReactApplicationContext) {
   private lateinit var healthConnectClient: HealthConnectClient
   private val coroutineScope = CoroutineScope(Dispatchers.IO)
-  private var pendingPromise: Promise? = null
-  private var latestPermissions: Set<String>? = null
 
   private val isInitialized get() = this::healthConnectClient.isInitialized
 
@@ -34,16 +29,6 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     }
     block()
   }
-
-  override fun onActivityResult(
-    activity: Activity?, requestCode: Int, resultCode: Int, intent: Intent?
-  ) {
-    if (requestCode == REQUEST_CODE) {
-      HCPermissionManager.parseOnActivityResult(resultCode, intent, pendingPromise)
-    }
-  }
-
-  override fun onNewIntent(intent: Intent?) {}
 
   fun openHealthConnectSettings() {
     val intent = Intent(HealthConnectClient.ACTION_HEALTH_CONNECT_SETTINGS)
@@ -75,22 +60,10 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     reactPermissions: ReadableArray, providerPackageName: String, promise: Promise
   ) {
     throwUnlessClientIsAvailable(promise) {
-      this.pendingPromise = promise
-      this.latestPermissions = HCPermissionManager.parsePermissions(reactPermissions)
-
-      val bundle = Bundle().apply {
-        putString("providerPackageName", providerPackageName)
+      coroutineScope.launch {
+        val granted = HealthConnectPermissionDelegate.launch(PermissionUtils.parsePermissions(reactPermissions))
+        promise.resolve(PermissionUtils.mapPermissionResult(granted))
       }
-
-      val intent = HCPermissionManager(providerPackageName).healthPermissionContract.createIntent(
-        applicationContext, latestPermissions!!
-      )
-
-      applicationContext.currentActivity?.startActivityForResult(
-        intent,
-        HealthConnectManager.REQUEST_CODE,
-        bundle
-      )
     }
   }
 
@@ -105,7 +78,7 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   fun getGrantedPermissions(promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
-        promise.resolve(HCPermissionManager.getGrantedPermissions(healthConnectClient.permissionController))
+        promise.resolve(PermissionUtils.getGrantedPermissions(healthConnectClient.permissionController))
       }
     }
   }
@@ -204,14 +177,6 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
         }
       }
     }
-  }
-
-  companion object {
-    const val REQUEST_CODE = 4235
-  }
-
-  init {
-    applicationContext.addActivityEventListener(this)
   }
 }
 
