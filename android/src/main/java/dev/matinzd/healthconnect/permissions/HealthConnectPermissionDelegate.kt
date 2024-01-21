@@ -16,9 +16,9 @@ object HealthConnectPermissionDelegate {
 
   fun setPermissionDelegate(
     activity: ReactActivity,
-    providerPackageName: String? = "com.google.android.apps.healthdata"
+    providerPackageName: String = "com.google.android.apps.healthdata"
   ) {
-    val contract = PermissionController.createRequestPermissionResultContract(providerPackageName!!)
+    val contract = PermissionController.createRequestPermissionResultContract(providerPackageName)
 
     requestPermission = activity.registerForActivityResult(contract) {
       coroutineScope.launch {
