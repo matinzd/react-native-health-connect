@@ -33,6 +33,3 @@ object HealthConnectPermissionDelegate {
     return channel.receive()
   }
 }
-
-
-
