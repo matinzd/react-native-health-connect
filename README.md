@@ -28,7 +28,7 @@ This library is a wrapper around Health Connect for react native. Health Connect
 To install react-native-health-connect, use the following command:
 
 ```bash
-yarn add react-native-health-connect@latest
+yarn add react-native-health-connect
 ```
 
 For version 2 onwards, please add the following code into your `MainActivity.kt` within the `onCreate` method:
