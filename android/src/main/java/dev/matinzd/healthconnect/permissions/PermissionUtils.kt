@@ -1,22 +1,15 @@
 package dev.matinzd.healthconnect.permissions
 
-import android.content.Intent
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
-import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidRecordType
 import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 
-class HCPermissionManager(providerPackageName: String) {
-  val healthPermissionContract =
-    PermissionController.createRequestPermissionResultContract(providerPackageName)
-
+class PermissionUtils {
   companion object {
-    private const val DEFAULT_PROVIDER_PACKAGE_NAME = "com.google.android.apps.healthdata"
-
     fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
       return reactPermissions.toArrayList().mapNotNull {
         it as HashMap<*, *>
@@ -32,27 +25,11 @@ class HCPermissionManager(providerPackageName: String) {
       }.toSet()
     }
 
-    fun parseOnActivityResult(
-      resultCode: Int,
-      intent: Intent?,
-      pendingPromise: Promise?
-    ) {
-      val providerPackageName =
-        intent?.getStringExtra("providerPackageName") ?: DEFAULT_PROVIDER_PACKAGE_NAME
-      val contract = HCPermissionManager(providerPackageName).healthPermissionContract
-      val result = contract.parseResult(
-        resultCode,
-        intent
-      )
-
-      pendingPromise?.resolve(mapPermissionResult(result))
-    }
-
     suspend fun getGrantedPermissions(permissionController: PermissionController): WritableNativeArray {
       return mapPermissionResult(permissionController.getGrantedPermissions())
     }
 
-    private fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
+    fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
       return WritableNativeArray().apply {
         grantedPermissions.forEach {
           val map = WritableNativeMap()

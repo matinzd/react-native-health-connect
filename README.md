@@ -25,13 +25,46 @@ This library is a wrapper around Health Connect for react native. Health Connect
 
 ## Installation
 
-Install `react-native-health-connect` by running:
+To install react-native-health-connect, use the following command:
 
 ```bash
-yarn add react-native-health-connect@latest
+yarn add react-native-health-connect
 ```
 
-Since this module is Android-only, you do not need to run `pod install`.
+For version 2 onwards, please add the following code into your `MainActivity.kt` within the `onCreate` method:
+
+```diff
+package com.healthconnectexample
+
++ import android.os.Bundle
+import com.facebook.react.ReactActivity
+import com.facebook.react.ReactActivityDelegate
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
+import com.facebook.react.defaults.DefaultReactActivityDelegate
++ import dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate
+
+class MainActivity : ReactActivity() {
+  /**
+   * Returns the name of the main component registered from JavaScript. This is used to schedule
+   * rendering of the component.
+   */
+  override fun getMainComponentName(): String = "HealthConnectExample"
+
++ override fun onCreate(savedInstanceState: Bundle?) {
++   super.onCreate(savedInstanceState)
++   // In order to handle permission contract results, we need to set the permission delegate.
++   HealthConnectPermissionDelegate.setPermissionDelegate(this)
++ }
+
+  /**
+   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
+   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
+   */
+  override fun createReactActivityDelegate(): ReactActivityDelegate =
+    DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+}
+
+```
 
 
 ## Expo installation
