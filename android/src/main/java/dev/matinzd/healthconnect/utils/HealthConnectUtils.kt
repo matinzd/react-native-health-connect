@@ -287,8 +287,8 @@ fun getEnergyFromJsMap(energyMap: ReadableMap?): Energy {
 
   val value = energyMap.getDouble("value")
   return when (energyMap.getString("unit")) {
-    "kilojoules" -> Energy.kilocalories(value)
-    "kilocalories" -> Energy.kilojoules(value)
+    "kilojoules" -> Energy.kilojoules(value)
+    "kilocalories" -> Energy.kilocalories(value)
     "joules" -> Energy.joules(value)
     "calories" -> Energy.calories(value)
     else -> Energy.calories(value)
