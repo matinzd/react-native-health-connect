@@ -21,7 +21,36 @@ To access health data from the Health Connect app in your own app, you need to a
 </manifest>
 ```
 
-- Add the following highlighted code inside the activity tag as well:
+- Create `PermissionRationaleActivity.kt`
+
+```diff title="android/app/src/main/java/com/healthconnectexample/PermissionRationaleActivity.kt"
+package com.healthconnectexample
+
+import android.os.Bundle
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
+
+class PermissionsRationaleActivity: AppCompatActivity() {
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    val webView = WebView(this)
+    webView.webViewClient = object : WebViewClient() {
+      override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        return false
+      }
+    }
+
+    webView.loadUrl("https://developer.android.com/health-and-fitness/guides/health-connect/develop/get-started")
+
+    setContentView(webView)
+  }
+}
+```
+
+- Add the following highlighted code inside the application tag as well:
 
 ```diff title="android/src/main/AndroidManifest.xml"
     <activity
@@ -35,12 +64,31 @@ To access health data from the Health Connect app in your own app, you need to a
           <action android:name="android.intent.action.MAIN" />
           <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
-      // highlight-start
-+     <intent-filter>
-+       <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
-+     </intent-filter>
-      // highlight-end
     </activity>
+    // highlight-start
+    <!-- For supported versions through Android 13, create an activity to show the rationale
+           of Health Connect permissions once users click the privacy policy link. -->
+    <activity
+      android:name=".PermissionsRationaleActivity"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+      </intent-filter>
+    </activity>
+
+    <!-- For versions starting Android 14, create an activity alias to show the rationale
+         of Health Connect permissions once users click the privacy policy link. -->
+    <activity-alias
+      android:name="ViewPermissionUsageActivity"
+      android:exported="true"
+      android:targetActivity=".PermissionsRationaleActivity"
+      android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+        <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+      </intent-filter>
+    </activity-alias>
+    // highlight-end
 ```
 
 
