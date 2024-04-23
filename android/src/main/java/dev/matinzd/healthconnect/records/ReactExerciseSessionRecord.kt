@@ -18,6 +18,17 @@ import java.time.Instant
 class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<ExerciseSessionRecord> {
     return records.toMapList().map {
+      val routeList = it.getMap("exerciseRoute")?.getArray("route")?.toMapList()?.map { sample ->
+        ExerciseRoute.Location(
+          time = Instant.parse(sample.getString("time")),
+          latitude = sample.getDouble("latitude"),
+          longitude = sample.getDouble("longitude"),
+          horizontalAccuracy = getLengthFromJsMap(sample.getMap("horizontalAccuracy")),
+          verticalAccuracy = getLengthFromJsMap(sample.getMap("verticalAccuracy")),
+          altitude = getLengthFromJsMap(sample.getMap("altitude")),
+        )
+      } ?: emptyList()
+
       ExerciseSessionRecord(
         startTime = Instant.parse(it.getString("startTime")),
         endTime = Instant.parse(it.getString("endTime")),
@@ -45,18 +56,13 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
             repetitions = sample.getSafeInt("repetitions", 0),
           )
         } ?: emptyList(),
-        exerciseRoute = ExerciseRoute(
-          route = it.getMap("exerciseRoute")?.getArray("route")?.toMapList()?.map { sample ->
-            ExerciseRoute.Location(
-              time = Instant.parse(sample.getString("time")),
-              latitude = sample.getDouble("latitude"),
-              longitude = sample.getDouble("longitude"),
-              horizontalAccuracy = getLengthFromJsMap(sample.getMap("horizontalAccuracy")),
-              verticalAccuracy = getLengthFromJsMap(sample.getMap("verticalAccuracy")),
-              altitude = getLengthFromJsMap(sample.getMap("altitude")),
-            )
-          } ?: emptyList(),
-        )
+        exerciseRoute = if (routeList.isNotEmpty()) {
+          ExerciseRoute(
+            route = routeList,
+          )
+        } else {
+          null
+        },
       )
     }
   }
@@ -89,7 +95,7 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
       })
 
 
-      when(record.exerciseRouteResult) {
+      when (record.exerciseRouteResult) {
         is ExerciseRouteResult.Data -> {
           val exerciseRouteMap = WritableNativeMap()
           exerciseRouteMap.putArray("route", WritableNativeArray().apply {
@@ -106,12 +112,15 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
           })
           putMap("exerciseRoute", exerciseRouteMap)
         }
+
         is ExerciseRouteResult.NoData -> {
           putMap("exerciseRoute", WritableNativeMap())
         }
+
         is ExerciseRouteResult.ConsentRequired -> {
           throw Exception("Consent required")
         }
+
         else -> {
           putMap("exerciseRoute", WritableNativeMap())
         }
