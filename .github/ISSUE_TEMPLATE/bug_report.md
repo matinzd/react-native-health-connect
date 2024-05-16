@@ -17,13 +17,17 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
+**Expected behavior**  
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
+**Screenshots**  
 If applicable, add screenshots to help explain your problem.
+
+**Minimal Reproducible**  
+Link to minimal reproducible code. It would be much easier for us to investigate the issue!
 
 **Environment:**
  - Health Connect Version: x.x.x
  - React Native Version: x.x.x
  - New architecture enabled: Yes/No
+ - Using Expo: No/Go/Prebuild(Dev Client)
