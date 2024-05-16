@@ -59,9 +59,13 @@ export default function App() {
         startTime: getLastWeekDate().toISOString(),
         endTime: getTodayDate().toISOString(),
       },
-    ]).then((ids) => {
-      console.log('Records inserted ', { ids });
-    });
+    ])
+      .then((ids) => {
+        console.log('Records inserted ', { ids });
+      })
+      .catch((err) => {
+        console.error('Error inserting records ', { err });
+      });
   };
 
   const readSampleData = () => {
@@ -71,17 +75,23 @@ export default function App() {
         startTime: getLastTwoWeeksDate().toISOString(),
         endTime: getTodayDate().toISOString(),
       },
-    }).then((result) => {
-      console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
-    });
+    })
+      .then((result) => {
+        console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
+      })
+      .catch((err) => {
+        console.error('Error reading records ', { err });
+      });
   };
 
   const readSampleDataSingle = () => {
-    readRecord('Steps', 'a7bdea65-86ce-4eb2-a9ef-a87e6a7d9df2').then(
-      (result) => {
+    readRecord('Steps', 'a7bdea65-86ce-4eb2-a9ef-a87e6a7d9df2')
+      .then((result) => {
         console.log('Retrieved record: ', JSON.stringify({ result }, null, 2));
-      }
-    );
+      })
+      .catch((err) => {
+        console.error('Error reading record ', { err });
+      });
   };
 
   const aggregateSampleData = () => {
