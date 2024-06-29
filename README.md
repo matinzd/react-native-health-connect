@@ -18,6 +18,7 @@
 This library is a wrapper around Health Connect for react native. Health Connect is an Android API and platform. It unifies data from multiple devices and apps into an ecosystem. For Android developers, it provides a single interface for reading and writing a user’s health and fitness data. For Android users, it offers a place for control over which apps have read and/or write access to different types of data. Health Connect also provides on-device storage. Read more [here](https://developer.android.com/guide/health-and-fitness/health-connect).
 
 ## Requirements
+
 Make sure you have React Native version 0.71 or higher installed to use v2 of React Native Health Connect.
 
 - [Health Connect](https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata&hl=en&gl=US) needs to be installed on the user's device. Starting from Android 14 (Upside Down Cake), Health Connect is part of the Android Framework. Read more [here](https://developer.android.com/health-and-fitness/guides/health-connect/develop/get-started#step-1).
@@ -30,10 +31,10 @@ Make sure you have React Native version 0.71 or higher installed to use v2 of Re
 To install react-native-health-connect, use the following command:
 
 ```bash
-yarn add react-native-health-connect
+npm install react-native-health-connect
 ```
 
-For version 2 onwards, please add the following code into your `MainActivity.kt` within the `onCreate` method:
+If you are using React Native CLI template, for version 2 onwards, please add the following code into your `MainActivity.kt` within the `onCreate` method:
 
 ```diff
 package com.healthconnectexample
@@ -68,6 +69,7 @@ class MainActivity : ReactActivity() {
 
 ```
 
+You also need to setup permissions in your `AndroidManifest.xml` file. For more information, check [here](https://matinzd.github.io/react-native-health-connect/docs/permissions).
 
 ## Expo installation
 
@@ -77,7 +79,7 @@ Just add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the
 First install the package with yarn, npm, or [`expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install).
 
 ```sh
-expo install react-native-health-connect
+npm install expo-health-connect expo-build-properties --save-dev
 ```
 
 Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
@@ -85,7 +87,7 @@ Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins
 ```json
 {
   "expo": {
-    "plugins": ["react-native-health-connect"]
+    "plugins": ["expo-health-connect"]
   }
 }
 ```
