@@ -1,5 +1,6 @@
 package dev.matinzd.healthconnect.permissions
 
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.health.connect.client.PermissionController
 import com.facebook.react.ReactActivity
@@ -15,7 +16,7 @@ object HealthConnectPermissionDelegate {
   private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
   fun setPermissionDelegate(
-    activity: ReactActivity,
+    activity: ComponentActivity,
     providerPackageName: String = "com.google.android.apps.healthdata"
   ) {
     val contract = PermissionController.createRequestPermissionResultContract(providerPackageName)
