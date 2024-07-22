@@ -184,7 +184,7 @@ const readSampleData = async () => {
 
 ## Alternatives
 
-For iOS there are two alteranatives you can use which is very similar to Health Connect on Android. First one is [@kingstinct/react-native-healhkit](https://github.com/kingstinct/react-native-healthkit) and the other one is [react-native-health](https://github.com/agencyenterprise/react-native-health). These options are similar in functionality and can help you manage your health data on iOS.
+For iOS there are two alteranatives you can use which is very similar to Health Connect on Android. First one is [@kingstinct/react-native-healthkit](https://github.com/kingstinct/react-native-healthkit) and the other one is [react-native-health](https://github.com/agencyenterprise/react-native-health). These options are similar in functionality and can help you manage your health data on iOS.
 
 ## Documentation
 
