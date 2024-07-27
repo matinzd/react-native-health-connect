@@ -72,7 +72,8 @@ Just add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the
 First install the package with yarn, npm, or [`expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install).
 
 ```sh
-npm install expo-health-connect expo-build-properties --save-dev
+npm install expo-health-connect
+npm install expo-build-properties --save-dev
 ```
 
 Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
