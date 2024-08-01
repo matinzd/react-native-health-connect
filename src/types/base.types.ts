@@ -4,14 +4,11 @@ export interface BaseRecord {
 
 export interface InstantaneousRecord extends BaseRecord {
   time: string;
-  zoneOffset?: string;
 }
 
 export interface IntervalRecord extends BaseRecord {
   startTime: string;
-  startZoneOffset?: string;
   endTime: string;
-  endZoneOffset?: string;
 }
 
 export interface Metadata {
