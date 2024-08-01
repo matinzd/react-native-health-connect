@@ -19,6 +19,7 @@ import type {
   ExerciseLap,
   SleepStage,
   ExerciseRoute,
+  ZoneOffset,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -100,6 +101,8 @@ export interface ElevationGainedRecord extends IntervalRecord {
 }
 
 export interface ExerciseSessionRecord extends IntervalRecord {
+  startZoneOffset?: ZoneOffset;
+  endZoneOffset?: ZoneOffset;
   recordType: 'ExerciseSession';
   // Use ExerciseType constant
   exerciseType: number;

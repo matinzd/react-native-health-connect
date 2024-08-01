@@ -2,6 +2,11 @@ export interface BaseRecord {
   metadata?: Metadata;
 }
 
+export interface ZoneOffset {
+  id: string;
+  totalSeconds: number;
+}
+
 export interface InstantaneousRecord extends BaseRecord {
   time: string;
 }

@@ -74,6 +74,21 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
       putString("notes", record.notes)
       putString("title", record.title)
       putInt("exerciseType", record.exerciseType)
+
+      if (record.startZoneOffset != null) {
+        putMap("startZoneOffset", WritableNativeMap().apply {
+          putString("id", record.startZoneOffset!!.id)
+          putInt("totalSeconds", record.startZoneOffset!!.totalSeconds)
+        })
+      }
+
+      if (record.endZoneOffset != null) {
+        putMap("endZoneOffset", WritableNativeMap().apply {
+          putString("id", record.endZoneOffset!!.id)
+          putInt("totalSeconds", record.endZoneOffset!!.totalSeconds)
+        })
+      }
+
       putArray("laps", WritableNativeArray().apply {
         record.laps.map {
           val map = WritableNativeMap()
