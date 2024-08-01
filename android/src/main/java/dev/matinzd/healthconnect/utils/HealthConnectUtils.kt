@@ -12,6 +12,7 @@ import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.records.*
 import java.time.Instant
+import java.time.ZoneOffset
 import kotlin.reflect.KClass
 
 fun <T : Record> convertReactRequestOptionsFromJS(
@@ -255,6 +256,17 @@ fun lengthToJsMap(length: Length?): WritableNativeMap {
     putDouble("inMiles", length?.inMiles ?: 0.0)
     putDouble("inInches", length?.inInches ?: 0.0)
     putDouble("inFeet", length?.inFeet ?: 0.0)
+  }
+}
+
+fun zoneOffsetToJsMap(zoneOffset: ZoneOffset?): WritableNativeMap? {
+  if (zoneOffset == null) {
+    return null
+  }
+
+  return WritableNativeMap().apply {
+    putString("id", zoneOffset.id)
+    putInt("totalSeconds", zoneOffset.totalSeconds)
   }
 }
 
