@@ -175,6 +175,11 @@ interface PowerAggregateResult extends BaseAggregate {
   POWER_MAX: PowerResult;
 }
 
+interface ElevationGainedAggregateResult extends BaseAggregate {
+  recordType: 'ElevationGained';
+  ELEVATION_GAINED_TOTAL: LengthResult;
+}
+
 export type AggregateRecordResult =
   | ActiveCaloriesBurnedAggregateResult
   | BasalMetabolicRateAggregateResult
@@ -195,7 +200,8 @@ export type AggregateRecordResult =
   | WheelchairPushesAggregateResult
   | StepsCadenceAggregateResult
   | TotalCaloriesBurnedAggregateResult
-  | PowerAggregateResult;
+  | PowerAggregateResult
+  | ElevationGainedAggregateResult;
 
 export type AggregateResultRecordType = AggregateRecordResult['recordType'];
 
