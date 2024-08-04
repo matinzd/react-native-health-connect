@@ -2,16 +2,18 @@ export interface BaseRecord {
   metadata?: Metadata;
 }
 
+export interface ZoneOffset {
+  id: string;
+  totalSeconds: number;
+}
+
 export interface InstantaneousRecord extends BaseRecord {
   time: string;
-  zoneOffset?: string;
 }
 
 export interface IntervalRecord extends BaseRecord {
   startTime: string;
-  startZoneOffset?: string;
   endTime: string;
-  endZoneOffset?: string;
 }
 
 export interface Metadata {

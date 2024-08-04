@@ -70,7 +70,9 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
   override fun parseRecord(record: ExerciseSessionRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
       putString("endTime", record.endTime.toString())
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putString("notes", record.notes)
       putString("title", record.title)
       putInt("exerciseType", record.exerciseType)
