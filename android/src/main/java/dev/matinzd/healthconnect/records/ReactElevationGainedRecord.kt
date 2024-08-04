@@ -32,10 +32,19 @@ class ReactElevationGainedRecord : ReactHealthRecordImpl<ElevationGainedRecord> 
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
-    throw AggregationNotSupported()
+    return AggregateRequest(
+      metrics = setOf(
+        ElevationGainedRecord.ELEVATION_GAINED_TOTAL
+      ),
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
   }
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
-    throw AggregationNotSupported()
+    return WritableNativeMap().apply {
+      putMap("ELEVATION_GAINED_TOTAL", lengthToJsMap(record[ElevationGainedRecord.ELEVATION_GAINED_TOTAL]))
+      putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
   }
 }
