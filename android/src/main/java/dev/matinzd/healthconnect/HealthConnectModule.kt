@@ -71,6 +71,11 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
+  override fun getChanges(options: ReadableMap, promise: Promise) {
+    return manager.getChanges(options, promise)
+  }
+
+  @ReactMethod
   override fun deleteRecordsByUuids(
     recordType: String,
     recordIdsList: ReadableArray,

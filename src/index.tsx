@@ -9,6 +9,8 @@ import type {
   ReadRecordsOptions,
   RecordResult,
   RecordType,
+  GetChangesRequest,
+  GetChangesResults,
 } from './types';
 import type { TimeRangeFilter } from './types/base.types';
 
@@ -145,6 +147,12 @@ export function aggregateRecord<T extends AggregateResultRecordType>(
   request: AggregateRequest<T>
 ): Promise<AggregateResult<T>> {
   return HealthConnect.aggregateRecord(request);
+}
+
+export function getChanges(
+  request: GetChangesRequest
+): Promise<GetChangesResults> {
+  return HealthConnect.getChanges(request);
 }
 
 export function deleteRecordsByUuids(

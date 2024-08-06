@@ -34,6 +34,11 @@ export interface Spec extends TurboModule {
     startTime: string;
     endTime: string;
   }): Promise<{}>;
+  getChanges(request: {
+    changesToken?: string;
+    recordTypes?: string[];
+    dataOriginFilters?: string[];
+  }): Promise<{}>;
   deleteRecordsByUuids(
     recordType: string,
     recordIdsList: string[],
