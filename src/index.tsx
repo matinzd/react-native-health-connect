@@ -9,6 +9,7 @@ import type {
   ReadRecordsOptions,
   RecordResult,
   RecordType,
+  ReadRecordsResult,
 } from './types';
 import type { TimeRangeFilter } from './types/base.types';
 
@@ -108,7 +109,7 @@ export function revokeAllPermissions(): void {
 export function readRecords<T extends RecordType>(
   recordType: T,
   options: ReadRecordsOptions
-): Promise<RecordResult<T>[]> {
+): Promise<ReadRecordsResult<T>> {
   return HealthConnect.readRecords(recordType, options);
 }
 

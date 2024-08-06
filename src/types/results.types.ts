@@ -321,3 +321,8 @@ export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,
   'recordType'
 >;
+
+export type ReadRecordsResult<T extends RecordType> = {
+  records: RecordResult<T>[];
+  pageToken?: string;
+};

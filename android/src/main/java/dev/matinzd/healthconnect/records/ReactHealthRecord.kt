@@ -69,12 +69,15 @@ class ReactHealthRecord {
     fun parseRecords(
       recordType: String,
       response: ReadRecordsResponse<out Record>
-    ): WritableNativeArray {
+    ): WritableNativeMap {
       val recordClass = createReactHealthRecordInstance<Record>(recordType)
-      return WritableNativeArray().apply {
-        for (record in response.records) {
-          pushMap(recordClass.parseRecord(record))
-        }
+      return WritableNativeMap().apply {
+        putString("pageToken", response.pageToken)
+        putArray("records", WritableNativeArray().apply {
+          for (record in response.records) {
+            pushMap(recordClass.parseRecord(record))
+          }
+        })
       }
     }
 
