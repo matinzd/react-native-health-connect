@@ -13,6 +13,8 @@ import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidRecordType
 import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
+import dev.matinzd.healthconnect.utils.healthConnectClassToReactClassMap
+import dev.matinzd.healthconnect.utils.reactClassToReactTypeMap
 import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 import dev.matinzd.healthconnect.utils.reactRecordTypeToReactClassMap
 import kotlin.reflect.KClass
@@ -25,6 +27,15 @@ class ReactHealthRecord {
       }
 
       val reactClass = reactRecordTypeToReactClassMap[recordType]
+      return reactClass?.newInstance() as ReactHealthRecordImpl<T>
+    }
+
+    private fun <T : Record> createReactHealthRecordInstance(recordClass: Class<out Record>): ReactHealthRecordImpl<T> {
+      if (!healthConnectClassToReactClassMap.containsKey(recordClass)) {
+        throw InvalidRecordType()
+      }
+
+      val reactClass = healthConnectClassToReactClassMap[recordClass]
       return reactClass?.newInstance() as ReactHealthRecordImpl<T>
     }
 
@@ -84,6 +95,15 @@ class ReactHealthRecord {
     ): WritableNativeMap {
       val recordClass = createReactHealthRecordInstance<Record>(recordType)
       return recordClass.parseRecord(response.record)
+    }
+
+    fun parseRecord(
+      record: Record
+    ): WritableNativeMap {
+      val reactRecordClass = createReactHealthRecordInstance<Record>(record.javaClass)
+      val reactRecord = reactRecordClass.parseRecord(record)
+      reactRecord.putString("recordType", reactClassToReactTypeMap[reactRecordClass.javaClass])
+      return reactRecord
     }
   }
 }

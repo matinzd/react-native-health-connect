@@ -2,14 +2,19 @@ package dev.matinzd.healthconnect
 
 import android.content.Intent
 import androidx.health.connect.client.HealthConnectClient
+import androidx.health.connect.client.changes.DeletionChange
+import androidx.health.connect.client.changes.UpsertionChange
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.WritableNativeArray
+import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate
 import dev.matinzd.healthconnect.permissions.PermissionUtils
 import dev.matinzd.healthconnect.records.ReactHealthRecord
 import dev.matinzd.healthconnect.utils.ClientNotInitialized
+import dev.matinzd.healthconnect.utils.convertChangesTokenRequestOptionsFromJS
 import dev.matinzd.healthconnect.utils.getTimeRangeFilter
 import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 import dev.matinzd.healthconnect.utils.rejectWithException
@@ -136,6 +141,48 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
             )
           )
           promise.resolve(ReactHealthRecord.parseAggregationResult(recordType, response))
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
+        }
+      }
+    }
+  }
+
+  fun getChanges(options: ReadableMap, promise: Promise) {
+    throwUnlessClientIsAvailable(promise) {
+      coroutineScope.launch {
+        try {
+          val changesToken =
+            options.getString("changesToken") ?: healthConnectClient.getChangesToken(convertChangesTokenRequestOptionsFromJS(options))
+          val changesResponse = healthConnectClient.getChanges(changesToken)
+
+          promise.resolve(WritableNativeMap().apply {
+            val upsertionChanges = WritableNativeArray()
+            val deletionChanges = WritableNativeArray()
+
+            for (change in changesResponse.changes) {
+              when (change) {
+                is UpsertionChange -> {
+                  upsertionChanges.pushMap(WritableNativeMap().apply {
+                    val record = ReactHealthRecord.parseRecord(change.record)
+                    putMap("record", record)
+                  })
+                }
+
+                is DeletionChange -> {
+                  deletionChanges.pushMap(WritableNativeMap().apply {
+                    putString("recordId", change.recordId)
+                  })
+                }
+              }
+            }
+
+            putArray("upsertionChanges", upsertionChanges)
+            putArray("deletionChanges", deletionChanges)
+            putString("nextChangesToken", changesResponse.nextChangesToken)
+            putBoolean("hasMore", changesResponse.hasMore)
+            putBoolean("changesTokenExpired", changesResponse.changesTokenExpired)
+          })
         } catch (e: Exception) {
           promise.rejectWithException(e)
         }
