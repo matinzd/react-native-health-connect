@@ -24,10 +24,7 @@ export interface Spec extends TurboModule {
   getGrantedPermissions(): Promise<Permission[]>;
   revokeAllPermissions(): Promise<void>;
   insertRecords(records: HealthConnectRecord[]): Promise<string[]>;
-  readRecords(
-    recordType: string,
-    options: ReadRecordsOptions
-  ): Promise<Array<{}>>;
+  readRecords(recordType: string, options: ReadRecordsOptions): Promise<{}>;
   readRecord(recordType: string, recordId: string): Promise<{}>;
   aggregateRecord(record: {
     recordType: string;

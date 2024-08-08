@@ -9,6 +9,7 @@ import type {
   ReadRecordsOptions,
   RecordResult,
   RecordType,
+  ReadRecordsResult,
   GetChangesRequest,
   GetChangesResults,
 } from './types';
@@ -110,7 +111,7 @@ export function revokeAllPermissions(): void {
 export function readRecords<T extends RecordType>(
   recordType: T,
   options: ReadRecordsOptions
-): Promise<RecordResult<T>[]> {
+): Promise<ReadRecordsResult<T>> {
   return HealthConnect.readRecords(recordType, options);
 }
 
