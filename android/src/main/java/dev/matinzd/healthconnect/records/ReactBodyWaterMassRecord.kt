@@ -16,6 +16,7 @@ class ReactBodyWaterMassRecord : ReactHealthRecordImpl<BodyWaterMassRecord> {
         time = Instant.parse(it.getString("time")),
         mass = getMassFromJsMap(it.getMap("mass")),
         zoneOffset = null,
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

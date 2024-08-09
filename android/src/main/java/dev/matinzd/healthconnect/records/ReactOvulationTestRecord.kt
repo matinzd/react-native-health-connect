@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
@@ -17,8 +18,9 @@ class ReactOvulationTestRecord : ReactHealthRecordImpl<OvulationTestRecord> {
     return records.toMapList().map { map ->
       OvulationTestRecord(
         time = Instant.parse(map.getString("time")), zoneOffset = null, result = map.getSafeInt(
-          "result", OvulationTestRecord.RESULT_INCONCLUSIVE
-        )
+        "result", OvulationTestRecord.RESULT_INCONCLUSIVE
+      ),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

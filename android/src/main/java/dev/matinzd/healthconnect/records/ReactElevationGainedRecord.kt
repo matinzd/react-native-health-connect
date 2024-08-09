@@ -17,7 +17,8 @@ class ReactElevationGainedRecord : ReactHealthRecordImpl<ElevationGainedRecord> 
         endTime = Instant.parse(it.getString("endTime")),
         startZoneOffset = null,
         endZoneOffset = null,
-        elevation = getLengthFromJsMap(it.getMap("elevation"))
+        elevation = getLengthFromJsMap(it.getMap("elevation")),
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

@@ -17,7 +17,8 @@ class ReactDistanceRecord : ReactHealthRecordImpl<DistanceRecord> {
         endTime = Instant.parse(map.getString("endTime")),
         distance = getLengthFromJsMap(map.getMap("distance")),
         endZoneOffset = null,
-        startZoneOffset = null
+        startZoneOffset = null,
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

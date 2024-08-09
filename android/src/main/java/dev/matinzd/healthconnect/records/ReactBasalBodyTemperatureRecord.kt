@@ -8,7 +8,12 @@ import androidx.health.connect.client.units.Temperature
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.*
+import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.InvalidTemperature
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
+import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
+import dev.matinzd.healthconnect.utils.getSafeInt
+import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
 class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatureRecord> {
@@ -21,7 +26,8 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
         measurementLocation = it.getSafeInt(
           "measurementLocation",
           BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_UNKNOWN
-        )
+        ),
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

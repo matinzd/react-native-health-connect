@@ -27,6 +27,7 @@ class ReactSleepSessionRecord : ReactHealthRecordImpl<SleepSessionRecord> {
         endZoneOffset = null,
         title = map.getString("title"),
         notes = map.getString("description"),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

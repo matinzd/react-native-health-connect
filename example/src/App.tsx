@@ -14,6 +14,8 @@ import {
   openHealthConnectSettings,
   openHealthConnectDataManagement,
   readRecord,
+  RecordingMethod,
+  DeviceType,
 } from 'react-native-health-connect';
 
 const getLastWeekDate = (): Date => {
@@ -26,6 +28,10 @@ const getLastTwoWeeksDate = (): Date => {
 
 const getTodayDate = (): Date => {
   return new Date();
+};
+
+const random64BitString = () => {
+  return Math.floor(Math.random() * 0xffffffffffffffff).toString(16);
 };
 
 export default function App() {
@@ -58,6 +64,16 @@ export default function App() {
         count: 1000,
         startTime: getLastWeekDate().toISOString(),
         endTime: getTodayDate().toISOString(),
+        metadata: {
+          clientRecordId: random64BitString(),
+          recordingMethod:
+            RecordingMethod.RECORDING_METHOD_AUTOMATICALLY_RECORDED,
+          device: {
+            manufacturer: 'Google',
+            model: 'Pixel 4',
+            type: DeviceType.TYPE_PHONE,
+          },
+        },
       },
     ])
       .then((ids) => {
@@ -85,7 +101,7 @@ export default function App() {
   };
 
   const readSampleDataSingle = () => {
-    readRecord('Steps', 'a7bdea65-86ce-4eb2-a9ef-a87e6a7d9df2')
+    readRecord('Steps', '40a67ecf-d929-4648-996e-e8d248727d95')
       .then((result) => {
         console.log('Retrieved record: ', JSON.stringify({ result }, null, 2));
       })

@@ -15,7 +15,8 @@ class ReactWeightRecord : ReactHealthRecordImpl<WeightRecord> {
       WeightRecord(
         time = Instant.parse(map.getString("time")),
         weight = getMassFromJsMap(map.getMap("weight")),
-        zoneOffset = null
+        zoneOffset = null,
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

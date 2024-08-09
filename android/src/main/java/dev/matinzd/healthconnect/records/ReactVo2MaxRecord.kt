@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
@@ -23,6 +24,7 @@ class ReactVo2MaxRecord : ReactHealthRecordImpl<Vo2MaxRecord> {
           "measurementMethod",
           Vo2MaxRecord.MEASUREMENT_METHOD_OTHER
         ),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

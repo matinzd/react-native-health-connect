@@ -24,6 +24,7 @@ class ReactHeartRateRecord : ReactHealthRecordImpl<HeartRateRecord> {
             beatsPerMinute = sample.getDouble("beatsPerMinute").toLong()
           )
         } ?: emptyList(),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

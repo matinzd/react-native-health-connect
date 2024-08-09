@@ -176,3 +176,4 @@ export function deleteRecordsByTimeRange(
 }
 
 export * from './constants';
+export * from './types';

@@ -17,7 +17,8 @@ class ReactTotalCaloriesBurnedRecord : ReactHealthRecordImpl<TotalCaloriesBurned
         endTime = Instant.parse(map.getString("endTime")),
         startZoneOffset = null,
         endZoneOffset = null,
-        energy = getEnergyFromJsMap(map.getMap("energy"))
+        energy = getEnergyFromJsMap(map.getMap("energy")),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

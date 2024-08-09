@@ -7,7 +7,13 @@ import androidx.health.connect.client.units.Power
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.*
+import dev.matinzd.healthconnect.utils.InvalidPower
+import dev.matinzd.healthconnect.utils.convertDataOriginsToJsArray
+import dev.matinzd.healthconnect.utils.convertJsToDataOriginSet
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
+import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
+import dev.matinzd.healthconnect.utils.getTimeRangeFilter
+import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
 class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRecord> {
@@ -16,7 +22,8 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
       BasalMetabolicRateRecord(
         time = Instant.parse(it.getString("time")),
         basalMetabolicRate = getPowerFromJsMap(it.getMap("basalMetabolicRate")),
-        zoneOffset = null
+        zoneOffset = null,
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

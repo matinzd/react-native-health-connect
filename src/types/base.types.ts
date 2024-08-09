@@ -1,3 +1,5 @@
+import type { Metadata } from './metadata.types';
+
 export interface BaseRecord {
   metadata?: Metadata;
 }
@@ -14,19 +16,6 @@ export interface InstantaneousRecord extends BaseRecord {
 export interface IntervalRecord extends BaseRecord {
   startTime: string;
   endTime: string;
-}
-
-export interface Metadata {
-  id: string;
-  // package name of the app that created the record
-  dataOrigin: string;
-  lastModifiedTime: string;
-  clientRecordId?: string;
-  clientRecordVersion: number;
-  // see: https://developer.android.com/reference/kotlin/androidx/health/connect/client/records/metadata/Device
-  device: number;
-  // Use RecordingType constant to compare
-  recordingMethod: number;
 }
 
 export type TimeRangeFilter =

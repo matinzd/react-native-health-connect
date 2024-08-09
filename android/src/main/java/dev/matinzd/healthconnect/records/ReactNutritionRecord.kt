@@ -62,6 +62,7 @@ class ReactNutritionRecord : ReactHealthRecordImpl<NutritionRecord> {
         zinc = map.getMap("zinc")?.let { getMassFromJsMap(it) },
         name = map.getString("name"),
         mealType = map.getSafeInt("mealType", MealType.MEAL_TYPE_UNKNOWN),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

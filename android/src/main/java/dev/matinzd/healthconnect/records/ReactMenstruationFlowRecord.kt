@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
@@ -19,6 +20,7 @@ class ReactMenstruationFlowRecord : ReactHealthRecordImpl<MenstruationFlowRecord
         time = Instant.parse(map.getString("time")),
         flow = map.getSafeInt("flow", MenstruationFlowRecord.FLOW_UNKNOWN),
         zoneOffset = null,
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

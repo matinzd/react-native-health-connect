@@ -17,7 +17,8 @@ class ReactStepsRecord : ReactHealthRecordImpl<StepsRecord> {
         endTime = Instant.parse(map.getString("endTime")),
         startZoneOffset = null,
         endZoneOffset = null,
-        count = map.getDouble("count").toLong()
+        count = map.getDouble("count").toLong(),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

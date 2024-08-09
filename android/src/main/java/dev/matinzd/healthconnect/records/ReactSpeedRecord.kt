@@ -24,6 +24,7 @@ class ReactSpeedRecord : ReactHealthRecordImpl<SpeedRecord> {
             speed = getVelocityFromJsMap(sample.getMap("speed"))
           )
         } ?: emptyList(),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

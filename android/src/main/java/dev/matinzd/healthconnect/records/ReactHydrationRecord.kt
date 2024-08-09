@@ -17,7 +17,8 @@ class ReactHydrationRecord : ReactHealthRecordImpl<HydrationRecord> {
         endTime = Instant.parse(map.getString("endTime")),
         volume = getVolumeFromJsMap(map.getMap("volume")),
         endZoneOffset = null,
-        startZoneOffset = null
+        startZoneOffset = null,
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

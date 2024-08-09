@@ -16,6 +16,7 @@ class ReactLeanBodyMassRecord : ReactHealthRecordImpl<LeanBodyMassRecord> {
         time = Instant.parse(map.getString("time")),
         mass = getMassFromJsMap(map.getMap("mass")),
         zoneOffset = null,
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

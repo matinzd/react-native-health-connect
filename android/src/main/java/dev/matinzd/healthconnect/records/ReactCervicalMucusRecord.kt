@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
@@ -20,6 +21,7 @@ class ReactCervicalMucusRecord : ReactHealthRecordImpl<CervicalMucusRecord> {
         appearance = it.getSafeInt("appearance", CervicalMucusRecord.APPEARANCE_UNKNOWN),
         sensation = it.getSafeInt("sensation", CervicalMucusRecord.SENSATION_UNKNOWN),
         zoneOffset = null,
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

@@ -23,7 +23,8 @@ class ReactStepsCadenceRecord : ReactHealthRecordImpl<StepsCadenceRecord> {
             time = Instant.parse(sample.getString("time")),
             rate = sample.getDouble("count")
           )
-        } ?: emptyList()
+        } ?: emptyList(),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

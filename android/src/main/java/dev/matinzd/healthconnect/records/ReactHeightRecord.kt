@@ -16,6 +16,7 @@ class ReactHeightRecord : ReactHealthRecordImpl<HeightRecord> {
         time = Instant.parse(map.getString("time")),
         height = getLengthFromJsMap(map.getMap("height")),
         zoneOffset = null,
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

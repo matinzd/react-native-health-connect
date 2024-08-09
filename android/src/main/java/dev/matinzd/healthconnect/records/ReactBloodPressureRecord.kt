@@ -21,7 +21,8 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
         measurementLocation = it.getSafeInt(
           "measurementLocation", BloodPressureRecord.MEASUREMENT_LOCATION_UNKNOWN
         ),
-        zoneOffset = null
+        zoneOffset = null,
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

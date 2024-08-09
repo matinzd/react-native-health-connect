@@ -6,7 +6,14 @@ import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.*
+import dev.matinzd.healthconnect.utils.convertDataOriginsToJsArray
+import dev.matinzd.healthconnect.utils.convertJsToDataOriginSet
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
+import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
+import dev.matinzd.healthconnect.utils.energyToJsMap
+import dev.matinzd.healthconnect.utils.getEnergyFromJsMap
+import dev.matinzd.healthconnect.utils.getTimeRangeFilter
+import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
 class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurnedRecord> {
@@ -17,7 +24,8 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
         endTime = Instant.parse(it.getString("endTime")),
         energy = getEnergyFromJsMap(it.getMap("energy")),
         endZoneOffset = null,
-        startZoneOffset = null
+        startZoneOffset = null,
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

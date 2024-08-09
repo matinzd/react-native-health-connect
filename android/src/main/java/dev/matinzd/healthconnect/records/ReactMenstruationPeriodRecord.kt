@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
@@ -18,7 +19,8 @@ class ReactMenstruationPeriodRecord : ReactHealthRecordImpl<MenstruationPeriodRe
         startTime = Instant.parse(map.getString("startTime")),
         endTime = Instant.parse(map.getString("endTime")),
         endZoneOffset = null,
-        startZoneOffset = null
+        startZoneOffset = null,
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

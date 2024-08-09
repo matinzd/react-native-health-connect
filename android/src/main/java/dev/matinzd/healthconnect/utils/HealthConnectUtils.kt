@@ -2,6 +2,7 @@ package dev.matinzd.healthconnect.utils
 
 import androidx.health.connect.client.records.*
 import androidx.health.connect.client.records.metadata.DataOrigin
+import androidx.health.connect.client.records.metadata.Device
 import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
@@ -76,6 +77,10 @@ fun ReadableMap.getSafeString(key: String, default: String): String {
   return if (this.hasKey(key)) this.getString(key) ?: default else default
 }
 
+fun ReadableMap.getSafeDouble(key: String, default: Double): Double {
+  return if (this.hasKey(key)) this.getDouble(key) else default
+}
+
 fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
   val timeRangeFilter = if (key != null) this.getMap(key)
     ?: throw Exception("Time range filter should be provided") else this
@@ -120,6 +125,28 @@ fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
   }
 }
 
+fun convertMetadataFromJSMap(meta: ReadableMap?): Metadata {
+  if (meta == null) {
+    return Metadata()
+  }
+
+  return Metadata(
+    id = meta.getSafeString("id", ""),
+    clientRecordId = meta.getString("clientRecordId"),
+    clientRecordVersion = meta.getSafeDouble("clientRecordVersion", 0.0).toLong(),
+    dataOrigin = DataOrigin(meta.getSafeString("dataOrigin", "")),
+    lastModifiedTime = Instant.parse(meta.getSafeString("lastModifiedTime", Instant.now().toString())),
+    device = meta.getMap("device")?.let {
+      Device(
+        type = it.getSafeInt("type", Device.TYPE_UNKNOWN),
+        manufacturer = it.getString("manufacturer"),
+        model = it.getString("model"),
+      )
+    },
+    recordingMethod = meta.getSafeInt("recordingMethod", Metadata.RECORDING_METHOD_UNKNOWN)
+  )
+}
+
 fun convertMetadataToJSMap(meta: Metadata): WritableNativeMap {
   return WritableNativeMap().apply {
     putString("id", meta.id)
@@ -127,8 +154,20 @@ fun convertMetadataToJSMap(meta: Metadata): WritableNativeMap {
     putDouble("clientRecordVersion", meta.clientRecordVersion.toDouble())
     putString("dataOrigin", meta.dataOrigin.packageName)
     putString("lastModifiedTime", meta.lastModifiedTime.toString())
-    putInt("device", meta.device?.type ?: 0)
+    putMap("device", convertDeviceToJSMap(meta.device))
     putInt("recordingMethod", meta.recordingMethod)
+  }
+}
+
+fun convertDeviceToJSMap(device: Device?): WritableNativeMap? {
+  if (device == null) {
+    return null
+  }
+
+  return WritableNativeMap().apply {
+    putInt("type", device.type)
+    putString("manufacturer", device.manufacturer)
+    putString("model", device.model)
   }
 }
 
