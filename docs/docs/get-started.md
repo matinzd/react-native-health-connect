@@ -62,6 +62,42 @@ class MainActivity : ReactActivity() {
 }
 
 ```
+
+If you are using a Java based react native project, please add the following code into your `MainActivity.java` within the `onCreate` method:
+
+```diff
+package com.healthconnectexample
+
++ import android.os.Bundle
+import com.facebook.react.ReactActivity
+import com.facebook.react.ReactActivityDelegate
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
+import com.facebook.react.defaults.DefaultReactActivityDelegate
++ import dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate
+
+class MainActivity : ReactActivity() {
+  /**
+   * Returns the name of the main component registered from JavaScript. This is used to schedule
+   * rendering of the component.
+   */
+  override fun getMainComponentName(): String = "HealthConnectExample"
+
++ override fun onCreate(savedInstanceState: Bundle?) {
++   super.onCreate(savedInstanceState)
++   // In order to handle permission contract results, we need to set the permission delegate.
++   HealthConnectPermissionDelegate.INSTANCE.setPermissionDelegate(this, "com.google.android.apps.healthdata");
++ }
+
+  /**
+   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
+   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
+   */
+  override fun createReactActivityDelegate(): ReactActivityDelegate =
+    DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+}
+
+```
+
 You also need to setup permissions in your `AndroidManifest.xml` file. For more information, check [here](https://matinzd.github.io/react-native-health-connect/docs/permissions).
 
 ## Expo installation
