@@ -63,6 +63,7 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
         } else {
           null
         },
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

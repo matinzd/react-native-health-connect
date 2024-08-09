@@ -23,7 +23,8 @@ class ReactCyclingPedalingCadenceRecord : ReactHealthRecordImpl<CyclingPedalingC
           )
         } ?: emptyList(),
         endZoneOffset = null,
-        startZoneOffset = null
+        startZoneOffset = null,
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

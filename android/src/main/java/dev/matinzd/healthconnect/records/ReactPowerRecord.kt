@@ -24,6 +24,7 @@ class ReactPowerRecord : ReactHealthRecordImpl<PowerRecord> {
             power = getPowerFromJsMap(sample.getMap("power"))
           )
         } ?: emptyList(),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

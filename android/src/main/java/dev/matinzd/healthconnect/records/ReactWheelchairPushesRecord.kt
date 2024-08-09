@@ -18,6 +18,7 @@ class ReactWheelchairPushesRecord : ReactHealthRecordImpl<WheelchairPushesRecord
         count = map.getDouble("count").toLong(),
         startZoneOffset = null,
         endZoneOffset = null,
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

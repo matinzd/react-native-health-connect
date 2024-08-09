@@ -17,7 +17,8 @@ class ReactFloorsClimbedRecord : ReactHealthRecordImpl<FloorsClimbedRecord> {
         endTime = Instant.parse(it.getString("endTime")),
         startZoneOffset = null,
         endZoneOffset = null,
-        floors = it.getDouble("floors")
+        floors = it.getDouble("floors"),
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

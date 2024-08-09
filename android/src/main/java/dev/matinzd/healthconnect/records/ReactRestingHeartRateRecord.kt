@@ -15,7 +15,8 @@ class ReactRestingHeartRateRecord : ReactHealthRecordImpl<RestingHeartRateRecord
       RestingHeartRateRecord(
         time = Instant.parse(map.getString("time")),
         zoneOffset = null,
-        beatsPerMinute = map.getDouble("beatsPerMinute").toLong()
+        beatsPerMinute = map.getDouble("beatsPerMinute").toLong(),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

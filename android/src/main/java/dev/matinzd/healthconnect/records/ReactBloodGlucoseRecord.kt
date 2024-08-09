@@ -8,7 +8,12 @@ import androidx.health.connect.client.units.BloodGlucose
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.*
+import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.InvalidBloodGlucoseLevel
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
+import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
+import dev.matinzd.healthconnect.utils.getSafeInt
+import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
 class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
@@ -24,7 +29,8 @@ class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
         relationToMeal = it.getSafeInt(
           "relationToMeal", BloodGlucoseRecord.RELATION_TO_MEAL_UNKNOWN
         ),
-        zoneOffset = null
+        zoneOffset = null,
+        metadata = convertMetadataFromJSMap(it.getMap("metadata"))
       )
     }
   }

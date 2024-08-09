@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
@@ -19,6 +20,7 @@ class ReactOxygenSaturationRecord : ReactHealthRecordImpl<OxygenSaturationRecord
         time = Instant.parse(map.getString("time")),
         zoneOffset = null,
         percentage = Percentage(map.getDouble("percentage")),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

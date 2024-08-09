@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.AggregationNotSupported
+import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
@@ -15,7 +16,8 @@ class ReactRespiratoryRateRecord : ReactHealthRecordImpl<RespiratoryRateRecord> 
   override fun parseWriteRecord(records: ReadableArray): List<RespiratoryRateRecord> {
     return records.toMapList().map { map ->
       RespiratoryRateRecord(
-        time = Instant.parse(map.getString("time")), zoneOffset = null, rate = map.getDouble("rate")
+        time = Instant.parse(map.getString("time")), zoneOffset = null, rate = map.getDouble("rate"),
+        metadata = convertMetadataFromJSMap(map.getMap("metadata"))
       )
     }
   }

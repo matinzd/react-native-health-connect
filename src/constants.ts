@@ -422,17 +422,3 @@ export const ExerciseSegmentType = {
   /** Use this type for yoga. */
   YOGA: 67,
 };
-
-export const RecordingMethod = {
-  /** For actively recorded data by the user. */
-  RECORDING_METHOD_ACTIVELY_RECORDED: 1,
-
-  /** For passively recorded data by the app. */
-  RECORDING_METHOD_AUTOMATICALLY_RECORDED: 2,
-
-  /** For manually entered data by the user. */
-  RECORDING_METHOD_MANUAL_ENTRY: 3,
-
-  /** Unknown recording method. */
-  RECORDING_METHOD_UNKNOWN: 0,
-};

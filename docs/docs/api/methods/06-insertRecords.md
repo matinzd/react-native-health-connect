@@ -24,6 +24,15 @@ const insertSampleData = () => {
       energy: { unit: 'kilocalories', value: 10000 },
       startTime: '2023-01-09T10:00:00.405Z',
       endTime: '2023-01-09T11:53:15.405Z',
+      metadata: {
+        recordingMethod:
+          RecordingMethod.RECORDING_METHOD_AUTOMATICALLY_RECORDED,
+        device: {
+          manufacturer: 'Google',
+          model: 'Pixel 4',
+          type: DeviceType.TYPE_PHONE,
+        },
+      },
     },
     {
       recordType: 'ActiveCaloriesBurned',
