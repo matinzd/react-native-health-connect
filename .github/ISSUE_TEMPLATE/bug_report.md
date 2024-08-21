@@ -31,3 +31,4 @@ Link to minimal reproducible code. It would be much easier for us to investigate
  - React Native Version: x.x.x
  - New architecture enabled: Yes/No
  - Using Expo: No/Go/Prebuild(Dev Client)
+ - Android API Level: e.g API 34 (Android 14)
