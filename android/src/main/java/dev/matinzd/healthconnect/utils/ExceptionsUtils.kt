@@ -15,7 +15,6 @@ class InvalidBloodPressure : Exception("Blood pressure is not valid")
 class InvalidMass : Exception("Mass is not valid")
 class InvalidLength : Exception("Length is not valid")
 class AggregationNotSupported : Exception("Aggregation is not supported for this record")
-class UnsupportedPermissionType : Exception()
 
 fun Promise.rejectWithException(exception: Exception) {
   val code = when (exception) {
