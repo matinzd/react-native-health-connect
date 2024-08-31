@@ -1,13 +1,10 @@
 package dev.matinzd.healthconnect.permissions
 
-import android.util.Log
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.WritableNativeArray
-import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidRecordType
-import dev.matinzd.healthconnect.utils.UnsupportedPermissionType
 import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 
 class PermissionUtils {
@@ -33,35 +30,20 @@ class PermissionUtils {
 
     fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
       return WritableNativeArray().apply {
-        grantedPermissions.forEach {
-          val map = WritableNativeMap()
+        for ((recordType, recordClass) in reactRecordTypeToClassMap) {
+          val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
+          val writePermissionForRecord = HealthPermission.getWritePermission(recordClass)
 
-          try {
-            val (accessType, recordType) = extractPermissionResult(it)
-            map.putString("recordType", recordType)
-            map.putString("accessType", accessType)
-            pushMap(map)
-          } catch (e: UnsupportedPermissionType) {
-            Log.d("Unsupported Permission", "Encountered an unsupported permission type: $it")
+          if (grantedPermissions.contains(readPermissionForRecord)) {
+            pushMap(ReactPermission(AccessType.READ, recordType).toReadableMap())
+          }
+
+          if (grantedPermissions.contains(writePermissionForRecord)) {
+            pushMap(ReactPermission(AccessType.WRITE, recordType).toReadableMap())
           }
         }
       }
     }
 
-    private fun extractPermissionResult(permissionName: String): Pair<String, String> {
-      for ((recordType, recordClass) in reactRecordTypeToClassMap) {
-        val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
-        if (readPermissionForRecord == permissionName) {
-          return Pair("read", recordType)
-        }
-
-        val writePermissionForRecord = HealthPermission.getWritePermission(recordClass)
-        if (writePermissionForRecord == permissionName) {
-          return Pair("write", recordType)
-        }
-      }
-
-      throw UnsupportedPermissionType()
-    }
   }
 }
