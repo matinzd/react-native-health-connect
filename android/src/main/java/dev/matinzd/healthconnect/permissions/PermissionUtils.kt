@@ -9,7 +9,6 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidRecordType
 import dev.matinzd.healthconnect.utils.UnsupportedPermissionType
 import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
-import java.util.logging.Logger
 
 class PermissionUtils {
   companion object {
@@ -42,23 +41,22 @@ class PermissionUtils {
             map.putString("recordType", recordType)
             map.putString("accessType", accessType)
             pushMap(map)
-          }
-          catch (e: UnsupportedPermissionType) {
+          } catch (e: UnsupportedPermissionType) {
             Log.d("Unsupported Permission", "Encountered an unsupported permission type: $it")
           }
         }
       }
     }
 
-    private fun extractPermissionResult(permissionName: String): Pair<String, String>  {
-      for((recordType, recordClass) in reactRecordTypeToClassMap) {
-          val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
-          if(readPermissionForRecord == permissionName) {
-            return Pair("read", recordType)
-          }
+    private fun extractPermissionResult(permissionName: String): Pair<String, String> {
+      for ((recordType, recordClass) in reactRecordTypeToClassMap) {
+        val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
+        if (readPermissionForRecord == permissionName) {
+          return Pair("read", recordType)
+        }
 
         val writePermissionForRecord = HealthPermission.getWritePermission(recordClass)
-        if(writePermissionForRecord == permissionName) {
+        if (writePermissionForRecord == permissionName) {
           return Pair("write", recordType)
         }
       }
