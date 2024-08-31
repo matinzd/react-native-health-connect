@@ -10,7 +10,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
-class ReactStepsCadenceRecord : ReactHealthRecordImpl<StepsCadenceRecord> {
+class ReactStepsCadenceRecord : ReactHealthRecord<StepsCadenceRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<StepsCadenceRecord> {
     return records.toMapList().map { map ->
       StepsCadenceRecord(

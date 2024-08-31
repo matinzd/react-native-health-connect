@@ -13,7 +13,7 @@ import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactVo2MaxRecord : ReactHealthRecordImpl<Vo2MaxRecord> {
+class ReactVo2MaxRecord : ReactHealthRecord<Vo2MaxRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<Vo2MaxRecord> {
     return records.toMapList().map { map ->
       Vo2MaxRecord(

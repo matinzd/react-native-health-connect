@@ -16,7 +16,7 @@ import dev.matinzd.healthconnect.utils.getTimeRangeFilter
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurnedRecord> {
+class ReactActiveCaloriesBurnedRecord : ReactHealthRecord<ActiveCaloriesBurnedRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<ActiveCaloriesBurnedRecord> {
     return records.toMapList().map {
       ActiveCaloriesBurnedRecord(

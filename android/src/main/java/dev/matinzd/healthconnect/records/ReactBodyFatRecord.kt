@@ -13,7 +13,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactBodyFatRecord : ReactHealthRecordImpl<BodyFatRecord> {
+class ReactBodyFatRecord : ReactHealthRecord<BodyFatRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<BodyFatRecord> {
     return records.toMapList().map {
       BodyFatRecord(

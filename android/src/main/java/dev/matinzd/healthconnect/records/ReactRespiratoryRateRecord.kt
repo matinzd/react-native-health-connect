@@ -12,7 +12,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactRespiratoryRateRecord : ReactHealthRecordImpl<RespiratoryRateRecord> {
+class ReactRespiratoryRateRecord : ReactHealthRecord<RespiratoryRateRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<RespiratoryRateRecord> {
     return records.toMapList().map { map ->
       RespiratoryRateRecord(

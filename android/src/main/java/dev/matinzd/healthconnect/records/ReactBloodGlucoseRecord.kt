@@ -16,7 +16,7 @@ import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
+class ReactBloodGlucoseRecord : ReactHealthRecord<BloodGlucoseRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<BloodGlucoseRecord> {
     return records.toMapList().map {
       BloodGlucoseRecord(

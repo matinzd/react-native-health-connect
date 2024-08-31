@@ -9,7 +9,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
-class ReactBodyWaterMassRecord : ReactHealthRecordImpl<BodyWaterMassRecord> {
+class ReactBodyWaterMassRecord : ReactHealthRecord<BodyWaterMassRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<BodyWaterMassRecord> {
     return records.toMapList().map {
       BodyWaterMassRecord(

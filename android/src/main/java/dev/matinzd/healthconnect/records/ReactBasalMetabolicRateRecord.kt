@@ -16,7 +16,7 @@ import dev.matinzd.healthconnect.utils.getTimeRangeFilter
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRecord> {
+class ReactBasalMetabolicRateRecord : ReactHealthRecord<BasalMetabolicRateRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<BasalMetabolicRateRecord> {
     return records.toMapList().map {
       BasalMetabolicRateRecord(

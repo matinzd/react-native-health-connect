@@ -12,7 +12,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactIntermenstrualBleedingRecord : ReactHealthRecordImpl<IntermenstrualBleedingRecord> {
+class ReactIntermenstrualBleedingRecord : ReactHealthRecord<IntermenstrualBleedingRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<IntermenstrualBleedingRecord> {
     return records.toMapList().map { map ->
       IntermenstrualBleedingRecord(
