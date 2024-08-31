@@ -1,12 +1,15 @@
 package dev.matinzd.healthconnect.permissions
 
+import android.util.Log
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidRecordType
+import dev.matinzd.healthconnect.utils.UnsupportedPermissionType
 import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
+import java.util.logging.Logger
 
 class PermissionUtils {
   companion object {
@@ -34,24 +37,33 @@ class PermissionUtils {
         grantedPermissions.forEach {
           val map = WritableNativeMap()
 
-          val (accessType, recordType) = extractPermissionResult(it)
-
-          map.putString("recordType", snakeToCamel(recordType))
-          map.putString("accessType", accessType)
-          pushMap(map)
+          try {
+            val (accessType, recordType) = extractPermissionResult(it)
+            map.putString("recordType", recordType)
+            map.putString("accessType", accessType)
+            pushMap(map)
+          }
+          catch (e: UnsupportedPermissionType) {
+            Log.d("Unsupported Permission", "Encountered an unsupported permission type: $it")
+          }
         }
       }
     }
 
-    private fun extractPermissionResult(it: String): Pair<String, String> {
-      val accessType = it.substring(it.lastIndexOf(".") + 1, it.indexOf("_")).lowercase()
-      val recordType = it.substring(it.indexOf("_") + 1).lowercase()
-      return Pair(accessType, recordType)
-    }
+    private fun extractPermissionResult(permissionName: String): Pair<String, String>  {
+      for((recordType, recordClass) in reactRecordTypeToClassMap) {
+          val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
+          if(readPermissionForRecord == permissionName) {
+            return Pair("read", recordType)
+          }
 
-    private fun snakeToCamel(word: String): String {
-      val components = word.split("_")
-      return components.joinToString("") { it[0].uppercase() + it.substring(1) }
+        val writePermissionForRecord = HealthPermission.getWritePermission(recordClass)
+        if(writePermissionForRecord == permissionName) {
+          return Pair("write", recordType)
+        }
+      }
+
+      throw UnsupportedPermissionType()
     }
   }
 }
