@@ -4,7 +4,6 @@ import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.WritableNativeArray
-import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidRecordType
 import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 
@@ -31,27 +30,20 @@ class PermissionUtils {
 
     fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
       return WritableNativeArray().apply {
-        grantedPermissions.forEach {
-          val map = WritableNativeMap()
+        for ((recordType, recordClass) in reactRecordTypeToClassMap) {
+          val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
+          val writePermissionForRecord = HealthPermission.getWritePermission(recordClass)
 
-          val (accessType, recordType) = extractPermissionResult(it)
+          if (grantedPermissions.contains(readPermissionForRecord)) {
+            pushMap(ReactPermission(AccessType.READ, recordType).toReadableMap())
+          }
 
-          map.putString("recordType", snakeToCamel(recordType))
-          map.putString("accessType", accessType)
-          pushMap(map)
+          if (grantedPermissions.contains(writePermissionForRecord)) {
+            pushMap(ReactPermission(AccessType.WRITE, recordType).toReadableMap())
+          }
         }
       }
     }
 
-    private fun extractPermissionResult(it: String): Pair<String, String> {
-      val accessType = it.substring(it.lastIndexOf(".") + 1, it.indexOf("_")).lowercase()
-      val recordType = it.substring(it.indexOf("_") + 1).lowercase()
-      return Pair(accessType, recordType)
-    }
-
-    private fun snakeToCamel(word: String): String {
-      val components = word.split("_")
-      return components.joinToString("") { it[0].uppercase() + it.substring(1) }
-    }
   }
 }

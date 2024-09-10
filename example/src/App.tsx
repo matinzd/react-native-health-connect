@@ -133,6 +133,14 @@ export default function App() {
         accessType: 'write',
         recordType: 'Steps',
       },
+      {
+        accessType: 'write',
+        recordType: 'ExerciseSession',
+      },
+      {
+        accessType: 'read',
+        recordType: 'ExerciseSession',
+      },
     ]).then((permissions) => {
       console.log('Granted permissions on request ', { permissions });
     });
