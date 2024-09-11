@@ -1,11 +1,14 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.request.AggregateRequest
+import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeMap
+import com.facebook.react.bridge.WritableNativeArray
 import dev.matinzd.healthconnect.utils.convertDataOriginsToJsArray
 import dev.matinzd.healthconnect.utils.convertJsToDataOriginSet
 import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
@@ -14,9 +17,12 @@ import dev.matinzd.healthconnect.utils.energyToJsMap
 import dev.matinzd.healthconnect.utils.getEnergyFromJsMap
 import dev.matinzd.healthconnect.utils.getTimeRangeFilter
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.mapPeriodStringToPeriod
 import java.time.Instant
 
 class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurnedRecord> {
+  private val aggregateMetrics = setOf(ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL)
+
   override fun parseWriteRecord(records: ReadableArray): List<ActiveCaloriesBurnedRecord> {
     return records.toMapList().map {
       ActiveCaloriesBurnedRecord(
@@ -41,8 +47,17 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
     return AggregateRequest(
-      metrics = setOf(ActiveCaloriesBurnedRecord.ACTIVE_CALORIES_TOTAL),
+      metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
+  override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
+    return AggregateGroupByPeriodRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapPeriodStringToPeriod(record.getString("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
@@ -69,6 +84,19 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
       }
       putMap("ACTIVE_CALORIES_TOTAL", map)
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  override fun parseAggregationResultGroupedByPeriod(record: List<AggregationResultGroupedByPeriod>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+        }
+        pushMap(map)
+      }
     }
   }
 }

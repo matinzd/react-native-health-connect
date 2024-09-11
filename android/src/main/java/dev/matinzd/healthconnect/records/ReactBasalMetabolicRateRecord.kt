@@ -1,11 +1,14 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.BasalMetabolicRateRecord
+import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.units.Power
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.InvalidPower
 import dev.matinzd.healthconnect.utils.convertDataOriginsToJsArray
@@ -13,10 +16,13 @@ import dev.matinzd.healthconnect.utils.convertJsToDataOriginSet
 import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getTimeRangeFilter
+import dev.matinzd.healthconnect.utils.mapPeriodStringToPeriod
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
 class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRecord> {
+  private val aggregateMetrics = setOf(BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL)
+
   override fun parseWriteRecord(records: ReadableArray): List<BasalMetabolicRateRecord> {
     return records.toMapList().map {
       BasalMetabolicRateRecord(
@@ -38,10 +44,32 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
     return AggregateRequest(
-      metrics = setOf(BasalMetabolicRateRecord.BASAL_CALORIES_TOTAL),
+      metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
+  }
+
+  override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
+    return AggregateGroupByPeriodRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapPeriodStringToPeriod(record.getString("timeRangeSlicer")),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
+  override fun parseAggregationResultGroupedByPeriod(record: List<AggregationResultGroupedByPeriod>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+        }
+        pushMap(map)
+      }
+    }
   }
 
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {

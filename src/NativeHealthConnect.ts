@@ -31,6 +31,12 @@ export interface Spec extends TurboModule {
     startTime: string;
     endTime: string;
   }): Promise<{}>;
+  aggregateGroupByPeriod(record: {
+    recordType: string;
+    startTime: string;
+    endTime: string;
+    timeRangeSlicer: string;
+  }): Promise<[]>;
   getChanges(request: {
     changesToken?: string;
     recordTypes?: string[];

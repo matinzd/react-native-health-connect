@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import {
   aggregateRecord,
+  aggregateGroupByPeriod,
   getGrantedPermissions,
   initialize,
   insertRecords,
@@ -16,14 +17,21 @@ import {
   readRecord,
   RecordingMethod,
   DeviceType,
+  HealthConnectRecord,
 } from 'react-native-health-connect';
 
-const getLastWeekDate = (): Date => {
-  return new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
+const getBeginningOfLast7Days = () => {
+  const day = new Date();
+  day.setDate(day.getDate() - 7);
+  day.setHours(0, 0, 0, 0);
+  return day;
 };
 
-const getLastTwoWeeksDate = (): Date => {
-  return new Date(new Date().getTime() - 2 * 7 * 24 * 60 * 60 * 1000);
+const getBeginningOfLast14Days = () => {
+  const day = new Date();
+  day.setDate(day.getDate() - 14);
+  day.setHours(0, 0, 0, 0);
+  return day;
 };
 
 const getTodayDate = (): Date => {
@@ -58,24 +66,49 @@ export default function App() {
   };
 
   const insertSampleData = () => {
-    insertRecords([
-      {
-        recordType: 'Steps',
-        count: 1000,
-        startTime: getLastWeekDate().toISOString(),
-        endTime: getTodayDate().toISOString(),
-        metadata: {
-          clientRecordId: random64BitString(),
-          recordingMethod:
-            RecordingMethod.RECORDING_METHOD_AUTOMATICALLY_RECORDED,
-          device: {
-            manufacturer: 'Google',
-            model: 'Pixel 4',
-            type: DeviceType.TYPE_PHONE,
+    const days = 7;
+    const startingStepCount = 1000;
+
+    const records = Array.from({ length: days }).reduce(
+      (acc: HealthConnectRecord[], _, i) => {
+        // Step count increases by 1000 starting from the first day (7 days ago)
+        const stepCount = startingStepCount + i * 1000;
+        const day = new Date();
+
+        // Get the date for each of the last 7 days, starting from 7 days ago (excluding today)
+        day.setDate(day.getDate() - (days - i));
+
+        // Set start time to 9am
+        const startTime = new Date(day);
+        startTime.setHours(9, 0, 0, 0);
+
+        // Set end time to 11am
+        const endTime = new Date(day);
+        endTime.setHours(11, 0, 0, 0);
+
+        const record: HealthConnectRecord = {
+          recordType: 'Steps',
+          count: stepCount,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+          metadata: {
+            clientRecordId: random64BitString(),
+            recordingMethod:
+              RecordingMethod.RECORDING_METHOD_AUTOMATICALLY_RECORDED,
+            device: {
+              manufacturer: 'Google',
+              model: 'Pixel 4',
+              type: DeviceType.TYPE_PHONE,
+            },
           },
-        },
+        };
+
+        return [...acc, record];
       },
-    ])
+      []
+    );
+
+    insertRecords(records)
       .then((ids) => {
         console.log('Records inserted ', { ids });
       })
@@ -88,7 +121,7 @@ export default function App() {
     readRecords('Steps', {
       timeRangeFilter: {
         operator: 'between',
-        startTime: getLastTwoWeeksDate().toISOString(),
+        startTime: getBeginningOfLast14Days().toISOString(),
         endTime: getTodayDate().toISOString(),
       },
     })
@@ -115,11 +148,25 @@ export default function App() {
       recordType: 'Steps',
       timeRangeFilter: {
         operator: 'between',
-        startTime: getLastWeekDate().toISOString(),
+        startTime: getBeginningOfLast7Days().toISOString(),
         endTime: getTodayDate().toISOString(),
       },
     }).then((result) => {
       console.log('Aggregated record: ', { result });
+    });
+  };
+
+  const aggregateSampleGroupByPeriod = () => {
+    aggregateGroupByPeriod({
+      recordType: 'Steps',
+      timeRangeFilter: {
+        operator: 'between',
+        startTime: getBeginningOfLast7Days().toISOString(),
+        endTime: getTodayDate().toISOString(),
+      },
+      timeRangeSlicer: 'DAYS',
+    }).then((result) => {
+      console.log('Aggregated Group: ', JSON.stringify({ result }, null, 2));
     });
   };
 
@@ -166,6 +213,10 @@ export default function App() {
       <Button title="Read sample data" onPress={readSampleData} />
       <Button title="Read specific data" onPress={readSampleDataSingle} />
       <Button title="Aggregate sample data" onPress={aggregateSampleData} />
+      <Button
+        title="Aggregate sample group data"
+        onPress={aggregateSampleGroupByPeriod}
+      />
     </View>
   );
 }
