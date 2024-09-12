@@ -1,13 +1,16 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByDuration
 import androidx.health.connect.client.records.HeartRateRecord
+import androidx.health.connect.client.request.AggregateGroupByDurationRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
+import java.time.Duration
 import java.time.Instant
 
 class ReactHeartRateRecord : ReactHealthRecordImpl<HeartRateRecord> {
@@ -67,5 +70,38 @@ class ReactHeartRateRecord : ReactHealthRecordImpl<HeartRateRecord> {
       putDouble("MEASUREMENTS_COUNT", record[HeartRateRecord.MEASUREMENTS_COUNT]?.toDouble() ?: 0.0)
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
     }
+  }
+
+
+  override fun getAggregateGroupByDurationRequest(record: ReadableMap): AggregateGroupByDurationRequest {
+    return AggregateGroupByDurationRequest(
+      metrics = setOf(
+        HeartRateRecord.BPM_AVG,
+      ),
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = Duration.ofDays(record.getInt("bucketInterval").toLong())
+    )
+  }
+
+  override fun parseAggregationResultGroupedByDuration(records: List<AggregationResultGroupedByDuration>): WritableNativeArray {
+    // Create the WritableNativeArray to hold the parsed results
+    val resultArray = WritableNativeArray()
+
+    // Map each AggregationResultGroupedByDuration into a WritableNativeMap
+    records.forEach { aggregationResult ->
+      val value: Double = aggregationResult.result[HeartRateRecord.BPM_AVG]?.toDouble() ?: 0.0
+      val map = WritableNativeMap().apply {
+        putString("startDate", aggregationResult.startTime.toString())
+        putDouble("value", value)
+        putArray("dataOrigins", convertDataOriginsToJsArray(aggregationResult.result.dataOrigins))
+      }
+
+      if(value > 0) {
+        // Add the map to the result array
+        resultArray.pushMap(map)
+      }
+    }
+
+    return resultArray
   }
 }

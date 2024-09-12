@@ -215,3 +215,11 @@ export interface AggregateRequest<T extends AggregateResultRecordType> {
   timeRangeFilter: TimeRangeFilter;
   dataOriginFilter?: string[];
 }
+
+export interface AggregateAndGroupRequest<T extends AggregateResultRecordType> {
+  recordType: T;
+  timeRangeFilter: TimeRangeFilter;
+  // The interval in minutes to group the data by
+  bucketInterval: number;
+  dataOriginFilter?: string[];
+}

@@ -148,6 +148,31 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     }
   }
 
+  fun aggregateGroupByDurationRecord(record: ReadableMap, promise: Promise) {
+    throwUnlessClientIsAvailable(promise) {
+      coroutineScope.launch {
+        try {
+          val recordType = record.getString("recordType") ?: ""
+          val response = ReactHealthRecord.getAggregateGroupByDurationRequest(
+            recordType, record
+          )?.let {
+            healthConnectClient.aggregateGroupByDuration(
+              it
+            )
+          }
+
+          if(response !== null) {
+            promise.resolve(ReactHealthRecord.parseAggregationResultGroupedByDuration(recordType, response))
+          } else {
+            promise.rejectWithException("Response is not provided")
+          }
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
+        }
+      }
+    }
+  }
+
   fun getChanges(options: ReadableMap, promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
