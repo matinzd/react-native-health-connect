@@ -66,7 +66,7 @@ class ReactSpeedRecord : ReactHealthRecordImpl<SpeedRecord> {
     return AggregateGroupByPeriodRequest(
       metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
-      timeRangeSlicer = mapPeriodStringToPeriod(record.getString("timeRangeSlicer")),
+      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }

@@ -33,7 +33,10 @@ export type TimeRangeFilter =
       endTime: string;
     };
 
-export type TimeRangeSlicer = 'DAYS' | 'WEEKS' | 'MONTHS' | 'YEARS';
+export interface TimeRangeSlicer {
+  period: 'DAYS' | 'WEEKS' | 'MONTHS' | 'YEARS';
+  duration: number;
+}
 
 export interface Energy {
   value: number;

@@ -164,7 +164,10 @@ export default function App() {
         startTime: getBeginningOfLast7Days().toISOString(),
         endTime: getTodayDate().toISOString(),
       },
-      timeRangeSlicer: 'DAYS',
+      timeRangeSlicer: {
+        period: 'DAYS',
+        duration: 1,
+      },
     }).then((result) => {
       console.log('Aggregated Group: ', JSON.stringify({ result }, null, 2));
     });

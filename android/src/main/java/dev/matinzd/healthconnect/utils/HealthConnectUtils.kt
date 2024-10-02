@@ -457,12 +457,16 @@ fun convertChangesTokenRequestOptionsFromJS(options: ReadableMap): ChangesTokenR
   )
 }
 
-fun mapPeriodStringToPeriod(period: String?): Period {
-  return when (period) {
-    "DAYS" -> Period.ofDays(1)
-    "WEEKS" -> Period.ofWeeks(1)
-    "MONTHS" -> Period.ofMonths(1)
-    "YEARS" -> Period.ofYears(1)
-    else -> Period.ofDays(1)
+fun mapJsPeriodToPeriod(period: ReadableMap?): Period {
+  if (period == null) {
+    return Period.ofDays(0)
+  }
+  val duration = period.getInt("duration")
+  return when (period.getString("period")) {
+    "DAYS" -> Period.ofDays(duration)
+    "WEEKS" -> Period.ofWeeks(duration)
+    "MONTHS" -> Period.ofMonths(duration)
+    "YEARS" -> Period.ofYears(duration)
+    else -> Period.ofDays(duration)
   }
 }

@@ -17,7 +17,7 @@ import dev.matinzd.healthconnect.utils.energyToJsMap
 import dev.matinzd.healthconnect.utils.getEnergyFromJsMap
 import dev.matinzd.healthconnect.utils.getTimeRangeFilter
 import dev.matinzd.healthconnect.utils.toMapList
-import dev.matinzd.healthconnect.utils.mapPeriodStringToPeriod
+import dev.matinzd.healthconnect.utils.mapJsPeriodToPeriod
 import java.time.Instant
 
 class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurnedRecord> {
@@ -57,7 +57,7 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
     return AggregateGroupByPeriodRequest(
       metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
-      timeRangeSlicer = mapPeriodStringToPeriod(record.getString("timeRangeSlicer")),
+      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }

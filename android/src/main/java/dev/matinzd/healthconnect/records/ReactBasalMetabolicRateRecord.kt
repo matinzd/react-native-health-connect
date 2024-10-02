@@ -16,7 +16,7 @@ import dev.matinzd.healthconnect.utils.convertJsToDataOriginSet
 import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getTimeRangeFilter
-import dev.matinzd.healthconnect.utils.mapPeriodStringToPeriod
+import dev.matinzd.healthconnect.utils.mapJsPeriodToPeriod
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
@@ -54,7 +54,7 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
     return AggregateGroupByPeriodRequest(
       metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
-      timeRangeSlicer = mapPeriodStringToPeriod(record.getString("timeRangeSlicer")),
+      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
