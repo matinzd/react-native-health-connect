@@ -276,7 +276,7 @@ interface OxygenSaturationRecordResult extends OxygenSaturationRecord {}
 interface PowerRecordResult
   extends Replace<PowerRecord, 'samples', PowerResult[]> {}
 
-type HealthConnectRecordResult =
+export type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
   | BasalMetabolicRateRecordResult
