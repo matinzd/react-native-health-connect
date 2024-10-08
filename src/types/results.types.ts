@@ -3,7 +3,7 @@ import type {
   IntervalRecord,
   LengthResult,
   MassResult,
-  PowerResult,
+  PowerSampleResult,
   PressureResult,
   SpeedSampleResult,
   VolumeResult,
@@ -274,7 +274,7 @@ interface TotalCaloriesBurnedRecordResult
 interface OxygenSaturationRecordResult extends OxygenSaturationRecord {}
 
 interface PowerRecordResult
-  extends Replace<PowerRecord, 'samples', PowerResult[]> {}
+  extends Replace<PowerRecord, 'samples', PowerSampleResult[]> {}
 
 export type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
