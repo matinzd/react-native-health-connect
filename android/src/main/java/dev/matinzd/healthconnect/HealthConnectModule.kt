@@ -41,6 +41,15 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
+  override fun requestExerciseRoute(
+    recordId: String,
+    promise: Promise
+  ) {
+    return manager.requestExerciseRoute(recordId, promise)
+  }
+
+
+  @ReactMethod
   override fun getGrantedPermissions(promise: Promise) {
     return manager.getGrantedPermissions(promise)
   }

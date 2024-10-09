@@ -1,6 +1,7 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 import type { HealthConnectRecord, Permission } from './types';
+import { ExerciseRoute } from './types/base.types';
 
 type ReadRecordsOptions = {
   startTime: string;
@@ -21,6 +22,7 @@ export interface Spec extends TurboModule {
     permissions: Permission[],
     providerPackageName: string
   ): Promise<Permission[]>;
+  requestExerciseRoute(recordId: string): Promise<ExerciseRoute>;
   getGrantedPermissions(): Promise<Permission[]>;
   revokeAllPermissions(): Promise<void>;
   insertRecords(records: HealthConnectRecord[]): Promise<string[]>;

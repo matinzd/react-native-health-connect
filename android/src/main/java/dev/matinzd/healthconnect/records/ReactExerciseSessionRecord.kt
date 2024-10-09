@@ -6,7 +6,6 @@ import androidx.health.connect.client.records.ExerciseRoute
 import androidx.health.connect.client.records.ExerciseRouteResult
 import androidx.health.connect.client.records.ExerciseSegment
 import androidx.health.connect.client.records.ExerciseSessionRecord
-import androidx.health.connect.client.records.PowerRecord
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -100,19 +99,8 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
 
       when (record.exerciseRouteResult) {
         is ExerciseRouteResult.Data -> {
-          val exerciseRouteMap = WritableNativeMap()
-          exerciseRouteMap.putArray("route", WritableNativeArray().apply {
-            (record.exerciseRouteResult as ExerciseRouteResult.Data).exerciseRoute.route.map {
-              val map = WritableNativeMap()
-              map.putString("time", it.time.toString())
-              map.putDouble("latitude", it.latitude)
-              map.putDouble("longitude", it.longitude)
-              map.putMap("horizontalAccuracy", lengthToJsMap(it.horizontalAccuracy))
-              map.putMap("verticalAccuracy", lengthToJsMap(it.verticalAccuracy))
-              map.putMap("altitude", lengthToJsMap(it.altitude))
-              this.pushMap(map)
-            }
-          })
+          val exerciseRoute: ExerciseRoute = (record.exerciseRouteResult as ExerciseRouteResult.Data).exerciseRoute
+          val exerciseRouteMap = parseExerciseRoute(exerciseRoute)
           putMap("exerciseRoute", exerciseRouteMap)
         }
 
@@ -151,6 +139,25 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
       }
       putMap("EXERCISE_DURATION_TOTAL", map)
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  companion object {
+    fun parseExerciseRoute(exerciseRoute: ExerciseRoute): WritableNativeMap {
+      return WritableNativeMap().apply {
+        putArray("route", WritableNativeArray().apply {
+          exerciseRoute.route.map {
+            val map = WritableNativeMap()
+            map.putString("time", it.time.toString())
+            map.putDouble("latitude", it.latitude)
+            map.putDouble("longitude", it.longitude)
+            map.putMap("horizontalAccuracy", lengthToJsMap(it.horizontalAccuracy))
+            map.putMap("verticalAccuracy", lengthToJsMap(it.verticalAccuracy))
+            map.putMap("altitude", lengthToJsMap(it.altitude))
+            this.pushMap(map)
+          }
+        })
+      }
     }
   }
 }

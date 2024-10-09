@@ -4,6 +4,7 @@ import android.os.RemoteException
 import com.facebook.react.bridge.Promise
 import okio.IOException
 
+class ExerciseRouteAccessDenied : Exception("Request to access exercise route denied")
 class ClientNotInitialized : Exception("Health Connect client is not initialized")
 class InvalidRecordType : Exception("Record type is not valid")
 class InvalidTemperature : Exception("Temperature is not valid")

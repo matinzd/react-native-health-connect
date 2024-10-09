@@ -1,6 +1,13 @@
 import * as React from 'react';
 
-import { Button, StyleSheet, View } from 'react-native';
+import {
+  Button,
+  NativeSyntheticEvent,
+  StyleSheet,
+  TextInput,
+  TextInputChangeEventData,
+  View,
+} from 'react-native';
 import {
   aggregateRecord,
   getGrantedPermissions,
@@ -16,7 +23,34 @@ import {
   readRecord,
   RecordingMethod,
   DeviceType,
+  ExerciseType,
+  requestExerciseRoute,
 } from 'react-native-health-connect';
+import { Location } from 'src/types/base.types';
+
+const generateExerciseRoute = (startTime: Date): Location[] => {
+  const route: Location[] = [];
+  for (let i = 0; i < 10; i++) {
+    route.push({
+      latitude: 37.785834 + Math.random() * 0.01,
+      longitude: -122.406417 + Math.random() * 0.01,
+      altitude: {
+        value: 0 + Math.random() * 100,
+        unit: 'meters',
+      },
+      horizontalAccuracy: {
+        value: 0 + Math.random() * 10,
+        unit: 'meters',
+      },
+      verticalAccuracy: {
+        value: 0 + Math.random() * 10,
+        unit: 'meters',
+      },
+      time: new Date(startTime.getTime() + i * 1000).toISOString(),
+    });
+  }
+  return route;
+};
 
 const getLastWeekDate = (): Date => {
   return new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -35,6 +69,14 @@ const random64BitString = () => {
 };
 
 export default function App() {
+  const [recordId, setRecordId] = React.useState<string>();
+
+  const updateRecordId = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>
+  ) => {
+    setRecordId(e.nativeEvent.text);
+  };
+
   const initializeHealthConnect = async () => {
     const result = await initialize();
     console.log({ result });
@@ -152,6 +194,51 @@ export default function App() {
     });
   };
 
+  const insertRandomExercise = () => {
+    const startTime = new Date('2021-09-01T00:00:00.000Z');
+    insertRecords([
+      {
+        recordType: 'ExerciseSession',
+        startTime: startTime.toISOString(),
+        endTime: new Date(startTime.getTime() + 1000 * 60 * 10).toISOString(), // 10 minutes
+        metadata: {
+          clientRecordId: random64BitString(),
+          recordingMethod:
+            RecordingMethod.RECORDING_METHOD_AUTOMATICALLY_RECORDED,
+          device: {
+            manufacturer: 'Google',
+            model: 'Pixel 4',
+            type: DeviceType.TYPE_PHONE,
+          },
+        },
+        exerciseType: ExerciseType.RUNNING,
+        exerciseRoute: { route: generateExerciseRoute(startTime) },
+        title: 'Morning Run - v' + Math.random().toFixed(2).toString(),
+      },
+    ])
+      .then((ids) => {
+        console.log('Records inserted ', { ids });
+      })
+      .catch((err) => {
+        console.error('Error inserting records ', { err });
+      });
+  };
+
+  const readExerciseRoute = () => {
+    if (!recordId) {
+      console.error('Record ID is required');
+      return;
+    }
+
+    requestExerciseRoute(recordId)
+      .then((route) => {
+        console.log('Exercise route: ', { route });
+      })
+      .catch((err) => {
+        console.error('Error reading exercise route ', { err });
+      });
+  };
+
   return (
     <View style={styles.container}>
       <Button title="Initialize" onPress={initializeHealthConnect} />
@@ -174,6 +261,14 @@ export default function App() {
       <Button title="Read sample data" onPress={readSampleData} />
       <Button title="Read specific data" onPress={readSampleDataSingle} />
       <Button title="Aggregate sample data" onPress={aggregateSampleData} />
+      <Button title="Insert random exercise" onPress={insertRandomExercise} />
+      <TextInput
+        id="record-id"
+        placeholder="Record ID"
+        value={recordId}
+        onChange={updateRecordId}
+      />
+      <Button title="Request exercise route" onPress={readExerciseRoute} />
     </View>
   );
 }
