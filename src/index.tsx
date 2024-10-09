@@ -102,9 +102,7 @@ export function requestPermission(
   return HealthConnect.requestPermission(permissions, includeRoute);
 }
 
-export function requestExerciseRoute(
-  recordId: string
-): Promise<ExerciseRoute[]> {
+export function requestExerciseRoute(recordId: string): Promise<ExerciseRoute> {
   return HealthConnect.requestExerciseRoute(recordId);
 }
 

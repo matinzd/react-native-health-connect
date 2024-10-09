@@ -314,11 +314,11 @@ export default function App() {
       <Button title="Read sample data" onPress={readSampleData} />
       <Button title="Read specific data" onPress={readSampleDataSingle} />
       <Button title="Aggregate sample data" onPress={aggregateSampleData} />
-      <Button title="Insert random exercise" onPress={insertRandomExercise} />
       <Button
         title="Aggregate sample group data"
         onPress={aggregateSampleGroupByPeriod}
       />
+      <Button title="Insert random exercise" onPress={insertRandomExercise} />
       <TextInput
         id="record-id"
         placeholder="Record ID"
