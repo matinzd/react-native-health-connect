@@ -1,11 +1,6 @@
 package dev.matinzd.healthconnect
 
-import com.facebook.react.bridge.Promise
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.*
 
 abstract class HealthConnectSpec internal constructor(context: ReactApplicationContext) :
   ReactContextBaseJavaModule(context) {
@@ -14,61 +9,47 @@ abstract class HealthConnectSpec internal constructor(context: ReactApplicationC
   abstract fun getSdkStatus(providerPackageName: String, promise: Promise)
 
   @ReactMethod
-  abstract fun initialize(providerPackageName: String, promise: Promise)
+  abstract fun initialize(providerPackageName: String, promise: Promise);
 
   @ReactMethod
-  abstract fun openHealthConnectSettings()
+  abstract fun openHealthConnectSettings();
 
   @ReactMethod
-  abstract fun openHealthConnectDataManagement(providerPackageName: String?)
+  abstract fun openHealthConnectDataManagement(providerPackageName: String?);
 
   @ReactMethod
-  abstract fun requestPermission(
-    permissions: ReadableArray,
-    includeRoute: Boolean?,
-    promise: Promise
-  )
+  abstract fun requestPermission(permissions: ReadableArray, includeRoute: Boolean?, promise: Promise);
 
   @ReactMethod
-  abstract fun requestExerciseRoute(recordId: String, promise: Promise)
+  abstract fun requestExerciseRoute(recordId: String, promise: Promise);
 
   @ReactMethod
-  abstract fun getGrantedPermissions(promise: Promise)
+  abstract fun getGrantedPermissions(promise: Promise);
 
   @ReactMethod
-  abstract fun revokeAllPermissions(promise: Promise)
+  abstract fun revokeAllPermissions(promise: Promise);
 
   @ReactMethod
-  abstract fun insertRecords(records: ReadableArray, promise: Promise)
+  abstract fun insertRecords(records: ReadableArray, promise: Promise);
 
   @ReactMethod
-  abstract fun readRecords(recordType: String, options: ReadableMap, promise: Promise)
+  abstract fun readRecords(recordType: String, options: ReadableMap, promise: Promise);
 
   @ReactMethod
-  abstract fun readRecord(recordType: String, recordId: String, promise: Promise)
+  abstract fun readRecord(recordType: String, recordId: String, promise: Promise);
 
   @ReactMethod
-  abstract fun aggregateRecord(record: ReadableMap, promise: Promise)
+  abstract fun aggregateRecord(record: ReadableMap, promise: Promise);
 
   @ReactMethod
-  abstract fun aggregateGroupByPeriod(record: ReadableMap, promise: Promise)
-
-
-  @ReactMethod
-  abstract fun getChanges(options: ReadableMap, promise: Promise)
+  abstract fun aggregateGroupByPeriod(record: ReadableMap, promise: Promise);
 
   @ReactMethod
-  abstract fun deleteRecordsByUuids(
-    recordType: String,
-    recordIdsList: ReadableArray,
-    clientRecordIdsList: ReadableArray,
-    promise: Promise
-  )
+  abstract fun getChanges(options: ReadableMap, promise: Promise);
 
   @ReactMethod
-  abstract fun deleteRecordsByTimeRange(
-    recordType: String,
-    timeRangeFilter: ReadableMap,
-    promise: Promise
-  )
+  abstract fun deleteRecordsByUuids(recordType: String, recordIdsList: ReadableArray, clientRecordIdsList: ReadableArray, promise: Promise);
+
+  @ReactMethod
+  abstract fun deleteRecordsByTimeRange(recordType: String, timeRangeFilter: ReadableMap, promise: Promise);
 }
