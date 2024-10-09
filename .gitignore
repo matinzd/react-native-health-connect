@@ -72,3 +72,5 @@ lib/
 .metro-health-check*
 *.keystore
 !debug.keystore
+
+.yarn

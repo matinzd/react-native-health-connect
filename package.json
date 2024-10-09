@@ -77,14 +77,14 @@
     "@types/react": "17.0.21"
   },
   "peerDependencies": {
+    "@expo/config-plugins": ">= 6.0.2",
     "react": "*",
-    "react-native": "*",
-    "@expo/config-plugins": ">= 6.0.2"
+    "react-native": "*"
   },
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "yarn@1.22.19+sha256.732620bac8b1690d507274f025f3c6cfdc3627a84d9642e38a07452cc00e0f2e",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
