@@ -3,6 +3,8 @@ import { HealthConnectError } from './errors';
 import type {
   AggregateRequest,
   AggregateResult,
+  AggregateGroupByPeriodRequest,
+  AggregationResultGroupedByPeriod,
   AggregateResultRecordType,
   HealthConnectRecord,
   Permission,
@@ -154,6 +156,12 @@ export function aggregateRecord<T extends AggregateResultRecordType>(
   request: AggregateRequest<T>
 ): Promise<AggregateResult<T>> {
   return HealthConnect.aggregateRecord(request);
+}
+
+export function aggregateGroupByPeriod<T extends AggregateResultRecordType>(
+  request: AggregateGroupByPeriodRequest<T>
+): Promise<AggregationResultGroupedByPeriod<T>> {
+  return HealthConnect.aggregateGroupByPeriod(request);
 }
 
 export function getChanges(

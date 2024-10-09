@@ -1,7 +1,9 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.CyclingPedalingCadenceRecord
+import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -11,6 +13,12 @@ import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactCyclingPedalingCadenceRecord : ReactHealthRecordImpl<CyclingPedalingCadenceRecord> {
+  private val aggregateMetrics = setOf(
+    CyclingPedalingCadenceRecord.RPM_AVG,
+    CyclingPedalingCadenceRecord.RPM_MAX,
+    CyclingPedalingCadenceRecord.RPM_MIN
+  )
+
   override fun parseWriteRecord(records: ReadableArray): List<CyclingPedalingCadenceRecord> {
     return records.toMapList().map { map ->
       CyclingPedalingCadenceRecord(
@@ -48,12 +56,17 @@ class ReactCyclingPedalingCadenceRecord : ReactHealthRecordImpl<CyclingPedalingC
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
     return AggregateRequest(
-      metrics = setOf(
-        CyclingPedalingCadenceRecord.RPM_AVG,
-        CyclingPedalingCadenceRecord.RPM_MAX,
-        CyclingPedalingCadenceRecord.RPM_MIN
-      ),
+      metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
+  override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
+    return AggregateGroupByPeriodRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
@@ -64,6 +77,19 @@ class ReactCyclingPedalingCadenceRecord : ReactHealthRecordImpl<CyclingPedalingC
       putDouble("RPM_MAX", record[CyclingPedalingCadenceRecord.RPM_MAX] ?: 0.0)
       putDouble("RPM_MIN", record[CyclingPedalingCadenceRecord.RPM_MIN] ?: 0.0)
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  override fun parseAggregationResultGroupedByPeriod(record: List<AggregationResultGroupedByPeriod>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+        }
+        pushMap(map)
+      }
     }
   }
 }

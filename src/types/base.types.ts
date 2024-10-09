@@ -33,6 +33,11 @@ export type TimeRangeFilter =
       endTime: string;
     };
 
+export interface TimeRangeSlicer {
+  period: 'DAYS' | 'WEEKS' | 'MONTHS' | 'YEARS';
+  duration: number;
+}
+
 export interface Energy {
   value: number;
   unit: 'calories' | 'joules' | 'kilocalories' | 'kilojoules';

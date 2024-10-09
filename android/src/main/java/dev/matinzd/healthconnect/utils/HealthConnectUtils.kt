@@ -15,6 +15,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.records.*
 import java.time.Instant
 import java.time.ZoneOffset
+import java.time.Period
 import kotlin.reflect.KClass
 
 fun <T : Record> convertReactRequestOptionsFromJS(
@@ -454,4 +455,18 @@ fun convertChangesTokenRequestOptionsFromJS(options: ReadableMap): ChangesTokenR
     recordTypes = convertJsToRecordTypeSet(options.getArray("recordTypes")),
     dataOriginFilters = convertJsToDataOriginSet(options.getArray("dataOriginFilters")),
   )
+}
+
+fun mapJsPeriodToPeriod(period: ReadableMap?): Period {
+  if (period == null) {
+    return Period.ofDays(0)
+  }
+  val duration = period.getInt("duration")
+  return when (period.getString("period")) {
+    "DAYS" -> Period.ofDays(duration)
+    "WEEKS" -> Period.ofWeeks(duration)
+    "MONTHS" -> Period.ofMonths(duration)
+    "YEARS" -> Period.ofYears(duration)
+    else -> Period.ofDays(duration)
+  }
 }

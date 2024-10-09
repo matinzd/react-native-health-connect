@@ -1,15 +1,22 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.DistanceRecord
+import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactDistanceRecord : ReactHealthRecordImpl<DistanceRecord> {
+  private val aggregateMetrics = setOf(
+    DistanceRecord.DISTANCE_TOTAL,
+  )
+
   override fun parseWriteRecord(records: ReadableArray): List<DistanceRecord> {
     return records.toMapList().map { map ->
       DistanceRecord(
@@ -23,7 +30,6 @@ class ReactDistanceRecord : ReactHealthRecordImpl<DistanceRecord> {
     }
   }
 
-
   override fun parseRecord(record: DistanceRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
@@ -35,10 +41,17 @@ class ReactDistanceRecord : ReactHealthRecordImpl<DistanceRecord> {
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
     return AggregateRequest(
-      metrics = setOf(
-        DistanceRecord.DISTANCE_TOTAL,
-      ),
+      metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
+  override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
+    return AggregateGroupByPeriodRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
@@ -47,6 +60,19 @@ class ReactDistanceRecord : ReactHealthRecordImpl<DistanceRecord> {
     return WritableNativeMap().apply {
       putMap("DISTANCE", lengthToJsMap(record[DistanceRecord.DISTANCE_TOTAL]))
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  override fun parseAggregationResultGroupedByPeriod(record: List<AggregationResultGroupedByPeriod>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+        }
+        pushMap(map)
+      }
     }
   }
 }

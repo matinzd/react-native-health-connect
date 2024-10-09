@@ -1,7 +1,9 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.PowerRecord
+import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -11,6 +13,12 @@ import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactPowerRecord : ReactHealthRecordImpl<PowerRecord> {
+  private val aggregateMetrics = setOf(
+    PowerRecord.POWER_AVG,
+    PowerRecord.POWER_MAX,
+    PowerRecord.POWER_MIN,
+  )
+
   override fun parseWriteRecord(records: ReadableArray): List<PowerRecord> {
     return records.toMapList().map { map ->
       PowerRecord(
@@ -48,12 +56,17 @@ class ReactPowerRecord : ReactHealthRecordImpl<PowerRecord> {
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
     return AggregateRequest(
-      metrics = setOf(
-        PowerRecord.POWER_AVG,
-        PowerRecord.POWER_MAX,
-        PowerRecord.POWER_MIN,
-      ),
+      metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
+  override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
+    return AggregateGroupByPeriodRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
@@ -64,6 +77,19 @@ class ReactPowerRecord : ReactHealthRecordImpl<PowerRecord> {
       putMap("POWER_MAX", powerToJsMap(record[PowerRecord.POWER_MAX]))
       putMap("POWER_MIN", powerToJsMap(record[PowerRecord.POWER_MIN]))
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  override fun parseAggregationResultGroupedByPeriod(record: List<AggregationResultGroupedByPeriod>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+        }
+        pushMap(map)
+      }
     }
   }
 }

@@ -1,16 +1,62 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.MealType
 import androidx.health.connect.client.records.NutritionRecord
+import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactNutritionRecord : ReactHealthRecordImpl<NutritionRecord> {
+  private val aggregateMetrics = setOf(
+    NutritionRecord.BIOTIN_TOTAL,
+    NutritionRecord.CAFFEINE_TOTAL,
+    NutritionRecord.CALCIUM_TOTAL,
+    NutritionRecord.ENERGY_TOTAL,
+    NutritionRecord.ENERGY_FROM_FAT_TOTAL,
+    NutritionRecord.CHLORIDE_TOTAL,
+    NutritionRecord.CHOLESTEROL_TOTAL,
+    NutritionRecord.CHROMIUM_TOTAL,
+    NutritionRecord.COPPER_TOTAL,
+    NutritionRecord.DIETARY_FIBER_TOTAL,
+    NutritionRecord.FOLATE_TOTAL,
+    NutritionRecord.FOLIC_ACID_TOTAL,
+    NutritionRecord.IODINE_TOTAL,
+    NutritionRecord.IRON_TOTAL,
+    NutritionRecord.MAGNESIUM_TOTAL,
+    NutritionRecord.MANGANESE_TOTAL,
+    NutritionRecord.MOLYBDENUM_TOTAL,
+    NutritionRecord.MONOUNSATURATED_FAT_TOTAL,
+    NutritionRecord.NIACIN_TOTAL,
+    NutritionRecord.PANTOTHENIC_ACID_TOTAL,
+    NutritionRecord.PHOSPHORUS_TOTAL,
+    NutritionRecord.POLYUNSATURATED_FAT_TOTAL,
+    NutritionRecord.POTASSIUM_TOTAL,
+    NutritionRecord.PROTEIN_TOTAL,
+    NutritionRecord.RIBOFLAVIN_TOTAL,
+    NutritionRecord.SATURATED_FAT_TOTAL,
+    NutritionRecord.SELENIUM_TOTAL,
+    NutritionRecord.SODIUM_TOTAL,
+    NutritionRecord.SUGAR_TOTAL,
+    NutritionRecord.THIAMIN_TOTAL,
+    NutritionRecord.TOTAL_CARBOHYDRATE_TOTAL,
+    NutritionRecord.TOTAL_FAT_TOTAL,
+    NutritionRecord.ZINC_TOTAL,
+    NutritionRecord.VITAMIN_A_TOTAL,
+    NutritionRecord.VITAMIN_B12_TOTAL,
+    NutritionRecord.VITAMIN_B6_TOTAL,
+    NutritionRecord.VITAMIN_C_TOTAL,
+    NutritionRecord.VITAMIN_D_TOTAL,
+    NutritionRecord.VITAMIN_E_TOTAL,
+    NutritionRecord.VITAMIN_K_TOTAL,
+  )
+
   override fun parseWriteRecord(records: ReadableArray): List<NutritionRecord> {
     return records.toMapList().map { map ->
       NutritionRecord(
@@ -121,49 +167,17 @@ class ReactNutritionRecord : ReactHealthRecordImpl<NutritionRecord> {
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
     return AggregateRequest(
-      metrics = setOf(
-        NutritionRecord.BIOTIN_TOTAL,
-        NutritionRecord.CAFFEINE_TOTAL,
-        NutritionRecord.CALCIUM_TOTAL,
-        NutritionRecord.ENERGY_TOTAL,
-        NutritionRecord.ENERGY_FROM_FAT_TOTAL,
-        NutritionRecord.CHLORIDE_TOTAL,
-        NutritionRecord.CHOLESTEROL_TOTAL,
-        NutritionRecord.CHROMIUM_TOTAL,
-        NutritionRecord.COPPER_TOTAL,
-        NutritionRecord.DIETARY_FIBER_TOTAL,
-        NutritionRecord.FOLATE_TOTAL,
-        NutritionRecord.FOLIC_ACID_TOTAL,
-        NutritionRecord.IODINE_TOTAL,
-        NutritionRecord.IRON_TOTAL,
-        NutritionRecord.MAGNESIUM_TOTAL,
-        NutritionRecord.MANGANESE_TOTAL,
-        NutritionRecord.MOLYBDENUM_TOTAL,
-        NutritionRecord.MONOUNSATURATED_FAT_TOTAL,
-        NutritionRecord.NIACIN_TOTAL,
-        NutritionRecord.PANTOTHENIC_ACID_TOTAL,
-        NutritionRecord.PHOSPHORUS_TOTAL,
-        NutritionRecord.POLYUNSATURATED_FAT_TOTAL,
-        NutritionRecord.POTASSIUM_TOTAL,
-        NutritionRecord.PROTEIN_TOTAL,
-        NutritionRecord.RIBOFLAVIN_TOTAL,
-        NutritionRecord.SATURATED_FAT_TOTAL,
-        NutritionRecord.SELENIUM_TOTAL,
-        NutritionRecord.SODIUM_TOTAL,
-        NutritionRecord.SUGAR_TOTAL,
-        NutritionRecord.THIAMIN_TOTAL,
-        NutritionRecord.TOTAL_CARBOHYDRATE_TOTAL,
-        NutritionRecord.TOTAL_FAT_TOTAL,
-        NutritionRecord.ZINC_TOTAL,
-        NutritionRecord.VITAMIN_A_TOTAL,
-        NutritionRecord.VITAMIN_B12_TOTAL,
-        NutritionRecord.VITAMIN_B6_TOTAL,
-        NutritionRecord.VITAMIN_C_TOTAL,
-        NutritionRecord.VITAMIN_D_TOTAL,
-        NutritionRecord.VITAMIN_E_TOTAL,
-        NutritionRecord.VITAMIN_K_TOTAL,
-      ),
+      metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
+  override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
+    return AggregateGroupByPeriodRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
@@ -219,6 +233,19 @@ class ReactNutritionRecord : ReactHealthRecordImpl<NutritionRecord> {
       putMap("VITAMIN_E_TOTAL", massToJsMap(record[NutritionRecord.VITAMIN_E_TOTAL]))
       putMap("VITAMIN_K_TOTAL", massToJsMap(record[NutritionRecord.VITAMIN_K_TOTAL]))
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  override fun parseAggregationResultGroupedByPeriod(record: List<AggregationResultGroupedByPeriod>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+        }
+        pushMap(map)
+      }
     }
   }
 }
