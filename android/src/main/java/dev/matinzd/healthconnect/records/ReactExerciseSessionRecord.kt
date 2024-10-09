@@ -7,10 +7,7 @@ import androidx.health.connect.client.records.ExerciseRoute
 import androidx.health.connect.client.records.ExerciseRouteResult
 import androidx.health.connect.client.records.ExerciseSegment
 import androidx.health.connect.client.records.ExerciseSessionRecord
-<<<<<<< HEAD
-=======
 import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
->>>>>>> 8c2cf3998ae2bdb12b2eb723416a676208e1a6d8
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
