@@ -9,7 +9,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
-class ReactWeightRecord : ReactHealthRecordImpl<WeightRecord> {
+class ReactWeightRecord : ReactHealthRecord<WeightRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<WeightRecord> {
     return records.toMapList().map { map ->
       WeightRecord(

@@ -16,7 +16,7 @@ import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactBodyTemperatureRecord : ReactHealthRecordImpl<BodyTemperatureRecord> {
+class ReactBodyTemperatureRecord : ReactHealthRecord<BodyTemperatureRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<BodyTemperatureRecord> {
     return records.toMapList().map {
       BodyTemperatureRecord(

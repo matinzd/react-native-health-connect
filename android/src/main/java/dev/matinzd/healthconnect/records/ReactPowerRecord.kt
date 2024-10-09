@@ -10,7 +10,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
-class ReactPowerRecord : ReactHealthRecordImpl<PowerRecord> {
+class ReactPowerRecord : ReactHealthRecord<PowerRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<PowerRecord> {
     return records.toMapList().map { map ->
       PowerRecord(

@@ -13,7 +13,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactOxygenSaturationRecord : ReactHealthRecordImpl<OxygenSaturationRecord> {
+class ReactOxygenSaturationRecord : ReactHealthRecord<OxygenSaturationRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<OxygenSaturationRecord> {
     return records.toMapList().map { map ->
       OxygenSaturationRecord(

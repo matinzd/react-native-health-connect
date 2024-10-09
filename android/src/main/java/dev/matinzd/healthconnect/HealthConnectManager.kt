@@ -12,7 +12,7 @@ import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate
 import dev.matinzd.healthconnect.permissions.PermissionUtils
-import dev.matinzd.healthconnect.records.ReactHealthRecord
+import dev.matinzd.healthconnect.utils.ReactHealthRecordUtils
 import dev.matinzd.healthconnect.utils.ClientNotInitialized
 import dev.matinzd.healthconnect.utils.convertChangesTokenRequestOptionsFromJS
 import dev.matinzd.healthconnect.utils.getTimeRangeFilter
@@ -92,9 +92,9 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
         try {
-          val records = ReactHealthRecord.parseWriteRecords(reactRecords)
+          val records = ReactHealthRecordUtils.parseWriteRecords(reactRecords)
           val response = healthConnectClient.insertRecords(records)
-          promise.resolve(ReactHealthRecord.parseWriteResponse(response))
+          promise.resolve(ReactHealthRecordUtils.parseWriteResponse(response))
         } catch (e: Exception) {
           promise.rejectWithException(e)
         }
@@ -106,9 +106,9 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
         try {
-          val request = ReactHealthRecord.parseReadRequest(recordType, options)
+          val request = ReactHealthRecordUtils.parseReadRequest(recordType, options)
           val response = healthConnectClient.readRecords(request)
-          promise.resolve(ReactHealthRecord.parseRecords(recordType, response))
+          promise.resolve(ReactHealthRecordUtils.parseRecords(recordType, response))
         } catch (e: Exception) {
           promise.rejectWithException(e)
         }
@@ -120,9 +120,9 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
         try {
-          val record = ReactHealthRecord.getRecordByType(recordType)
+          val record = ReactHealthRecordUtils.getRecordByType(recordType)
           val response = healthConnectClient.readRecord(record, recordId)
-          promise.resolve(ReactHealthRecord.parseRecord(recordType, response))
+          promise.resolve(ReactHealthRecordUtils.parseRecord(recordType, response))
         } catch (e: Exception) {
           promise.rejectWithException(e)
         }
@@ -136,11 +136,11 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
         try {
           val recordType = record.getString("recordType") ?: ""
           val response = healthConnectClient.aggregate(
-            ReactHealthRecord.getAggregateRequest(
+            ReactHealthRecordUtils.getAggregateRequest(
               recordType, record
             )
           )
-          promise.resolve(ReactHealthRecord.parseAggregationResult(recordType, response))
+          promise.resolve(ReactHealthRecordUtils.parseAggregationResult(recordType, response))
         } catch (e: Exception) {
           promise.rejectWithException(e)
         }
@@ -164,7 +164,7 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
               when (change) {
                 is UpsertionChange -> {
                   upsertionChanges.pushMap(WritableNativeMap().apply {
-                    val record = ReactHealthRecord.parseRecord(change.record)
+                    val record = ReactHealthRecordUtils.parseRecord(change.record)
                     putMap("record", record)
                   })
                 }

@@ -13,7 +13,7 @@ import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactCervicalMucusRecord : ReactHealthRecordImpl<CervicalMucusRecord> {
+class ReactCervicalMucusRecord : ReactHealthRecord<CervicalMucusRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<CervicalMucusRecord> {
     return records.toMapList().map {
       CervicalMucusRecord(

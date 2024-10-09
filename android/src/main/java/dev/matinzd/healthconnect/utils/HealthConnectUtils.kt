@@ -212,7 +212,7 @@ val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "MenstruationPeriod" to MenstruationPeriodRecord::class
 )
 
-val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<*>>> = mapOf(
+val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecord<*>>> = mapOf(
   "ActiveCaloriesBurned" to ReactActiveCaloriesBurnedRecord::class.java,
   "BasalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
   "BasalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,

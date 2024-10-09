@@ -9,7 +9,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
-class ReactTotalCaloriesBurnedRecord : ReactHealthRecordImpl<TotalCaloriesBurnedRecord> {
+class ReactTotalCaloriesBurnedRecord : ReactHealthRecord<TotalCaloriesBurnedRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<TotalCaloriesBurnedRecord> {
     return records.toMapList().map { map ->
       TotalCaloriesBurnedRecord(

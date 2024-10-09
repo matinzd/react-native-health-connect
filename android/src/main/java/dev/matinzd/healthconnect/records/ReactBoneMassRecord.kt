@@ -14,7 +14,7 @@ import dev.matinzd.healthconnect.utils.massToJsMap
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactBoneMassRecord : ReactHealthRecordImpl<BoneMassRecord> {
+class ReactBoneMassRecord : ReactHealthRecord<BoneMassRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<BoneMassRecord> {
     return records.toMapList().map {
       BoneMassRecord(

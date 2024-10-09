@@ -13,7 +13,7 @@ import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
 class ReactHeartRateVariabilityRmssdRecord :
-  ReactHealthRecordImpl<HeartRateVariabilityRmssdRecord> {
+  ReactHealthRecord<HeartRateVariabilityRmssdRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<HeartRateVariabilityRmssdRecord> {
     return records.toMapList().map { map ->
       HeartRateVariabilityRmssdRecord(

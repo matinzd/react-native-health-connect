@@ -9,7 +9,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
-class ReactFloorsClimbedRecord : ReactHealthRecordImpl<FloorsClimbedRecord> {
+class ReactFloorsClimbedRecord : ReactHealthRecord<FloorsClimbedRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<FloorsClimbedRecord> {
     return records.toMapList().map {
       FloorsClimbedRecord(

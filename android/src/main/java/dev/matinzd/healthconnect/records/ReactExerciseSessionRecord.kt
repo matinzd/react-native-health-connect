@@ -6,7 +6,6 @@ import androidx.health.connect.client.records.ExerciseRoute
 import androidx.health.connect.client.records.ExerciseRouteResult
 import androidx.health.connect.client.records.ExerciseSegment
 import androidx.health.connect.client.records.ExerciseSessionRecord
-import androidx.health.connect.client.records.PowerRecord
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -15,7 +14,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
-class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> {
+class ReactExerciseSessionRecord : ReactHealthRecord<ExerciseSessionRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<ExerciseSessionRecord> {
     return records.toMapList().map {
       val routeList = it.getMap("exerciseRoute")?.getArray("route")?.toMapList()?.map { sample ->

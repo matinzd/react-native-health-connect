@@ -10,7 +10,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
-class ReactSleepSessionRecord : ReactHealthRecordImpl<SleepSessionRecord> {
+class ReactSleepSessionRecord : ReactHealthRecord<SleepSessionRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<SleepSessionRecord> {
     return records.toMapList().map { map ->
       SleepSessionRecord(

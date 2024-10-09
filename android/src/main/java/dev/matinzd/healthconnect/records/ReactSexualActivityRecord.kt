@@ -12,7 +12,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactSexualActivityRecord : ReactHealthRecordImpl<SexualActivityRecord> {
+class ReactSexualActivityRecord : ReactHealthRecord<SexualActivityRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<SexualActivityRecord> {
     return records.toMapList().map { map ->
       SexualActivityRecord(

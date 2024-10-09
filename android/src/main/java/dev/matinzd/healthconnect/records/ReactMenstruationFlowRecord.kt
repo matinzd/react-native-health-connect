@@ -13,7 +13,7 @@ import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
 import java.time.Instant
 
-class ReactMenstruationFlowRecord : ReactHealthRecordImpl<MenstruationFlowRecord> {
+class ReactMenstruationFlowRecord : ReactHealthRecord<MenstruationFlowRecord> {
   override fun parseWriteRecord(records: ReadableArray): List<MenstruationFlowRecord> {
     return records.toMapList().map { map ->
       MenstruationFlowRecord(
