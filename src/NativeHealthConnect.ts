@@ -1,5 +1,6 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
+import type { TimeRangeSlicer } from './types/base.types';
 import type { HealthConnectRecord, Permission } from './types';
 
 type ReadRecordsOptions = {
@@ -31,6 +32,12 @@ export interface Spec extends TurboModule {
     startTime: string;
     endTime: string;
   }): Promise<{}>;
+  aggregateGroupByPeriod(record: {
+    recordType: string;
+    startTime: string;
+    endTime: string;
+    timeRangeSlicer: TimeRangeSlicer;
+  }): Promise<[]>;
   getChanges(request: {
     changesToken?: string;
     recordTypes?: string[];

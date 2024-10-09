@@ -1,10 +1,13 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.Vo2MaxRecord
+import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.AggregationNotSupported
 import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
@@ -42,7 +45,15 @@ class ReactVo2MaxRecord : ReactHealthRecordImpl<Vo2MaxRecord> {
     throw AggregationNotSupported()
   }
 
+  override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
+    throw AggregationNotSupported()
+  }
+
   override fun parseAggregationResult(record: AggregationResult): WritableNativeMap {
+    throw AggregationNotSupported()
+  }
+
+  override fun parseAggregationResultGroupedByPeriod(record: List<AggregationResultGroupedByPeriod>): WritableNativeArray {
     throw AggregationNotSupported()
   }
 }

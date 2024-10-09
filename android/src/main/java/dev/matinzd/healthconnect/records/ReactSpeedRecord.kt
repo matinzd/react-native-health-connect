@@ -1,7 +1,9 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.SpeedRecord
+import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -11,6 +13,12 @@ import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactSpeedRecord : ReactHealthRecordImpl<SpeedRecord> {
+  private val aggregateMetrics = setOf(
+    SpeedRecord.SPEED_AVG,
+    SpeedRecord.SPEED_MIN,
+    SpeedRecord.SPEED_MAX,
+  )
+
   override fun parseWriteRecord(records: ReadableArray): List<SpeedRecord> {
     return records.toMapList().map { map ->
       SpeedRecord(
@@ -48,12 +56,17 @@ class ReactSpeedRecord : ReactHealthRecordImpl<SpeedRecord> {
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
     return AggregateRequest(
-      metrics = setOf(
-        SpeedRecord.SPEED_AVG,
-        SpeedRecord.SPEED_MIN,
-        SpeedRecord.SPEED_MAX,
-      ),
+      metrics = aggregateMetrics,
       timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
+  override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
+    return AggregateGroupByPeriodRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
   }
@@ -64,6 +77,19 @@ class ReactSpeedRecord : ReactHealthRecordImpl<SpeedRecord> {
       putMap("SPEED_MAX", velocityToJsMap(record[SpeedRecord.SPEED_MAX]))
       putMap("SPEED_MIN", velocityToJsMap(record[SpeedRecord.SPEED_MIN]))
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  override fun parseAggregationResultGroupedByPeriod(record: List<AggregationResultGroupedByPeriod>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+        }
+        pushMap(map)
+      }
     }
   }
 }
