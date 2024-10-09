@@ -26,7 +26,7 @@ import {
   ExerciseType,
   requestExerciseRoute,
 } from 'react-native-health-connect';
-import { Location } from 'src/types/base.types';
+import type { Location } from 'src/types/base.types';
 
 const generateExerciseRoute = (startTime: Date): Location[] => {
   const route: Location[] = [];
@@ -166,24 +166,27 @@ export default function App() {
   };
 
   const requestSamplePermissions = () => {
-    requestPermission([
-      {
-        accessType: 'read',
-        recordType: 'Steps',
-      },
-      {
-        accessType: 'write',
-        recordType: 'Steps',
-      },
-      {
-        accessType: 'write',
-        recordType: 'ExerciseSession',
-      },
-      {
-        accessType: 'read',
-        recordType: 'ExerciseSession',
-      },
-    ]).then((permissions) => {
+    requestPermission(
+      [
+        {
+          accessType: 'read',
+          recordType: 'Steps',
+        },
+        {
+          accessType: 'write',
+          recordType: 'Steps',
+        },
+        {
+          accessType: 'write',
+          recordType: 'ExerciseSession',
+        },
+        {
+          accessType: 'read',
+          recordType: 'ExerciseSession',
+        },
+      ],
+      true
+    ).then((permissions) => {
       console.log('Granted permissions on request ', { permissions });
     });
   };

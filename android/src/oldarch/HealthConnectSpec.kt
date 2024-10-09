@@ -16,7 +16,7 @@ abstract class HealthConnectSpec internal constructor(context: ReactApplicationC
   @ReactMethod
   abstract fun requestPermission(
           permissions: ReadableArray,
-          providerPackageName: String,
+          includeRoute: Boolean?,
           promise: Promise
   )
 

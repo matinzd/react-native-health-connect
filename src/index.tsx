@@ -95,9 +95,9 @@ export function openHealthConnectDataManagement(
  */
 export function requestPermission(
   permissions: Permission[],
-  providerPackageName = DEFAULT_PROVIDER_PACKAGE_NAME
+  includeRoute?: boolean
 ): Promise<Permission[]> {
-  return HealthConnect.requestPermission(permissions, providerPackageName);
+  return HealthConnect.requestPermission(permissions, includeRoute);
 }
 
 export function requestExerciseRoute(
@@ -110,7 +110,7 @@ export function getGrantedPermissions(): Promise<Permission[]> {
   return HealthConnect.getGrantedPermissions();
 }
 
-export function revokeAllPermissions(): void {
+export function revokeAllPermissions(): Promise<void> {
   return HealthConnect.revokeAllPermissions();
 }
 

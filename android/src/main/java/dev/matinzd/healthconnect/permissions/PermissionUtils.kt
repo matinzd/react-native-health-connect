@@ -1,6 +1,5 @@
 package dev.matinzd.healthconnect.permissions
 
-import android.util.Log
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.ExerciseSessionRecord
@@ -11,7 +10,7 @@ import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 
 class PermissionUtils {
   companion object {
-    fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
+    fun parsePermissions(reactPermissions: ReadableArray, includeExerciseRoute: Boolean): Set<String> {
       val setOfPermissions = reactPermissions.toArrayList().mapNotNull {
         it as HashMap<*, *>
         val recordType = it["recordType"]
@@ -26,16 +25,11 @@ class PermissionUtils {
       }.toSet()
 
       val containsExercise = setOfPermissions.contains(HealthPermission.getWritePermission(ExerciseSessionRecord::class))
-      Log.d("PermissionUtils", "Set of permissions are: " + setOfPermissions.toTypedArray().joinToString(", "))
-      Log.d("PermissionUtils", "WritePermission we're checking is " + HealthPermission.getWritePermission(ExerciseSessionRecord::class))
-      Log.d("PermissionUtils", "Contains is $containsExercise")
 
-      val shouldAskForRoute = true // TODO
-      if(containsExercise && shouldAskForRoute) {
-        return setOfPermissions.plus(HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE)
-      }
-      else {
-        return setOfPermissions
+      return if (containsExercise && includeExerciseRoute) {
+        setOfPermissions.plus(HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE)
+      } else {
+        setOfPermissions
       }
     }
 

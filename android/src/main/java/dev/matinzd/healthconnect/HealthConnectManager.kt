@@ -64,11 +64,13 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   }
 
   fun requestPermission(
-    reactPermissions: ReadableArray, providerPackageName: String, promise: Promise
+    reactPermissions: ReadableArray,
+    includeRoute: Boolean?,
+    promise: Promise
   ) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
-        val granted = HealthConnectPermissionDelegate.launchPermissionsDialog(PermissionUtils.parsePermissions(reactPermissions))
+        val granted = HealthConnectPermissionDelegate.launchPermissionsDialog(PermissionUtils.parsePermissions(reactPermissions, includeRoute ?: false))
         promise.resolve(PermissionUtils.mapPermissionResult(granted))
       }
     }
