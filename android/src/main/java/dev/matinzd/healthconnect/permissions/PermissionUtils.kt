@@ -2,6 +2,7 @@ package dev.matinzd.healthconnect.permissions
 
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
+import androidx.health.connect.client.records.ExerciseSessionRecord
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.WritableNativeArray
 import dev.matinzd.healthconnect.utils.InvalidRecordType
@@ -9,8 +10,8 @@ import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 
 class PermissionUtils {
   companion object {
-    fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
-      return reactPermissions.toArrayList().mapNotNull {
+    fun parsePermissions(reactPermissions: ReadableArray, includeExerciseRoute: Boolean): Set<String> {
+      val setOfPermissions = reactPermissions.toArrayList().mapNotNull {
         it as HashMap<*, *>
         val recordType = it["recordType"]
         val recordClass = reactRecordTypeToClassMap[recordType]
@@ -22,6 +23,14 @@ class PermissionUtils {
           else -> null
         }
       }.toSet()
+
+      val containsExercise = setOfPermissions.contains(HealthPermission.getWritePermission(ExerciseSessionRecord::class))
+
+      return if (containsExercise && includeExerciseRoute) {
+        setOfPermissions.plus(HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE)
+      } else {
+        setOfPermissions
+      }
     }
 
     suspend fun getGrantedPermissions(permissionController: PermissionController): WritableNativeArray {

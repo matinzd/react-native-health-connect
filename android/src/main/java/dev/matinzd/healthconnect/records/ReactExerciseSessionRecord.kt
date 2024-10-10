@@ -103,19 +103,8 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
 
       when (record.exerciseRouteResult) {
         is ExerciseRouteResult.Data -> {
-          val exerciseRouteMap = WritableNativeMap()
-          exerciseRouteMap.putArray("route", WritableNativeArray().apply {
-            (record.exerciseRouteResult as ExerciseRouteResult.Data).exerciseRoute.route.map {
-              val map = WritableNativeMap()
-              map.putString("time", it.time.toString())
-              map.putDouble("latitude", it.latitude)
-              map.putDouble("longitude", it.longitude)
-              map.putMap("horizontalAccuracy", lengthToJsMap(it.horizontalAccuracy))
-              map.putMap("verticalAccuracy", lengthToJsMap(it.verticalAccuracy))
-              map.putMap("altitude", lengthToJsMap(it.altitude))
-              this.pushMap(map)
-            }
-          })
+          val exerciseRoute: ExerciseRoute = (record.exerciseRouteResult as ExerciseRouteResult.Data).exerciseRoute
+          val exerciseRouteMap = parseExerciseRoute(exerciseRoute)
           putMap("exerciseRoute", exerciseRouteMap)
         }
 
@@ -175,6 +164,25 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
           putString("endTime", it.endTime.toString())
         }
         pushMap(map)
+      }
+    }
+  }
+
+  companion object {
+    fun parseExerciseRoute(exerciseRoute: ExerciseRoute): WritableNativeMap {
+      return WritableNativeMap().apply {
+        putArray("route", WritableNativeArray().apply {
+          exerciseRoute.route.map {
+            val map = WritableNativeMap()
+            map.putString("time", it.time.toString())
+            map.putDouble("latitude", it.latitude)
+            map.putDouble("longitude", it.longitude)
+            map.putMap("horizontalAccuracy", lengthToJsMap(it.horizontalAccuracy))
+            map.putMap("verticalAccuracy", lengthToJsMap(it.verticalAccuracy))
+            map.putMap("altitude", lengthToJsMap(it.altitude))
+            this.pushMap(map)
+          }
+        })
       }
     }
   }
