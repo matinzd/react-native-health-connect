@@ -156,7 +156,8 @@
   "codegenConfig": {
     "name": "RNHealthConnectSpec",
     "type": "modules",
-    "jsSrcsDir": "src"
+    "jsSrcsDir": "src",
+    "ios": {}
   },
   "commitlint": {
     "extends": [
