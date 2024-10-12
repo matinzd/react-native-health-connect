@@ -1,8 +1,10 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByDuration
 import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
+import androidx.health.connect.client.request.AggregateGroupByDurationRequest
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import com.facebook.react.bridge.ReadableArray
@@ -17,6 +19,7 @@ import dev.matinzd.healthconnect.utils.energyToJsMap
 import dev.matinzd.healthconnect.utils.getEnergyFromJsMap
 import dev.matinzd.healthconnect.utils.getTimeRangeFilter
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.mapJsDurationToDuration
 import dev.matinzd.healthconnect.utils.mapJsPeriodToPeriod
 import java.time.Instant
 
@@ -53,6 +56,15 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
     )
   }
 
+  override fun getAggregateGroupByDurationRequest(record: ReadableMap): AggregateGroupByDurationRequest {
+    return AggregateGroupByDurationRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapJsDurationToDuration(record.getMap("timeRangeSlicer")),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
   override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
     return AggregateGroupByPeriodRequest(
       metrics = aggregateMetrics,
@@ -84,6 +96,20 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
       }
       putMap("ACTIVE_CALORIES_TOTAL", map)
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  override fun parseAggregationResultGroupedByDuration(record: List<AggregationResultGroupedByDuration>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+          putString("zoneOffset", it.zoneOffset.toString())
+        }
+        pushMap(map)
+      }
     }
   }
 

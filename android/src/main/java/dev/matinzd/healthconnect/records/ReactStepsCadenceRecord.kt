@@ -1,8 +1,10 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByDuration
 import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.StepsCadenceRecord
+import androidx.health.connect.client.request.AggregateGroupByDurationRequest
 import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
@@ -62,6 +64,15 @@ class ReactStepsCadenceRecord : ReactHealthRecordImpl<StepsCadenceRecord> {
     )
   }
 
+  override fun getAggregateGroupByDurationRequest(record: ReadableMap): AggregateGroupByDurationRequest {
+    return AggregateGroupByDurationRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapJsDurationToDuration(record.getMap("timeRangeSlicer")),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
   override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
     return AggregateGroupByPeriodRequest(
       metrics = aggregateMetrics,
@@ -77,6 +88,20 @@ class ReactStepsCadenceRecord : ReactHealthRecordImpl<StepsCadenceRecord> {
       putDouble("RATE_MAX", record[StepsCadenceRecord.RATE_MAX]?.toDouble() ?: 0.0)
       putDouble("RATE_MIN", record[StepsCadenceRecord.RATE_MIN]?.toDouble() ?: 0.0)
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  override fun parseAggregationResultGroupedByDuration(record: List<AggregationResultGroupedByDuration>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+          putString("zoneOffset", it.zoneOffset.toString())
+        }
+        pushMap(map)
+      }
     }
   }
 
