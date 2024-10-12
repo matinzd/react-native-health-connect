@@ -15,6 +15,7 @@ import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.records.*
 import java.time.Instant
 import java.time.ZoneOffset
+import java.time.Duration
 import java.time.Period
 import kotlin.reflect.KClass
 
@@ -457,16 +458,31 @@ fun convertChangesTokenRequestOptionsFromJS(options: ReadableMap): ChangesTokenR
   )
 }
 
+fun mapJsDurationToDuration(duration: ReadableMap?): Duration {
+  if (duration == null) {
+    return Duration.ofDays(0)
+  }
+  val length = duration.getInt("length").toLong()
+  return when (duration.getString("duration")) {
+    "MILLIS" -> Duration.ofMillis(length)
+    "SECONDS" -> Duration.ofSeconds(length)
+    "MINUTES" -> Duration.ofMinutes(length)
+    "HOURS" -> Duration.ofHours(length)
+    "DAYS" -> Duration.ofDays(length)
+    else -> Duration.ofDays(length)
+  }
+}
+
 fun mapJsPeriodToPeriod(period: ReadableMap?): Period {
   if (period == null) {
     return Period.ofDays(0)
   }
-  val duration = period.getInt("duration")
+  val length = period.getInt("length")
   return when (period.getString("period")) {
-    "DAYS" -> Period.ofDays(duration)
-    "WEEKS" -> Period.ofWeeks(duration)
-    "MONTHS" -> Period.ofMonths(duration)
-    "YEARS" -> Period.ofYears(duration)
-    else -> Period.ofDays(duration)
+    "DAYS" -> Period.ofDays(length)
+    "WEEKS" -> Period.ofWeeks(length)
+    "MONTHS" -> Period.ofMonths(length)
+    "YEARS" -> Period.ofYears(length)
+    else -> Period.ofDays(length)
   }
 }

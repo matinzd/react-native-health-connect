@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Button, StyleSheet, View } from 'react-native';
 import {
   aggregateRecord,
+  aggregateGroupByDuration,
   aggregateGroupByPeriod,
   getGrantedPermissions,
   initialize,
@@ -21,20 +22,20 @@ import {
 } from 'react-native-health-connect';
 
 const getBeginningOfLast7Days = () => {
-  const day = new Date();
-  day.setDate(day.getDate() - 7);
-  day.setHours(0, 0, 0, 0);
-  return day;
+  const date = new Date();
+  date.setDate(date.getDate() - 7);
+  date.setHours(0, 0, 0, 0);
+  return date;
 };
 
 const getBeginningOfLast14Days = () => {
-  const day = new Date();
-  day.setDate(day.getDate() - 14);
-  day.setHours(0, 0, 0, 0);
-  return day;
+  const date = new Date();
+  date.setDate(date.getDate() - 14);
+  date.setHours(0, 0, 0, 0);
+  return date;
 };
 
-const getTodayDate = (): Date => {
+const now = () => {
   return new Date();
 };
 
@@ -73,17 +74,17 @@ export default function App() {
       (acc: HealthConnectRecord[], _, i) => {
         // Step count increases by 1000 starting from the first day (7 days ago)
         const stepCount = startingStepCount + i * 1000;
-        const day = new Date();
+        const date = new Date();
 
         // Get the date for each of the last 7 days, starting from 7 days ago (excluding today)
-        day.setDate(day.getDate() - (days - i));
+        date.setDate(date.getDate() - (days - i));
 
         // Set start time to 9am
-        const startTime = new Date(day);
+        const startTime = new Date(date);
         startTime.setHours(9, 0, 0, 0);
 
         // Set end time to 11am
-        const endTime = new Date(day);
+        const endTime = new Date(date);
         endTime.setHours(11, 0, 0, 0);
 
         const record: HealthConnectRecord = {
@@ -122,7 +123,7 @@ export default function App() {
       timeRangeFilter: {
         operator: 'between',
         startTime: getBeginningOfLast14Days().toISOString(),
-        endTime: getTodayDate().toISOString(),
+        endTime: now().toISOString(),
       },
     })
       .then((result) => {
@@ -149,10 +150,30 @@ export default function App() {
       timeRangeFilter: {
         operator: 'between',
         startTime: getBeginningOfLast7Days().toISOString(),
-        endTime: getTodayDate().toISOString(),
+        endTime: now().toISOString(),
       },
     }).then((result) => {
       console.log('Aggregated record: ', { result });
+    });
+  };
+
+  const aggregateSampleGroupByDuration = () => {
+    aggregateGroupByDuration({
+      recordType: 'Steps',
+      timeRangeFilter: {
+        operator: 'between',
+        startTime: getBeginningOfLast7Days().toISOString(),
+        endTime: now().toISOString(),
+      },
+      timeRangeSlicer: {
+        duration: 'DAYS',
+        length: 2,
+      },
+    }).then((result) => {
+      console.log(
+        'Aggregated Group by Duration: ',
+        JSON.stringify({ result }, null, 2)
+      );
     });
   };
 
@@ -162,14 +183,17 @@ export default function App() {
       timeRangeFilter: {
         operator: 'between',
         startTime: getBeginningOfLast7Days().toISOString(),
-        endTime: getTodayDate().toISOString(),
+        endTime: now().toISOString(),
       },
       timeRangeSlicer: {
         period: 'DAYS',
-        duration: 1,
+        length: 1,
       },
     }).then((result) => {
-      console.log('Aggregated Group: ', JSON.stringify({ result }, null, 2));
+      console.log(
+        'Aggregated Group by Period: ',
+        JSON.stringify({ result }, null, 2)
+      );
     });
   };
 
@@ -225,7 +249,11 @@ export default function App() {
       <Button title="Read specific data" onPress={readSampleDataSingle} />
       <Button title="Aggregate sample data" onPress={aggregateSampleData} />
       <Button
-        title="Aggregate sample group data"
+        title="Aggregate sample group data by duration"
+        onPress={aggregateSampleGroupByDuration}
+      />
+      <Button
+        title="Aggregate sample group data by period"
         onPress={aggregateSampleGroupByPeriod}
       />
     </View>

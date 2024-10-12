@@ -2,9 +2,11 @@ package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
 import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByDuration
 import androidx.health.connect.client.records.Record
 import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
+import androidx.health.connect.client.request.AggregateGroupByDurationRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.InsertRecordsResponse
 import androidx.health.connect.client.response.ReadRecordResponse
@@ -79,10 +81,22 @@ class ReactHealthRecord {
       return recordClass.getAggregateGroupByPeriodRequest(reactRequest)
     }
 
+    fun getAggregateGroupByDurationRequest(recordType: String, reactRequest: ReadableMap): AggregateGroupByDurationRequest {
+      val recordClass = createReactHealthRecordInstance<Record>(recordType)
+
+      return recordClass.getAggregateGroupByDurationRequest(reactRequest)
+    }
+
     fun parseAggregationResult(recordType: String, result: AggregationResult): WritableNativeMap {
       val recordClass = createReactHealthRecordInstance<Record>(recordType)
 
       return recordClass.parseAggregationResult(result)
+    }
+
+    fun parseAggregationResultGroupedByDuration(recordType: String, result: List<AggregationResultGroupedByDuration>): WritableNativeArray {
+      val recordClass = createReactHealthRecordInstance<Record>(recordType)
+
+      return recordClass.parseAggregationResultGroupedByDuration(result)
     }
 
     fun parseAggregationResultGroupedByPeriod(recordType: String, result: List<AggregationResultGroupedByPeriod>): WritableNativeArray {
