@@ -216,27 +216,28 @@ export default function App() {
   };
 
   const requestSamplePermissions = () => {
-    requestPermission(
-      [
-        {
-          accessType: 'read',
-          recordType: 'Steps',
-        },
-        {
-          accessType: 'write',
-          recordType: 'Steps',
-        },
-        {
-          accessType: 'write',
-          recordType: 'ExerciseSession',
-        },
-        {
-          accessType: 'read',
-          recordType: 'ExerciseSession',
-        },
-      ],
-      true
-    ).then((permissions) => {
+    requestPermission([
+      {
+        accessType: 'read',
+        recordType: 'Steps',
+      },
+      {
+        accessType: 'write',
+        recordType: 'Steps',
+      },
+      {
+        accessType: 'write',
+        recordType: 'ExerciseSession',
+      },
+      {
+        accessType: 'read',
+        recordType: 'ExerciseSession',
+      },
+      {
+        accessType: 'write',
+        recordType: 'ExerciseRoute',
+      },
+    ]).then((permissions) => {
       console.log('Granted permissions on request ', { permissions });
     });
   };
@@ -248,7 +249,9 @@ export default function App() {
   };
 
   const insertRandomExercise = () => {
-    const startTime = new Date('2021-09-01T00:00:00.000Z');
+    const startTime = new Date(
+      Date.now() - Math.random() * 1000 * 60 * 60 * 48
+    );
     insertRecords([
       {
         recordType: 'ExerciseSession',
@@ -274,6 +277,21 @@ export default function App() {
       })
       .catch((err) => {
         console.error('Error inserting records ', { err });
+      });
+  };
+
+  const readExercise = () => {
+    if (!recordId) {
+      console.error('Record ID is required');
+      return;
+    }
+
+    readRecord('ExerciseSession', recordId)
+      .then((exercise) => {
+        console.log('Exercise record: ', JSON.stringify(exercise, null, 2));
+      })
+      .catch((err) => {
+        console.error('Error reading exercise record ', { err });
       });
   };
 
@@ -325,6 +343,7 @@ export default function App() {
         value={recordId}
         onChange={updateRecordId}
       />
+      <Button title="Read exercise" onPress={readExercise} />
       <Button title="Request exercise route" onPress={readExerciseRoute} />
     </View>
   );

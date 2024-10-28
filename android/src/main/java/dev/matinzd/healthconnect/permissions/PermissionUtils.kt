@@ -1,5 +1,6 @@
 package dev.matinzd.healthconnect.permissions
 
+import android.util.Log
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.ExerciseSessionRecord
@@ -10,27 +11,27 @@ import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 
 class PermissionUtils {
   companion object {
-    fun parsePermissions(reactPermissions: ReadableArray, includeExerciseRoute: Boolean): Set<String> {
-      val setOfPermissions = reactPermissions.toArrayList().mapNotNull {
+    fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
+      return reactPermissions.toArrayList().mapNotNull {
         it as HashMap<*, *>
         val recordType = it["recordType"]
+        val accessType = it["accessType"]
+
+        Log.d("PermissionUtils","Access type $accessType and recordType $recordType")
+
+        if (accessType == "write" && recordType == "ExerciseRoute") {
+          return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
+        }
+
         val recordClass = reactRecordTypeToClassMap[recordType]
           ?: throw InvalidRecordType()
 
-        when (it["accessType"]) {
+        when (accessType) {
           "write" -> HealthPermission.getWritePermission(recordClass)
           "read" -> HealthPermission.getReadPermission(recordClass)
           else -> null
         }
       }.toSet()
-
-      val containsExercise = setOfPermissions.contains(HealthPermission.getWritePermission(ExerciseSessionRecord::class))
-
-      return if (containsExercise && includeExerciseRoute) {
-        setOfPermissions.plus(HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE)
-      } else {
-        setOfPermissions
-      }
     }
 
     suspend fun getGrantedPermissions(permissionController: PermissionController): WritableNativeArray {

@@ -18,7 +18,7 @@ abstract class HealthConnectSpec internal constructor(context: ReactApplicationC
   abstract fun openHealthConnectDataManagement(providerPackageName: String?);
 
   @ReactMethod
-  abstract fun requestPermission(permissions: ReadableArray, includeRoute: Boolean?, promise: Promise);
+  abstract fun requestPermission(permissions: ReadableArray, promise: Promise);
 
   @ReactMethod
   abstract fun requestExerciseRoute(recordId: String, promise: Promise);

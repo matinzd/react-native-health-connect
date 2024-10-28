@@ -1,7 +1,11 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 import type { TimeRangeSlicer } from './types/base.types';
-import type { HealthConnectRecord, Permission } from './types';
+import type {
+  HealthConnectRecord,
+  Permission,
+  WriteExerciseRoutePermission,
+} from './types';
 import type { ExerciseRoute } from './types/base.types';
 
 type ReadRecordsOptions = {
@@ -20,8 +24,7 @@ export interface Spec extends TurboModule {
   openHealthConnectSettings: () => void;
   openHealthConnectDataManagement: (providerPackageName?: string) => void;
   requestPermission(
-    permissions: Permission[],
-    includeRoute?: boolean
+    permissions: (Permission | WriteExerciseRoutePermission)[]
   ): Promise<Permission[]>;
   requestExerciseRoute(recordId: string): Promise<ExerciseRoute>;
   getGrantedPermissions(): Promise<Permission[]>;
