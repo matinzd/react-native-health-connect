@@ -200,6 +200,13 @@ export interface Location {
   altitude?: Length;
 }
 
+export enum ExerciseRouteResultType {
+  DATA,
+  NO_DATA,
+  CONSENT_REQUIRED,
+}
+
 export interface ExerciseRoute {
+  type?: ExerciseRouteResultType; // Nullable for write-only, reads always populate this
   route: Location[];
 }
