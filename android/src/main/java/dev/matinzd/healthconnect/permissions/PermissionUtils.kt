@@ -1,9 +1,7 @@
 package dev.matinzd.healthconnect.permissions
 
-import android.util.Log
 import androidx.health.connect.client.PermissionController
 import androidx.health.connect.client.permission.HealthPermission
-import androidx.health.connect.client.records.ExerciseSessionRecord
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.WritableNativeArray
 import dev.matinzd.healthconnect.utils.InvalidRecordType
@@ -16,8 +14,6 @@ class PermissionUtils {
         it as HashMap<*, *>
         val recordType = it["recordType"]
         val accessType = it["accessType"]
-
-        Log.d("PermissionUtils","Access type $accessType and recordType $recordType")
 
         if (accessType == "write" && recordType == "ExerciseRoute") {
           return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
