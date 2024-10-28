@@ -5,7 +5,8 @@ import type {
   PowerResult,
   PressureResult,
   TimeRangeFilter,
-  TimeRangeSlicer,
+  DurationRangeSlicer,
+  PeriodRangeSlicer,
   VelocityResult,
   VolumeResult,
 } from './base.types';
@@ -217,19 +218,26 @@ export type AggregateResult<T extends AggregateResultRecordType> = Omit<
   'recordType'
 >;
 
+export interface AggregateGroupByDurationRequest<
+  T extends AggregateResultRecordType
+> {
+  recordType: T;
+  timeRangeFilter: TimeRangeFilter;
+  timeRangeSlicer: DurationRangeSlicer;
+  dataOriginFilter?: string[];
+}
+
 export interface AggregateGroupByPeriodRequest<
   T extends AggregateResultRecordType
 > {
   recordType: T;
   timeRangeFilter: TimeRangeFilter;
-  timeRangeSlicer: TimeRangeSlicer;
+  timeRangeSlicer: PeriodRangeSlicer;
   dataOriginFilter?: string[];
 }
 
-export interface AggregationResultGroupedByPeriod<
-  T extends AggregateResultRecordType
-> {
-  result: AggregateRequest<T>;
+export interface AggregationGroupResult<T extends AggregateResultRecordType> {
+  result: AggregateResult<T>;
   startTime: string;
   endTime: string;
 }

@@ -1,8 +1,10 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByDuration
 import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.records.HeartRateRecord
+import androidx.health.connect.client.request.AggregateGroupByDurationRequest
 import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
@@ -63,6 +65,15 @@ class ReactHeartRateRecord : ReactHealthRecordImpl<HeartRateRecord> {
     )
   }
 
+  override fun getAggregateGroupByDurationRequest(record: ReadableMap): AggregateGroupByDurationRequest {
+    return AggregateGroupByDurationRequest(
+      metrics = aggregateMetrics,
+      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeSlicer = mapJsDurationToDuration(record.getMap("timeRangeSlicer")),
+      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    )
+  }
+
   override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
     return AggregateGroupByPeriodRequest(
       metrics = aggregateMetrics,
@@ -79,6 +90,20 @@ class ReactHeartRateRecord : ReactHealthRecordImpl<HeartRateRecord> {
       putDouble("BPM_MIN", record[HeartRateRecord.BPM_MIN]?.toDouble() ?: 0.0)
       putDouble("MEASUREMENTS_COUNT", record[HeartRateRecord.MEASUREMENTS_COUNT]?.toDouble() ?: 0.0)
       putArray("dataOrigins", convertDataOriginsToJsArray(record.dataOrigins))
+    }
+  }
+
+  override fun parseAggregationResultGroupedByDuration(record: List<AggregationResultGroupedByDuration>): WritableNativeArray {
+    return WritableNativeArray().apply {
+      record.forEach {
+        val map = WritableNativeMap().apply {
+          putMap("result", parseAggregationResult(it.result))
+          putString("startTime", it.startTime.toString())
+          putString("endTime", it.endTime.toString())
+          putString("zoneOffset", it.zoneOffset.toString())
+        }
+        pushMap(map)
+      }
     }
   }
 
