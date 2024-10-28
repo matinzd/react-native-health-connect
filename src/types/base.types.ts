@@ -207,6 +207,6 @@ export enum ExerciseRouteResultType {
 }
 
 export interface ExerciseRoute {
-  type?: ExerciseRouteResultType; // Nullable for write-only, reads always populate this
+  type?: ExerciseRouteResultType; // ReadRecord(s) will always populate this, write and readExerciseRoute will not
   route: Location[];
 }
