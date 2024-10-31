@@ -167,6 +167,24 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     }
   }
 
+  fun aggregateGroupByDuration(record: ReadableMap, promise: Promise) {
+    throwUnlessClientIsAvailable(promise) {
+      coroutineScope.launch {
+        try {
+          val recordType = record.getString("recordType") ?: ""
+          val response = healthConnectClient.aggregateGroupByDuration(
+            ReactHealthRecord.getAggregateGroupByDurationRequest(
+              recordType, record
+            )
+          )
+          promise.resolve(ReactHealthRecord.parseAggregationResultGroupedByDuration(recordType, response))
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
+        }
+      }
+    }
+  }
+
   fun aggregateGroupByPeriod(record: ReadableMap, promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {

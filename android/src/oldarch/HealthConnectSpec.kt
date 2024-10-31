@@ -42,6 +42,9 @@ abstract class HealthConnectSpec internal constructor(context: ReactApplicationC
   abstract fun aggregateRecord(record: ReadableMap, promise: Promise);
 
   @ReactMethod
+  abstract fun aggregateGroupByDuration(record: ReadableMap, promise: Promise);
+
+  @ReactMethod
   abstract fun aggregateGroupByPeriod(record: ReadableMap, promise: Promise);
 
   @ReactMethod
