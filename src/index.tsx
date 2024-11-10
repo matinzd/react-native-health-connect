@@ -15,8 +15,9 @@ import type {
   ReadRecordsResult,
   GetChangesRequest,
   GetChangesResults,
+  WriteExerciseRoutePermission,
 } from './types';
-import type { TimeRangeFilter } from './types/base.types';
+import type { ExerciseRoute, TimeRangeFilter } from './types/base.types';
 
 const LINKING_ERROR =
   `The package 'react-native-health-connect' doesn't seem to be linked. Make sure: \n\n` +
@@ -97,17 +98,20 @@ export function openHealthConnectDataManagement(
  * @returns granted permissions
  */
 export function requestPermission(
-  permissions: Permission[],
-  providerPackageName = DEFAULT_PROVIDER_PACKAGE_NAME
+  permissions: (Permission | WriteExerciseRoutePermission)[]
 ): Promise<Permission[]> {
-  return HealthConnect.requestPermission(permissions, providerPackageName);
+  return HealthConnect.requestPermission(permissions);
+}
+
+export function requestExerciseRoute(recordId: string): Promise<ExerciseRoute> {
+  return HealthConnect.requestExerciseRoute(recordId);
 }
 
 export function getGrantedPermissions(): Promise<Permission[]> {
   return HealthConnect.getGrantedPermissions();
 }
 
-export function revokeAllPermissions(): void {
+export function revokeAllPermissions(): Promise<void> {
   return HealthConnect.revokeAllPermissions();
 }
 

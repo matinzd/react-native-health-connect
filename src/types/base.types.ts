@@ -207,6 +207,13 @@ export interface Location {
   altitude?: Length;
 }
 
+export enum ExerciseRouteResultType {
+  DATA,
+  NO_DATA,
+  CONSENT_REQUIRED,
+}
+
 export interface ExerciseRoute {
+  type?: ExerciseRouteResultType; // ReadRecord(s) will always populate this, write and readExerciseRoute will not
   route: Location[];
 }

@@ -13,6 +13,7 @@ import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.ReadableNativeArray
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.utils.*
@@ -103,36 +104,26 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
       })
 
 
+      val exerciseRouteMap = WritableNativeMap()
       when (record.exerciseRouteResult) {
         is ExerciseRouteResult.Data -> {
-          val exerciseRouteMap = WritableNativeMap()
-          exerciseRouteMap.putArray("route", WritableNativeArray().apply {
-            (record.exerciseRouteResult as ExerciseRouteResult.Data).exerciseRoute.route.map {
-              val map = WritableNativeMap()
-              map.putString("time", it.time.toString())
-              map.putDouble("latitude", it.latitude)
-              map.putDouble("longitude", it.longitude)
-              map.putMap("horizontalAccuracy", lengthToJsMap(it.horizontalAccuracy))
-              map.putMap("verticalAccuracy", lengthToJsMap(it.verticalAccuracy))
-              map.putMap("altitude", lengthToJsMap(it.altitude))
-              this.pushMap(map)
-            }
-          })
-          putMap("exerciseRoute", exerciseRouteMap)
+          val exerciseRoute: ExerciseRoute =
+            (record.exerciseRouteResult as ExerciseRouteResult.Data).exerciseRoute
+          val route = parseExerciseRoute(exerciseRoute)
+          exerciseRouteMap.putString("type", "DATA")
+          exerciseRouteMap.putArray("route", route)
         }
-
         is ExerciseRouteResult.NoData -> {
-          putMap("exerciseRoute", WritableNativeMap())
-        }
+          exerciseRouteMap.putString("type", "NO_DATA")
+          exerciseRouteMap.putArray("route", WritableNativeArray())
 
+        }
         is ExerciseRouteResult.ConsentRequired -> {
-          throw Exception("Consent required")
-        }
-
-        else -> {
-          putMap("exerciseRoute", WritableNativeMap())
+          exerciseRouteMap.putString("type", "CONSENT_REQUIRED")
+          exerciseRouteMap.putArray("route", WritableNativeArray())
         }
       }
+      putMap("exerciseRoute", exerciseRouteMap)
 
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
@@ -200,6 +191,23 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
           putString("endTime", it.endTime.toString())
         }
         pushMap(map)
+      }
+    }
+  }
+
+  companion object {
+    fun parseExerciseRoute(exerciseRoute: ExerciseRoute): ReadableNativeArray {
+      return WritableNativeArray().apply {
+          exerciseRoute.route.map {
+            val map = WritableNativeMap()
+            map.putString("time", it.time.toString())
+            map.putDouble("latitude", it.latitude)
+            map.putDouble("longitude", it.longitude)
+            map.putMap("horizontalAccuracy", lengthToJsMap(it.horizontalAccuracy))
+            map.putMap("verticalAccuracy", lengthToJsMap(it.verticalAccuracy))
+            map.putMap("altitude", lengthToJsMap(it.altitude))
+            this.pushMap(map)
+        }
       }
     }
   }

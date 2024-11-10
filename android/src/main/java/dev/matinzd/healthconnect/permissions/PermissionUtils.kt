@@ -13,10 +13,16 @@ class PermissionUtils {
       return reactPermissions.toArrayList().mapNotNull {
         it as HashMap<*, *>
         val recordType = it["recordType"]
+        val accessType = it["accessType"]
+
+        if (accessType == "write" && recordType == "ExerciseRoute") {
+          return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
+        }
+
         val recordClass = reactRecordTypeToClassMap[recordType]
           ?: throw InvalidRecordType()
 
-        when (it["accessType"]) {
+        when (accessType) {
           "write" -> HealthPermission.getWritePermission(recordClass)
           "read" -> HealthPermission.getReadPermission(recordClass)
           else -> null
