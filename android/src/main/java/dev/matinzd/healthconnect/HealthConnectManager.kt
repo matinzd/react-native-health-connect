@@ -255,12 +255,17 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
       coroutineScope.launch {
         val record = reactRecordTypeToClassMap[recordType]
         if (record != null) {
-          healthConnectClient.deleteRecords(
-            recordType = record,
-            recordIdsList = recordIdsList.toArrayList().mapNotNull { it.toString() }.toList(),
-            clientRecordIdsList = if (clientRecordIdsList.size() > 0) clientRecordIdsList.toArrayList()
-              .mapNotNull { it.toString() }.toList() else emptyList()
-          )
+          try {
+            healthConnectClient.deleteRecords(
+              recordType = record,
+              recordIdsList = recordIdsList.toArrayList().mapNotNull { it.toString() }.toList(),
+              clientRecordIdsList = if (clientRecordIdsList.size() > 0) clientRecordIdsList.toArrayList()
+                .mapNotNull { it.toString() }.toList() else emptyList()
+            )
+            promise.resolve(true)
+          } catch (e: Exception) {
+            promise.rejectWithException(e)
+          }
         }
       }
     }
@@ -273,9 +278,13 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
       coroutineScope.launch {
         val record = reactRecordTypeToClassMap[recordType]
         if (record != null) {
-          healthConnectClient.deleteRecords(
-            recordType = record, timeRangeFilter = timeRangeFilter.getTimeRangeFilter()
-          )
+          try {
+            healthConnectClient.deleteRecords(
+              recordType = record, timeRangeFilter = timeRangeFilter.getTimeRangeFilter()
+            )
+          } catch (e: Exception) {
+            promise.rejectWithException(e)
+          }
         }
       }
     }
