@@ -282,6 +282,7 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
             healthConnectClient.deleteRecords(
               recordType = record, timeRangeFilter = timeRangeFilter.getTimeRangeFilter()
             )
+            promise.resolve(true)
           } catch (e: Exception) {
             promise.rejectWithException(e)
           }
