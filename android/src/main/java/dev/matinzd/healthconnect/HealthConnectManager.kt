@@ -259,8 +259,7 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
             healthConnectClient.deleteRecords(
               recordType = record,
               recordIdsList = recordIdsList.toArrayList().mapNotNull { it.toString() }.toList(),
-              clientRecordIdsList = if (clientRecordIdsList.size() > 0) clientRecordIdsList.toArrayList()
-                .mapNotNull { it.toString() }.toList() else emptyList()
+              clientRecordIdsList = clientRecordIdsList.toArrayList().mapNotNull { it.toString() }.toList()
             )
             promise.resolve(true)
           } catch (e: Exception) {
