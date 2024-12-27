@@ -24,7 +24,7 @@ class ReactVo2MaxRecord : ReactHealthRecordImpl<Vo2MaxRecord> {
       Vo2MaxRecord(
         time = Instant.parse(map.getString("time")),
         zoneOffset = null,
-        vo2MillilitersPerMinuteKilogram = map.getDouble("vo2Max"),
+        vo2MillilitersPerMinuteKilogram = map.getDouble("vo2MillilitersPerMinuteKilogram"),
         measurementMethod = map.getSafeInt(
           "measurementMethod",
           Vo2MaxRecord.MEASUREMENT_METHOD_OTHER
