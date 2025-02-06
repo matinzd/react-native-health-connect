@@ -19,6 +19,10 @@ class PermissionUtils {
           return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
         }
 
+        if(accessType == "read" && recordType == "ReadHealthDataInBackground") {
+          return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
+        }
+
         val recordClass = reactRecordTypeToClassMap[recordType]
           ?: throw InvalidRecordType()
 
