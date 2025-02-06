@@ -113,6 +113,10 @@ export interface ExerciseSessionRecord extends IntervalRecord {
   exerciseRoute?: ExerciseRoute;
 }
 
+interface PermissionReadHealthDataInBackground {
+  recordType: 'ReadHealthDataInBackground'
+}
+
 export interface FloorsClimbedRecord extends IntervalRecord {
   recordType: 'FloorsClimbed';
   floors: number;
@@ -331,6 +335,7 @@ export interface PowerRecord extends IntervalRecord {
 }
 
 export type HealthConnectRecord =
+  | PermissionReadHealthDataInBackground
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
   | BasalMetabolicRateRecord
