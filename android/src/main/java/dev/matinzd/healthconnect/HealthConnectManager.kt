@@ -95,6 +95,7 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
         healthConnectClient.permissionController.revokeAllPermissions()
+        promise.resolve(true)
       }
     }
   }
