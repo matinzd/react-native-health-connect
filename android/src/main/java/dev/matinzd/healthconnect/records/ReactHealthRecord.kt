@@ -52,7 +52,7 @@ class ReactHealthRecord {
     }
 
     fun parseWriteRecords(reactRecords: ReadableArray): List<Record> {
-      val recordType = reactRecords.getMap(0).getString("recordType")
+      val recordType = reactRecords.getMap(0)!!.getString("recordType")
 
       val recordClass = createReactHealthRecordInstance<Record>(recordType)
 
