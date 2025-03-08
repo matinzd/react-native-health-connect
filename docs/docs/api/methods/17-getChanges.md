@@ -20,6 +20,7 @@ import {
 const changeRes = await getChanges({
   recordTypes: ['Nutrition', 'HeartRate'], // RecordType[]
   changesToken: undefined, // string | undefined
+  dataOriginFilter: [] // optional array for more specific filtering by dataOrigin
 })
 
 const {
