@@ -18,9 +18,9 @@ import {
 } from "react-native-health-connect";
 
 const changeRes = await getChanges({
-        recordTypes: ['Nutrition', 'HeartRate'], // RecordType[]
-        changesToken: undefined, // string | undefined
-      })
+  recordTypes: ['Nutrition', 'HeartRate'], // RecordType[]
+  changesToken: undefined, // string | undefined
+})
 
 const {
   upsertionChanges, // Array<{ record: HealthConnectRecord }>
