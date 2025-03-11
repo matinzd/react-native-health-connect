@@ -14,9 +14,14 @@ import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.records.*
 import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.time.ZoneOffset
 import java.time.Duration
 import java.time.Period
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import kotlin.reflect.KClass
 
 fun <T : Record> convertReactRequestOptionsFromJS(
@@ -83,6 +88,33 @@ fun ReadableMap.getSafeDouble(key: String, default: Double): Double {
   return if (this.hasKey(key)) this.getDouble(key) else default
 }
 
+fun parseDateTime(dateTimeString: String?): LocalDateTime? {
+  if (dateTimeString == null) return null
+
+  try {
+    // First try to parse as Instant (handles formats with Z or offset)
+    val instant = Instant.parse(dateTimeString)
+    return LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+  } catch (e: DateTimeParseException) {
+    try {
+      // Then try direct LocalDateTime parsing
+      return LocalDateTime.parse(dateTimeString)
+    } catch (e: DateTimeParseException) {
+      try {
+        // Then try parsing as ZonedDateTime
+        return ZonedDateTime.parse(dateTimeString)
+          .withZoneSameInstant(ZoneId.systemDefault())
+          .toLocalDateTime()
+      } catch (e: DateTimeParseException) {
+        // Add more fallback parsing strategies if needed
+
+        // If all else fails, throw an exception
+        throw IllegalArgumentException("Unable to parse date-time: $dateTimeString", e)
+      }
+    }
+  }
+}
+
 fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
   val timeRangeFilter = if (key != null) this.getMap(key)
     ?: throw Exception("Time range filter should be provided") else this
@@ -90,10 +122,10 @@ fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
   val operator = timeRangeFilter.getString("operator")
 
   val startTime =
-    if (timeRangeFilter.hasKey("startTime")) Instant.parse(timeRangeFilter.getString("startTime")) else null
+    if (timeRangeFilter.hasKey("startTime")) parseDateTime(timeRangeFilter.getString("startTime")) else null
 
   val endTime =
-    if (timeRangeFilter.hasKey("endTime")) Instant.parse(timeRangeFilter.getString("endTime")) else null
+    if (timeRangeFilter.hasKey("endTime")) parseDateTime(timeRangeFilter.getString("endTime")) else null
 
   when (operator) {
     "between" -> {
