@@ -16,6 +16,7 @@ import type {
   GetChangesRequest,
   GetChangesResults,
   WriteExerciseRoutePermission,
+  ReadHealthDataHistoryPermission,
 } from './types';
 import type { ExerciseRoute, TimeRangeFilter } from './types/base.types';
 
@@ -98,7 +99,11 @@ export function openHealthConnectDataManagement(
  * @returns granted permissions
  */
 export function requestPermission(
-  permissions: (Permission | WriteExerciseRoutePermission)[]
+  permissions: (
+    | Permission
+    | WriteExerciseRoutePermission
+    | ReadHealthDataHistoryPermission
+  )[]
 ): Promise<Permission[]> {
   return HealthConnect.requestPermission(permissions);
 }
