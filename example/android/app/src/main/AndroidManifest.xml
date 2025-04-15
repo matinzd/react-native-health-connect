@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.health.WRITE_EXERCISE"/>
     <uses-permission android:name="android.permission.health.READ_EXERCISE_ROUTES"/>
     <uses-permission android:name="android.permission.health.WRITE_EXERCISE_ROUTE"/>
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"/>
 
     <application
       android:name=".MainApplication"

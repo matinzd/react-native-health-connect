@@ -10,32 +10,41 @@ import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 class PermissionUtils {
   companion object {
     fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
-      return reactPermissions.toArrayList().mapNotNull {
-        it as HashMap<*, *>
-        val recordType = it["recordType"]
-        val accessType = it["accessType"]
+      return reactPermissions
+              .toArrayList()
+              .mapNotNull {
+                it as HashMap<*, *>
+                val recordType = it["recordType"]
+                val accessType = it["accessType"]
 
-        if (accessType == "write" && recordType == "ExerciseRoute") {
-          return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
-        }
+                if (accessType == "write" && recordType == "ExerciseRoute") {
+                  return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
+                }
 
-        val recordClass = reactRecordTypeToClassMap[recordType]
-          ?: throw InvalidRecordType()
+                if (accessType == "read" && recordType == "BackgroundAccessPermission") {
+                  return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
+                }
 
-        when (accessType) {
-          "write" -> HealthPermission.getWritePermission(recordClass)
-          "read" -> HealthPermission.getReadPermission(recordClass)
-          else -> null
-        }
-      }.toSet()
+                val recordClass = reactRecordTypeToClassMap[recordType] ?: throw InvalidRecordType()
+
+                when (accessType) {
+                  "write" -> HealthPermission.getWritePermission(recordClass)
+                  "read" -> HealthPermission.getReadPermission(recordClass)
+                  else -> null
+                }
+              }
+              .toSet()
     }
 
-    suspend fun getGrantedPermissions(permissionController: PermissionController): WritableNativeArray {
+    suspend fun getGrantedPermissions(
+            permissionController: PermissionController
+    ): WritableNativeArray {
       return mapPermissionResult(permissionController.getGrantedPermissions())
     }
 
     fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
       return WritableNativeArray().apply {
+        // Handle regular permissions
         for ((recordType, recordClass) in reactRecordTypeToClassMap) {
           val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
           val writePermissionForRecord = HealthPermission.getWritePermission(recordClass)
@@ -48,8 +57,17 @@ class PermissionUtils {
             pushMap(ReactPermission(AccessType.WRITE, recordType).toReadableMap())
           }
         }
+
+        // Handle special permissions
+        if (grantedPermissions.contains(HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE)) {
+          pushMap(ReactPermission(AccessType.WRITE, "ExerciseRoute").toReadableMap())
+        }
+
+        if (grantedPermissions.contains(HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND)
+        ) {
+          pushMap(ReactPermission(AccessType.READ, "BackgroundAccessPermission").toReadableMap())
+        }
       }
     }
-
   }
 }

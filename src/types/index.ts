@@ -9,6 +9,28 @@ export interface WriteExerciseRoutePermission {
   accessType: 'write';
   recordType: 'ExerciseRoute';
 }
+export interface BackgroundAccessPermission {
+  accessType: 'read';
+  recordType: 'BackgroundAccessPermission';
+}
+
+/**
+ * Response from revokeAllPermissions function
+ */
+export interface RevokeAllPermissionsResponse {
+  /**
+   * Whether the revocation request was successful
+   */
+  revoked: boolean;
+  /**
+   * On Android 14+, indicates that the app needs to be restarted for the revocation to take effect
+   */
+  requiresRestart?: boolean;
+  /**
+   * Additional information about the revocation status
+   */
+  message?: string;
+}
 
 export * from './records.types';
 export * from './results.types';
