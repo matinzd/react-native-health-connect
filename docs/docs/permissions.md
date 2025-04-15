@@ -159,3 +159,48 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | WriteExerciseRoute       | android.permission.health.WRITE_EXERCISE_ROUTE      | N/A      |
 
 You can read more about data types and permissions [here](https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/data-types).
+
+## Special Permissions
+
+In addition to the standard record type permissions, Health Connect provides special permissions for specific functionality:
+
+### Background Access Permission
+
+This permission allows your app to read health data in the background, even when your app is not in the foreground.
+
+First, add the background access permission to your `AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"/>
+```
+
+Then, request the permission in your app:
+
+```ts
+// Request background access permission
+requestPermission([
+  {
+    accessType: 'read',
+    recordType: 'BackgroundAccessPermission',
+  },
+  // Other permissions...
+]);
+```
+
+Under the hood, this maps to `HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND` in the Android Health Connect API.
+
+See the [Background Access Permission](./api/methods/17-backgroundAccessPermission.md) documentation for more details.
+
+### Exercise Route Permission
+
+This special permission is required to write exercise routes:
+
+```ts
+requestPermission([
+  {
+    accessType: 'write',
+    recordType: 'ExerciseRoute',
+  },
+  // Other permissions...
+]);
+```
