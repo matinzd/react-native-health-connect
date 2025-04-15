@@ -8,7 +8,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:7.2.1"
+    classpath "com.android.tools.build:gradle:8.1.2"
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
@@ -92,7 +92,7 @@ dependencies {
   implementation "com.facebook.react:react-native"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-  implementation "androidx.health.connect:connect-client:1.1.0-alpha06"
+  implementation "androidx.health.connect:connect-client:1.1.0-alpha10"
 }
 
 if (isNewArchitectureEnabled()) {
