@@ -20,3 +20,10 @@ title: Overview
 | aggregateRecord           | Reads aggregated results according to requested read criteria, for e.g, data origin filter and within a time range.                                                                                                                       |
 | deleteRecordsByUuids      | Deletes one or more records by their identifiers. Deletion of multiple records is executed in a single transaction - if one fails, none is deleted.                                                                                       |
 | deleteRecordsByTimeRange  | Deletes any record of the given record type in the given time range (automatically filtered to a record belonging to the calling application). Deletion of multiple records is executed in a transaction - if one fails, none is deleted. |
+| requestExerciseRoute | Requests permission to access exercise route data for a specific exercise session. |
+
+## Special Permissions
+
+| **Permission Type**        | **Description**                                                                                                                                                                                                                           |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BackgroundAccessPermission | Allows your app to read health data in the background, even when your app is not in the foreground. |

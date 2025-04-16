@@ -16,6 +16,8 @@ import type {
   GetChangesRequest,
   GetChangesResults,
   WriteExerciseRoutePermission,
+  BackgroundAccessPermission,
+  RevokeAllPermissionsResponse,
 } from './types';
 import type { ExerciseRoute, TimeRangeFilter } from './types/base.types';
 
@@ -95,11 +97,17 @@ export function openHealthConnectDataManagement(
 /**
  * Request permissions to access Health Connect data
  * @param permissions list of permissions to request
- * @returns granted permissions
+ * @returns granted permissions, including special permissions like WriteExerciseRoutePermission and BackgroundAccessPermission
  */
 export function requestPermission(
-  permissions: (Permission | WriteExerciseRoutePermission)[]
-): Promise<Permission[]> {
+  permissions: (
+    | Permission
+    | WriteExerciseRoutePermission
+    | BackgroundAccessPermission
+  )[]
+): Promise<
+  (Permission | WriteExerciseRoutePermission | BackgroundAccessPermission)[]
+> {
   return HealthConnect.requestPermission(permissions);
 }
 
@@ -107,11 +115,24 @@ export function requestExerciseRoute(recordId: string): Promise<ExerciseRoute> {
   return HealthConnect.requestExerciseRoute(recordId);
 }
 
-export function getGrantedPermissions(): Promise<Permission[]> {
+/**
+ * Returns a set of all health permissions granted by the user to the calling app.
+ * This includes regular permissions as well as special permissions like WriteExerciseRoutePermission and BackgroundAccessPermission.
+ * @returns A promise that resolves to an array of granted permissions
+ */
+export function getGrantedPermissions(): Promise<
+  (Permission | WriteExerciseRoutePermission | BackgroundAccessPermission)[]
+> {
   return HealthConnect.getGrantedPermissions();
 }
 
-export function revokeAllPermissions(): Promise<void> {
+/**
+ * Revokes all previously granted permissions by the user to the calling app.
+ * On Android 14+, permissions are not immediately revoked. They will be revoked when the app restarts.
+ * @returns A promise that resolves to a RevokeAllPermissionsResponse object containing information about the revocation status,
+ * or void for backward compatibility with older versions
+ */
+export function revokeAllPermissions(): Promise<RevokeAllPermissionsResponse | void> {
   return HealthConnect.revokeAllPermissions();
 }
 
