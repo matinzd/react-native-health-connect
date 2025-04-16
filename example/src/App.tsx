@@ -261,6 +261,10 @@ export default function App() {
         accessType: 'write',
         recordType: 'ExerciseRoute',
       },
+      {
+        accessType: 'read',
+        recordType: 'ReadHealthDataHistory',
+      },
     ]).then((permissions) => {
       console.log('Granted permissions on request ', { permissions });
     });
