@@ -3,6 +3,7 @@ import * as React from 'react';
 import {
   Button,
   NativeSyntheticEvent,
+  ScrollView,
   StyleSheet,
   TextInput,
   TextInputChangeEventData,
@@ -243,6 +244,10 @@ export default function App() {
     requestPermission([
       {
         accessType: 'read',
+        recordType: 'BackgroundAccessPermission',
+      },
+      {
+        accessType: 'read',
         recordType: 'Steps',
       },
       {
@@ -335,45 +340,47 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <Button title="Initialize" onPress={initializeHealthConnect} />
-      <Button
-        title="Open Health Connect settings"
-        onPress={openHealthConnectSettings}
-      />
-      <Button
-        title="Open Health Connect data management"
-        onPress={() => openHealthConnectDataManagement()}
-      />
-      <Button title="Check availability" onPress={checkAvailability} />
-      <Button
-        title="Request sample permissions"
-        onPress={requestSamplePermissions}
-      />
-      <Button title="Get granted permissions" onPress={grantedPermissions} />
-      <Button title="Revoke all permissions" onPress={revokeAllPermissions} />
-      <Button title="Insert sample data" onPress={insertSampleData} />
-      <Button title="Read sample data" onPress={readSampleData} />
-      <Button title="Read specific data" onPress={readSampleDataSingle} />
-      <Button title="Aggregate sample data" onPress={aggregateSampleData} />
-      <Button
-        title="Aggregate sample group data by duration"
-        onPress={aggregateSampleGroupByDuration}
-      />
-      <Button
-        title="Aggregate sample group data by period"
-        onPress={aggregateSampleGroupByPeriod}
-      />
-      <Button title="Insert random exercise" onPress={insertRandomExercise} />
-      <TextInput
-        id="record-id"
-        placeholder="Record ID"
-        value={recordId}
-        onChange={updateRecordId}
-      />
-      <Button title="Read exercise" onPress={readExercise} />
-      <Button title="Request exercise route" onPress={readExerciseRoute} />
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <Button title="Initialize" onPress={initializeHealthConnect} />
+        <Button
+          title="Open Health Connect settings"
+          onPress={openHealthConnectSettings}
+        />
+        <Button
+          title="Open Health Connect data management"
+          onPress={() => openHealthConnectDataManagement()}
+        />
+        <Button title="Check availability" onPress={checkAvailability} />
+        <Button
+          title="Request sample permissions"
+          onPress={requestSamplePermissions}
+        />
+        <Button title="Get granted permissions" onPress={grantedPermissions} />
+        <Button title="Revoke all permissions" onPress={revokeAllPermissions} />
+        <Button title="Insert sample data" onPress={insertSampleData} />
+        <Button title="Read sample data" onPress={readSampleData} />
+        <Button title="Read specific data" onPress={readSampleDataSingle} />
+        <Button title="Aggregate sample data" onPress={aggregateSampleData} />
+        <Button
+          title="Aggregate sample group data by duration"
+          onPress={aggregateSampleGroupByDuration}
+        />
+        <Button
+          title="Aggregate sample group data by period"
+          onPress={aggregateSampleGroupByPeriod}
+        />
+        <Button title="Insert random exercise" onPress={insertRandomExercise} />
+        <TextInput
+          id="record-id"
+          placeholder="Record ID"
+          value={recordId}
+          onChange={updateRecordId}
+        />
+        <Button title="Read exercise" onPress={readExercise} />
+        <Button title="Request exercise route" onPress={readExerciseRoute} />
+      </View>
+    </ScrollView>
   );
 }
 
@@ -383,6 +390,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     rowGap: 16,
+    padding: 16,
   },
   box: {
     width: 60,
