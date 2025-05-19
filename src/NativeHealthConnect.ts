@@ -4,6 +4,7 @@ import type {
   HealthConnectRecord,
   Permission,
   WriteExerciseRoutePermission,
+  ReadHealthDataHistoryPermission,
 } from './types';
 import type { ExerciseRoute } from './types/base.types';
 
@@ -23,7 +24,11 @@ export interface Spec extends TurboModule {
   openHealthConnectSettings: () => void;
   openHealthConnectDataManagement: (providerPackageName?: string) => void;
   requestPermission(
-    permissions: (Permission | WriteExerciseRoutePermission)[]
+    permissions: (
+      | Permission
+      | WriteExerciseRoutePermission
+      | ReadHealthDataHistoryPermission
+    )[]
   ): Promise<Permission[]>;
   requestExerciseRoute(recordId: string): Promise<ExerciseRoute>;
   getGrantedPermissions(): Promise<Permission[]>;
