@@ -104,7 +104,7 @@ export function requestPermission(
     | WriteExerciseRoutePermission
     | ReadHealthDataHistoryPermission
   )[]
-): Promise<Permission[]> {
+): Promise<(Permission | WriteExerciseRoutePermission)[]> {
   return HealthConnect.requestPermission(permissions);
 }
 
@@ -112,7 +112,9 @@ export function requestExerciseRoute(recordId: string): Promise<ExerciseRoute> {
   return HealthConnect.requestExerciseRoute(recordId);
 }
 
-export function getGrantedPermissions(): Promise<Permission[]> {
+export function getGrantedPermissions(): Promise<
+  (Permission | WriteExerciseRoutePermission)[]
+> {
   return HealthConnect.getGrantedPermissions();
 }
 

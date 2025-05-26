@@ -40,6 +40,7 @@ class PermissionUtils {
 
     fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
       return WritableNativeArray().apply {
+        // Add read and write permissions for all record types
         for ((recordType, recordClass) in reactRecordTypeToClassMap) {
           val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
           val writePermissionForRecord = HealthPermission.getWritePermission(recordClass)
@@ -51,6 +52,11 @@ class PermissionUtils {
           if (grantedPermissions.contains(writePermissionForRecord)) {
             pushMap(ReactPermission(AccessType.WRITE, recordType).toReadableMap())
           }
+        }
+
+        // ExerciseRoute isn't a record type, so we need to add it manually
+        if (grantedPermissions.contains(HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE)) {
+          pushMap(ReactPermission(AccessType.WRITE, "ExerciseRoute").toReadableMap())
         }
       }
     }
