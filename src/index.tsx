@@ -16,6 +16,7 @@ import type {
   GetChangesRequest,
   GetChangesResults,
   WriteExerciseRoutePermission,
+  ReadHealthDataHistoryPermission,
   BackgroundAccessPermission,
   RevokeAllPermissionsResponse,
 } from './types';
@@ -104,9 +105,15 @@ export function requestPermission(
     | Permission
     | WriteExerciseRoutePermission
     | BackgroundAccessPermission
+    | ReadHealthDataHistoryPermission
   )[]
 ): Promise<
-  (Permission | WriteExerciseRoutePermission | BackgroundAccessPermission)[]
+  (
+    | Permission
+    | WriteExerciseRoutePermission
+    | ReadHealthDataHistoryPermission
+    | BackgroundAccessPermission
+  )[]
 > {
   return HealthConnect.requestPermission(permissions);
 }

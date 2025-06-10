@@ -32,6 +32,11 @@ export interface RevokeAllPermissionsResponse {
   message?: string;
 }
 
+export interface ReadHealthDataHistoryPermission {
+  accessType: 'read';
+  recordType: 'ReadHealthDataHistory';
+}
+
 export * from './records.types';
 export * from './results.types';
 export * from './aggregate.types';

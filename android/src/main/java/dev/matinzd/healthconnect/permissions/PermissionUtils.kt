@@ -10,35 +10,34 @@ import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 class PermissionUtils {
   companion object {
     fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
-      return reactPermissions
-              .toArrayList()
-              .mapNotNull {
-                it as HashMap<*, *>
-                val recordType = it["recordType"]
-                val accessType = it["accessType"]
+      return reactPermissions.toArrayList().mapNotNull {
+        it as HashMap<*, *>
+        val recordType = it["recordType"]
+        val accessType = it["accessType"]
 
-                if (accessType == "write" && recordType == "ExerciseRoute") {
-                  return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
-                }
+        if (accessType == "write" && recordType == "ExerciseRoute") {
+          return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
+        }
 
-                if (accessType == "read" && recordType == "BackgroundAccessPermission") {
-                  return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
-                }
+        if (accessType == "read" && recordType == "ReadHealthDataHistory") {
+          return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_HISTORY
+        }
 
-                val recordClass = reactRecordTypeToClassMap[recordType] ?: throw InvalidRecordType()
+        if (accessType == "read" && recordType == "BackgroundAccessPermission") {
+          return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
+        }
 
-                when (accessType) {
-                  "write" -> HealthPermission.getWritePermission(recordClass)
-                  "read" -> HealthPermission.getReadPermission(recordClass)
-                  else -> null
-                }
-              }
-              .toSet()
+        val recordClass = reactRecordTypeToClassMap[recordType] ?: throw InvalidRecordType()
+
+        when (accessType) {
+          "write" -> HealthPermission.getWritePermission(recordClass)
+          "read" -> HealthPermission.getReadPermission(recordClass)
+          else -> null
+        }
+      }.toSet()
     }
 
-    suspend fun getGrantedPermissions(
-            permissionController: PermissionController
-    ): WritableNativeArray {
+    suspend fun getGrantedPermissions(permissionController: PermissionController): WritableNativeArray {
       return mapPermissionResult(permissionController.getGrantedPermissions())
     }
 
