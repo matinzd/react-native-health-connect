@@ -1,36 +1,40 @@
 import * as React from 'react';
 
 import {
+  Alert,
   Button,
-  NativeSyntheticEvent,
   ScrollView,
+  StatusBar,
   StyleSheet,
-  TextInput,
-  TextInputChangeEventData,
   View,
 } from 'react-native';
 import {
-  aggregateRecord,
   aggregateGroupByDuration,
   aggregateGroupByPeriod,
+  aggregateRecord,
+  DeviceType,
+  ExerciseType,
   getGrantedPermissions,
+  getSdkStatus,
+  HealthConnectRecord,
   initialize,
   insertRecords,
-  getSdkStatus,
+  openHealthConnectDataManagement,
+  openHealthConnectSettings,
+  readRecord,
   readRecords,
+  RecordingMethod,
+  requestExerciseRoute,
   requestPermission,
   revokeAllPermissions,
   SdkAvailabilityStatus,
-  openHealthConnectSettings,
-  openHealthConnectDataManagement,
-  readRecord,
-  RecordingMethod,
-  DeviceType,
-  ExerciseType,
-  requestExerciseRoute,
-  HealthConnectRecord,
 } from 'react-native-health-connect';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import type { Location } from 'src/types/base.types';
+
+function formatObject(obj: any) {
+  return JSON.stringify(obj, null, 2);
+}
 
 const generateExerciseRoute = (startTime: Date): Location[] => {
   const route: Location[] = [];
@@ -78,34 +82,32 @@ const random64BitString = () => {
   return Math.floor(Math.random() * 0xffffffffffffffff).toString(16);
 };
 
+const insertedRecordIds: string[] = [];
+let insertedExerciseId: string | undefined;
+
 export default function App() {
-  const [recordId, setRecordId] = React.useState<string>();
-
-  const updateRecordId = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>
-  ) => {
-    setRecordId(e.nativeEvent.text);
-  };
-
   const initializeHealthConnect = async () => {
     const result = await initialize();
-    console.log({ result });
+    Alert.alert('Result', formatObject({ result }));
   };
 
   const checkAvailability = async () => {
     const status = await getSdkStatus();
     if (status === SdkAvailabilityStatus.SDK_AVAILABLE) {
-      console.log('SDK is available');
+      Alert.alert('SDK Status', 'SDK is available');
     }
 
     if (status === SdkAvailabilityStatus.SDK_UNAVAILABLE) {
-      console.log('SDK is not available');
+      Alert.alert('SDK Status', 'SDK is not available');
     }
 
     if (
       status === SdkAvailabilityStatus.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED
     ) {
-      console.log('SDK is not available, provider update required');
+      Alert.alert(
+        'SDK Status',
+        'SDK is not available, provider update required'
+      );
     }
   };
 
@@ -154,7 +156,8 @@ export default function App() {
 
     insertRecords(records)
       .then((ids) => {
-        console.log('Records inserted ', { ids });
+        Alert.alert('Records inserted', formatObject({ ids }));
+        insertedRecordIds.push(...ids);
       })
       .catch((err) => {
         console.error('Error inserting records ', { err });
@@ -170,7 +173,7 @@ export default function App() {
       },
     })
       .then((result) => {
-        console.log('Retrieved records: ', JSON.stringify({ result }, null, 2));
+        Alert.alert('Retrieved records', formatObject(result));
       })
       .catch((err) => {
         console.error('Error reading records ', { err });
@@ -178,9 +181,20 @@ export default function App() {
   };
 
   const readSampleDataSingle = () => {
-    readRecord('Steps', '40a67ecf-d929-4648-996e-e8d248727d95')
+    if (insertedRecordIds.length === 0) {
+      console.error(
+        'No inserted record IDs available. Please insert sample data first.'
+      );
+      return;
+    }
+
+    const randomInsertedId =
+      insertedRecordIds[Math.floor(Math.random() * insertedRecordIds.length)];
+    Alert.alert('Reading record with ID', String(randomInsertedId));
+
+    readRecord('Steps', '7bc394c6-56e6-3cd1-989d-fe5e0dcf0765')
       .then((result) => {
-        console.log('Retrieved record: ', JSON.stringify({ result }, null, 2));
+        Alert.alert('Retrieved record', formatObject(result));
       })
       .catch((err) => {
         console.error('Error reading record ', { err });
@@ -196,7 +210,7 @@ export default function App() {
         endTime: now().toISOString(),
       },
     }).then((result) => {
-      console.log('Aggregated record: ', { result });
+      Alert.alert('Aggregated record', formatObject({ result }));
     });
   };
 
@@ -213,10 +227,7 @@ export default function App() {
         length: 2,
       },
     }).then((result) => {
-      console.log(
-        'Aggregated Group by Duration: ',
-        JSON.stringify({ result }, null, 2)
-      );
+      Alert.alert('Aggregated Group by Duration', formatObject(result));
     });
   };
 
@@ -233,10 +244,7 @@ export default function App() {
         length: 1,
       },
     }).then((result) => {
-      console.log(
-        'Aggregated Group by Period: ',
-        JSON.stringify({ result }, null, 2)
-      );
+      Alert.alert('Aggregated Group by Period', JSON.stringify(result));
     });
   };
 
@@ -271,13 +279,16 @@ export default function App() {
         recordType: 'ReadHealthDataHistory',
       },
     ]).then((permissions) => {
-      console.log('Granted permissions on request ', { permissions });
+      Alert.alert(
+        'Granted permissions on request',
+        formatObject({ permissions })
+      );
     });
   };
 
   const grantedPermissions = () => {
     getGrantedPermissions().then((permissions) => {
-      console.log('Granted permissions ', { permissions });
+      Alert.alert('Granted permissions', formatObject({ permissions }));
     });
   };
 
@@ -306,7 +317,8 @@ export default function App() {
       },
     ])
       .then((ids) => {
-        console.log('Records inserted ', { ids });
+        Alert.alert('Records inserted', formatObject({ ids }));
+        insertedExerciseId = ids[0];
       })
       .catch((err) => {
         console.error('Error inserting records ', { err });
@@ -314,14 +326,16 @@ export default function App() {
   };
 
   const readExercise = () => {
-    if (!recordId) {
-      console.error('Record ID is required');
+    if (!insertedExerciseId) {
+      console.error(
+        'No inserted exercise IDs available. Please insert an exercise first.'
+      );
       return;
     }
 
-    readRecord('ExerciseSession', recordId)
+    readRecord('ExerciseSession', insertedExerciseId)
       .then((exercise) => {
-        console.log('Exercise record: ', JSON.stringify(exercise, null, 2));
+        Alert.alert('Exercise record', formatObject(exercise));
       })
       .catch((err) => {
         console.error('Error reading exercise record ', { err });
@@ -329,14 +343,14 @@ export default function App() {
   };
 
   const readExerciseRoute = () => {
-    if (!recordId) {
+    if (!insertedExerciseId) {
       console.error('Record ID is required');
       return;
     }
 
-    requestExerciseRoute(recordId)
+    requestExerciseRoute(insertedExerciseId)
       .then((route) => {
-        console.log('Exercise route: ', { route });
+        Alert.alert('Exercise route', formatObject({ route }));
       })
       .catch((err) => {
         console.error('Error reading exercise route ', { err });
@@ -344,47 +358,56 @@ export default function App() {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Button title="Initialize" onPress={initializeHealthConnect} />
-        <Button
-          title="Open Health Connect settings"
-          onPress={openHealthConnectSettings}
-        />
-        <Button
-          title="Open Health Connect data management"
-          onPress={() => openHealthConnectDataManagement()}
-        />
-        <Button title="Check availability" onPress={checkAvailability} />
-        <Button
-          title="Request sample permissions"
-          onPress={requestSamplePermissions}
-        />
-        <Button title="Get granted permissions" onPress={grantedPermissions} />
-        <Button title="Revoke all permissions" onPress={revokeAllPermissions} />
-        <Button title="Insert sample data" onPress={insertSampleData} />
-        <Button title="Read sample data" onPress={readSampleData} />
-        <Button title="Read specific data" onPress={readSampleDataSingle} />
-        <Button title="Aggregate sample data" onPress={aggregateSampleData} />
-        <Button
-          title="Aggregate sample group data by duration"
-          onPress={aggregateSampleGroupByDuration}
-        />
-        <Button
-          title="Aggregate sample group data by period"
-          onPress={aggregateSampleGroupByPeriod}
-        />
-        <Button title="Insert random exercise" onPress={insertRandomExercise} />
-        <TextInput
-          id="record-id"
-          placeholder="Record ID"
-          value={recordId}
-          onChange={updateRecordId}
-        />
-        <Button title="Read exercise" onPress={readExercise} />
-        <Button title="Request exercise route" onPress={readExerciseRoute} />
-      </View>
-    </ScrollView>
+    <SafeAreaView>
+      <StatusBar barStyle={'dark-content'} />
+      <ScrollView>
+        <View style={styles.container}>
+          <Button title="Initialize" onPress={initializeHealthConnect} />
+          <Button
+            title="Open Health Connect settings"
+            onPress={openHealthConnectSettings}
+          />
+          <Button
+            title="Open Health Connect data management"
+            onPress={() => openHealthConnectDataManagement()}
+          />
+          <Button title="Check availability" onPress={checkAvailability} />
+          <Button
+            title="Request sample permissions"
+            onPress={requestSamplePermissions}
+          />
+          <Button
+            title="Get granted permissions"
+            onPress={grantedPermissions}
+          />
+          <Button
+            title="Revoke all permissions"
+            onPress={revokeAllPermissions}
+          />
+          <Button title="Insert sample data" onPress={insertSampleData} />
+          <Button title="Read sample data" onPress={readSampleData} />
+          <Button
+            title="Read random inserted data"
+            onPress={readSampleDataSingle}
+          />
+          <Button title="Aggregate sample data" onPress={aggregateSampleData} />
+          <Button
+            title="Aggregate sample group data by duration"
+            onPress={aggregateSampleGroupByDuration}
+          />
+          <Button
+            title="Aggregate sample group data by period"
+            onPress={aggregateSampleGroupByPeriod}
+          />
+          <Button
+            title="Insert random exercise"
+            onPress={insertRandomExercise}
+          />
+          <Button title="Read exercise" onPress={readExercise} />
+          <Button title="Request exercise route" onPress={readExerciseRoute} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

@@ -47,6 +47,7 @@
     "react": "18.1.0",
     "react-native": "0.70.6",
     "react-native-builder-bob": "^0.20.0",
+    "react-native-monorepo-config": "^0.1.9",
     "release-it": "^15.6.0",
     "typescript": "^4.9.5"
   },
@@ -153,6 +154,9 @@
       ]
     ]
   },
+  "workspaces": [
+    "example"
+  ],
   "codegenConfig": {
     "name": "RNHealthConnectSpec",
     "type": "modules",
