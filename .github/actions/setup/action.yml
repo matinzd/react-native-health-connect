@@ -7,8 +7,7 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v5
       with:
-        node-version: 22
-        cache: 'yarn'
+        node-version-file: .nvmrc
 
     - name: Cache dependencies
       id: yarn-cache

@@ -19,6 +19,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
+    "android": "yarn workspace example android",
+    "start": "yarn workspace example start",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint ./src",
@@ -85,7 +87,7 @@
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "yarn@1.22.19+sha256.732620bac8b1690d507274f025f3c6cfdc3627a84d9642e38a07452cc00e0f2e",
+  "packageManager": "yarn@4.9.4",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
