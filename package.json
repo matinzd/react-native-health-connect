@@ -157,7 +157,8 @@
     ]
   },
   "workspaces": [
-    "example"
+    "example",
+    "docs"
   ],
   "codegenConfig": {
     "name": "RNHealthConnectSpec",
