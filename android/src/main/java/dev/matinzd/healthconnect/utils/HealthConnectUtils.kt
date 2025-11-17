@@ -161,6 +161,8 @@ fun convertMetadataToJSMap(meta: Metadata): WritableNativeMap {
     putString("lastModifiedTime", meta.lastModifiedTime.toString())
     putMap("device", convertDeviceToJSMap(meta.device))
     putInt("recordingMethod", meta.recordingMethod)
+    putString("manufacturer", meta.device?.manufacturer)
+    putString("model", meta.device?.model)
   }
 }
 
