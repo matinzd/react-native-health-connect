@@ -37,5 +37,5 @@ fun Promise.rejectWithException(exception: Exception) {
     else -> "UNKNOWN_ERROR"
   }
 
-  this.reject(code, exception.message)
+  this.reject(code, exception.message, exception)
 }
