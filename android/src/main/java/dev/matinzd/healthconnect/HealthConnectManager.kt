@@ -94,8 +94,12 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   fun revokeAllPermissions(promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
-        healthConnectClient.permissionController.revokeAllPermissions()
-        promise.resolve(true)
+        try {
+          healthConnectClient.permissionController.revokeAllPermissions()
+          promise.resolve(true)
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
+        }
       }
     }
   }
@@ -103,7 +107,11 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   fun getGrantedPermissions(promise: Promise) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
-        promise.resolve(PermissionUtils.getGrantedPermissions(healthConnectClient.permissionController))
+        try {
+          promise.resolve(PermissionUtils.getGrantedPermissions(healthConnectClient.permissionController))
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
+        }
       }
     }
   }
