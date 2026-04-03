@@ -4,6 +4,15 @@ export const SdkAvailabilityStatus = {
   SDK_AVAILABLE: 3,
 } as const;
 
+export const HealthConnectFeature = {
+  ACTIVITY_INTENSITY: 'activityIntensity',
+} as const;
+
+export const ActivityIntensityType = {
+  MODERATE: 0,
+  VIGOROUS: 1,
+} as const;
+
 export const TemperatureMeasurementLocation = {
   ARMPIT: 1,
   EAR: 8,

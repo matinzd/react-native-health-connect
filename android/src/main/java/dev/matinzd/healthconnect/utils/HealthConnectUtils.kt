@@ -132,24 +132,77 @@ fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
 
 fun convertMetadataFromJSMap(meta: ReadableMap?): Metadata {
   if (meta == null) {
-    return Metadata()
+    return Metadata.unknownRecordingMethod()
   }
 
-  return Metadata(
-    id = meta.getSafeString("id", ""),
-    clientRecordId = meta.getString("clientRecordId"),
-    clientRecordVersion = meta.getSafeDouble("clientRecordVersion", 0.0).toLong(),
-    dataOrigin = DataOrigin(meta.getSafeString("dataOrigin", "")),
-    lastModifiedTime = Instant.parse(meta.getSafeString("lastModifiedTime", Instant.now().toString())),
-    device = meta.getMap("device")?.let {
-      Device(
-        type = it.getSafeInt("type", Device.TYPE_UNKNOWN),
-        manufacturer = it.getString("manufacturer"),
-        model = it.getString("model"),
-      )
-    },
-    recordingMethod = meta.getSafeInt("recordingMethod", Metadata.RECORDING_METHOD_UNKNOWN)
-  )
+  val device = meta.getMap("device")?.let {
+    Device(
+      type = it.getSafeInt("type", Device.TYPE_UNKNOWN),
+      manufacturer = it.getString("manufacturer"),
+      model = it.getString("model"),
+    )
+  }
+  val recordingMethod = meta.getSafeInt("recordingMethod", Metadata.RECORDING_METHOD_UNKNOWN)
+  val clientRecordId = meta.getString("clientRecordId")
+  val clientRecordVersion = meta.getSafeDouble("clientRecordVersion", 0.0).toLong()
+  val id = meta.getSafeString("id", "")
+  val recordingDevice =
+    device ?: Device(type = Device.TYPE_UNKNOWN, manufacturer = null, model = null)
+
+  if (clientRecordId != null) {
+    return when (recordingMethod) {
+      Metadata.RECORDING_METHOD_ACTIVELY_RECORDED ->
+        Metadata.activelyRecorded(
+          recordingDevice,
+          clientRecordId,
+          clientRecordVersion
+        )
+      Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED ->
+        Metadata.autoRecorded(
+          recordingDevice,
+          clientRecordId,
+          clientRecordVersion
+        )
+      Metadata.RECORDING_METHOD_MANUAL_ENTRY ->
+        device?.let {
+          Metadata.manualEntry(clientRecordId, clientRecordVersion, it)
+        } ?: Metadata.manualEntry(clientRecordId, clientRecordVersion)
+      else ->
+        device?.let {
+          Metadata.unknownRecordingMethod(clientRecordId, clientRecordVersion, it)
+        } ?: Metadata.unknownRecordingMethod(
+          clientRecordId,
+          clientRecordVersion
+        )
+    }
+  }
+
+  if (id.isNotBlank()) {
+    return when (recordingMethod) {
+      Metadata.RECORDING_METHOD_ACTIVELY_RECORDED ->
+        Metadata.activelyRecordedWithId(id, recordingDevice)
+      Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED ->
+        Metadata.autoRecordedWithId(id, recordingDevice)
+      Metadata.RECORDING_METHOD_MANUAL_ENTRY ->
+        device?.let { Metadata.manualEntryWithId(id, it) }
+          ?: Metadata.manualEntryWithId(id)
+      else ->
+        device?.let { Metadata.unknownRecordingMethodWithId(id, it) }
+          ?: Metadata.unknownRecordingMethodWithId(id)
+    }
+  }
+
+  return when (recordingMethod) {
+    Metadata.RECORDING_METHOD_ACTIVELY_RECORDED ->
+      Metadata.activelyRecorded(recordingDevice)
+    Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED ->
+      Metadata.autoRecorded(recordingDevice)
+    Metadata.RECORDING_METHOD_MANUAL_ENTRY ->
+      device?.let { Metadata.manualEntry(it) } ?: Metadata.manualEntry()
+    else ->
+      device?.let { Metadata.unknownRecordingMethod(it) }
+        ?: Metadata.unknownRecordingMethod()
+  }
 }
 
 fun convertMetadataToJSMap(meta: Metadata): WritableNativeMap {
@@ -180,6 +233,7 @@ fun convertDeviceToJSMap(device: Device?): WritableNativeMap? {
 
 val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "ActiveCaloriesBurned" to ActiveCaloriesBurnedRecord::class,
+  "ActivityIntensity" to ActivityIntensityRecord::class,
   "BasalBodyTemperature" to BasalBodyTemperatureRecord::class,
   "BasalMetabolicRate" to BasalMetabolicRateRecord::class,
   "BloodGlucose" to BloodGlucoseRecord::class,
@@ -221,6 +275,7 @@ val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
 
 val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<*>>> = mapOf(
   "ActiveCaloriesBurned" to ReactActiveCaloriesBurnedRecord::class.java,
+  "ActivityIntensity" to ReactActivityIntensityRecord::class.java,
   "BasalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
   "BasalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,
   "BloodGlucose" to ReactBloodGlucoseRecord::class.java,
@@ -264,6 +319,7 @@ val reactClassToReactTypeMap = reactRecordTypeToReactClassMap.entries.associateB
 
 val healthConnectClassToReactClassMap = mapOf(
   ActiveCaloriesBurnedRecord::class.java to ReactActiveCaloriesBurnedRecord::class.java,
+  ActivityIntensityRecord::class.java to ReactActivityIntensityRecord::class.java,
   BasalBodyTemperatureRecord::class.java to ReactBasalBodyTemperatureRecord::class.java,
   BasalMetabolicRateRecord::class.java to ReactBasalMetabolicRateRecord::class.java,
   BloodGlucoseRecord::class.java to ReactBloodGlucoseRecord::class.java,

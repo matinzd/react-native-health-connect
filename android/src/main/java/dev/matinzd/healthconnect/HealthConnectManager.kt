@@ -2,6 +2,7 @@ package dev.matinzd.healthconnect
 
 import android.content.Intent
 import androidx.health.connect.client.HealthConnectClient
+import androidx.health.connect.client.HealthConnectFeatures
 import androidx.health.connect.client.changes.DeletionChange
 import androidx.health.connect.client.changes.UpsertionChange
 import com.facebook.react.bridge.Promise
@@ -52,6 +53,24 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   fun getSdkStatus(providerPackageName: String, promise: Promise) {
     val status = HealthConnectClient.getSdkStatus(applicationContext, providerPackageName)
     return promise.resolve(status)
+  }
+
+  fun isFeatureAvailable(feature: String, promise: Promise) {
+    throwUnlessClientIsAvailable(promise) {
+      coroutineScope.launch {
+        try {
+          val featureStatus = when (feature) {
+            "activityIntensity" -> healthConnectClient.features.getFeatureStatus(
+              HealthConnectFeatures.FEATURE_ACTIVITY_INTENSITY
+            )
+            else -> throw IllegalArgumentException("Feature is not supported: $feature")
+          }
+          promise.resolve(featureStatus == HealthConnectFeatures.FEATURE_STATUS_AVAILABLE)
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
+        }
+      }
+    }
   }
 
   fun initialize(providerPackageName: String, promise: Promise) {
@@ -299,4 +318,3 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     }
   }
 }
-

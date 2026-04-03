@@ -20,6 +20,7 @@ type ReadRecordsOptions = {
 //@TODO: Fix and refactor types when codegen starts supporting type imports and generics
 export interface Spec extends TurboModule {
   getSdkStatus(providerPackageName: string): Promise<number>;
+  isFeatureAvailable(feature: string): Promise<boolean>;
   initialize(providerPackageName: string): Promise<boolean>;
   openHealthConnectSettings: () => void;
   openHealthConnectDataManagement: (providerPackageName?: string) => void;
