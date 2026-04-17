@@ -11,6 +11,10 @@
   "repository": "https://github.com/matinzd/react-native-health-connect",
   "author": "matinzd <me@matinzd.dev> (https://github.com/matinzd)",
   "license": "MIT",
+  "react-native": {
+    "android": {
+      "codegenEnabled": false
+    },
   "bugs": {
     "url": "https://github.com/matinzd/react-native-health-connect/issues"
   },
@@ -160,12 +164,6 @@
     "example",
     "docs"
   ],
-  "codegenConfig": {
-    "name": "RNHealthConnectSpec",
-    "type": "modules",
-    "jsSrcsDir": "src",
-    "ios": {}
-  },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
