@@ -6,16 +6,15 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  id-token: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-      issues: write
-      pull-requests: write
-      id-token: write
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
