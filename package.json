@@ -28,7 +28,7 @@
     "release": "release-it",
     "example": "yarn --cwd example",
     "bootstrap": "yarn example && yarn install",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
+    "clean": "rm -rf android/build example/android/build example/android/app/build example/ios/build"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^17.4.2",
@@ -39,7 +39,6 @@
     "@types/jest": "^28.1.2",
     "@types/react": "~17.0.21",
     "commitlint": "^17.4.2",
-    "del-cli": "^5.0.0",
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
