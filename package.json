@@ -37,7 +37,7 @@
     "@evilmartians/lefthook": "^1.2.8",
     "@react-native-community/eslint-config": "^3.0.2",
     "@react-native/babel-preset": "0.81.1",
-    "@release-it/conventional-changelog": "^5.0.0",
+    "@release-it/conventional-changelog": "^5.1.1",
     "@types/jest": "^28.1.2",
     "@types/react": "~17.0.21",
     "commitlint": "^17.4.2",
@@ -51,7 +51,7 @@
     "react-native": "0.81.1",
     "react-native-builder-bob": "^0.20.0",
     "react-native-monorepo-config": "^0.1.9",
-    "release-it": "^15.6.0",
+    "release-it": "^15.11.0",
     "typescript": "^4.9.5"
   },
   "keywords": [
