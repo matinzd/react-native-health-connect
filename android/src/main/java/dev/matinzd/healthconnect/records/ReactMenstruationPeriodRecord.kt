@@ -33,11 +33,13 @@ class ReactMenstruationPeriodRecord : ReactHealthRecordImpl<MenstruationPeriodRe
 
   override fun parseRecord(record: MenstruationPeriodRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("startTime", record.startTime.toString())
-      putString("endTime", record.endTime.toString())
-      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
-      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putIntervalRecordTime(
+        startTime = record.startTime,
+        endTime = record.endTime,
+        startZoneOffset = record.startZoneOffset,
+        endZoneOffset = record.endZoneOffset
+      )
+      putMetadata(record.metadata)
     }
   }
 

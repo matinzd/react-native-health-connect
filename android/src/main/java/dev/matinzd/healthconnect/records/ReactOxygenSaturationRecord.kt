@@ -33,10 +33,12 @@ class ReactOxygenSaturationRecord : ReactHealthRecordImpl<OxygenSaturationRecord
 
   override fun parseRecord(record: OxygenSaturationRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putDouble("percentage", record.percentage.value)
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 

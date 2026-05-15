@@ -11,11 +11,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.AggregationNotSupported
-import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
-import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
-import dev.matinzd.healthconnect.utils.getSafeInt
-import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactOvulationTestRecord : ReactHealthRecordImpl<OvulationTestRecord> {
@@ -32,9 +28,9 @@ class ReactOvulationTestRecord : ReactHealthRecordImpl<OvulationTestRecord> {
 
   override fun parseRecord(record: OvulationTestRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
+      putTime(record.time)
       putInt("result", record.result)
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 

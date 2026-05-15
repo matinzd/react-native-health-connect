@@ -32,10 +32,12 @@ class ReactSexualActivityRecord : ReactHealthRecordImpl<SexualActivityRecord> {
 
   override fun parseRecord(record: SexualActivityRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putInt("protectionUsed", record.protectionUsed)
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 

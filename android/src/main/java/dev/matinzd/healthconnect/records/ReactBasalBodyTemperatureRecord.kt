@@ -40,11 +40,13 @@ class ReactBasalBodyTemperatureRecord : ReactHealthRecordImpl<BasalBodyTemperatu
 
   override fun parseRecord(record: BasalBodyTemperatureRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putInt("measurementLocation", record.measurementLocation)
       putMap("temperature", temperatureToJsMap(record.temperature))
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 

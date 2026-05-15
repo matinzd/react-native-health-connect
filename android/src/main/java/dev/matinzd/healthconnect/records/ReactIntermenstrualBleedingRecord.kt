@@ -31,9 +31,11 @@ class ReactIntermenstrualBleedingRecord : ReactHealthRecordImpl<IntermenstrualBl
 
   override fun parseRecord(record: IntermenstrualBleedingRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
+      putMetadata(record.metadata)
     }
   }
 

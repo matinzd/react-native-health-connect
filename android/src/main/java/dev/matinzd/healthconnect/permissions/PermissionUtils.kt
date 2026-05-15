@@ -9,6 +9,26 @@ import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 
 class PermissionUtils {
   companion object {
+    private data class RecordPermissionMapping(
+      val recordType: String,
+      val readPermission: String,
+      val writePermission: String,
+    )
+
+    private val permissionMappings: List<RecordPermissionMapping> = reactRecordTypeToClassMap.entries.map { entry ->
+      RecordPermissionMapping(
+        recordType = entry.key,
+        readPermission = HealthPermission.getReadPermission(entry.value),
+        writePermission = HealthPermission.getWritePermission(entry.value)
+      )
+    }
+
+    private val readPermissionByRecordType: Map<String, String> =
+      permissionMappings.associate { mapping -> mapping.recordType to mapping.readPermission }
+
+    private val writePermissionByRecordType: Map<String, String> =
+      permissionMappings.associate { mapping -> mapping.recordType to mapping.writePermission }
+
     fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
       return reactPermissions.toArrayList().mapNotNull {
         it as HashMap<*, *>
@@ -27,11 +47,9 @@ class PermissionUtils {
           return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
         }
 
-        val recordClass = reactRecordTypeToClassMap[recordType] ?: throw InvalidRecordType()
-
         when (accessType) {
-          "write" -> HealthPermission.getWritePermission(recordClass)
-          "read" -> HealthPermission.getReadPermission(recordClass)
+          "write" -> writePermissionByRecordType[recordType] ?: throw InvalidRecordType()
+          "read" -> readPermissionByRecordType[recordType] ?: throw InvalidRecordType()
           else -> null
         }
       }.toSet()
@@ -44,15 +62,14 @@ class PermissionUtils {
     fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
       return WritableNativeArray().apply {
         // Handle regular permissions
-        for ((recordType, recordClass) in reactRecordTypeToClassMap) {
-          val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
-          val writePermissionForRecord = HealthPermission.getWritePermission(recordClass)
+        for (mapping in permissionMappings) {
+          val recordType = mapping.recordType
 
-          if (grantedPermissions.contains(readPermissionForRecord)) {
+          if (grantedPermissions.contains(mapping.readPermission)) {
             pushMap(ReactPermission(AccessType.READ, recordType).toReadableMap())
           }
 
-          if (grantedPermissions.contains(writePermissionForRecord)) {
+          if (grantedPermissions.contains(mapping.writePermission)) {
             pushMap(ReactPermission(AccessType.WRITE, recordType).toReadableMap())
           }
         }

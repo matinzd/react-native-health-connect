@@ -33,10 +33,12 @@ class ReactHeartRateVariabilityRmssdRecord :
 
   override fun parseRecord(record: HeartRateVariabilityRmssdRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putDouble("heartRateVariabilityMillis", record.heartRateVariabilityMillis)
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 

@@ -43,39 +43,36 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
 
   override fun parseRecord(record: BloodPressureRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putInt("measurementLocation", record.measurementLocation)
       putInt("bodyPosition", record.bodyPosition)
       putMap("systolic", bloodPressureToJsMap(record.systolic))
       putMap("diastolic", bloodPressureToJsMap(record.diastolic))
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
-    return AggregateRequest(
-      metrics = aggregateMetrics,
-      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
-      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    return createAggregateRequest(
+      record = record,
+      aggregateMetrics = aggregateMetrics
     )
   }
 
   override fun getAggregateGroupByDurationRequest(record: ReadableMap): AggregateGroupByDurationRequest {
-    return AggregateGroupByDurationRequest(
-      metrics = aggregateMetrics,
-      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
-      timeRangeSlicer = mapJsDurationToDuration(record.getMap("timeRangeSlicer")),
-      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    return createAggregateGroupByDurationRequest(
+      record = record,
+      aggregateMetrics = aggregateMetrics
     )
   }
 
   override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
-    return AggregateGroupByPeriodRequest(
-      metrics = aggregateMetrics,
-      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
-      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
-      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    return createAggregateGroupByPeriodRequest(
+      record = record,
+      aggregateMetrics = aggregateMetrics
     )
   }
 

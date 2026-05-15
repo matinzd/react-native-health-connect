@@ -28,10 +28,12 @@ class ReactLeanBodyMassRecord : ReactHealthRecordImpl<LeanBodyMassRecord> {
 
   override fun parseRecord(record: LeanBodyMassRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putMap("mass", massToJsMap(record.mass))
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 
