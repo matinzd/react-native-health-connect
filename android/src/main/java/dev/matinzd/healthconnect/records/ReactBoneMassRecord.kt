@@ -34,10 +34,12 @@ class ReactBoneMassRecord : ReactHealthRecordImpl<BoneMassRecord> {
 
   override fun parseRecord(record: BoneMassRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putMap("mass", massToJsMap(record.mass))
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 

@@ -33,10 +33,12 @@ class ReactMenstruationFlowRecord : ReactHealthRecordImpl<MenstruationFlowRecord
 
   override fun parseRecord(record: MenstruationFlowRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putInt("flow", record.flow)
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 

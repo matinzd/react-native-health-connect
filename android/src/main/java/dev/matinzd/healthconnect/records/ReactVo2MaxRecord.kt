@@ -37,11 +37,13 @@ class ReactVo2MaxRecord : ReactHealthRecordImpl<Vo2MaxRecord> {
 
   override fun parseRecord(record: Vo2MaxRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putDouble("vo2MillilitersPerMinuteKilogram", record.vo2MillilitersPerMinuteKilogram)
       putInt("measurementMethod", record.measurementMethod)
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 

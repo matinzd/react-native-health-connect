@@ -3,7 +3,6 @@ package dev.matinzd.healthconnect.utils
 import androidx.health.connect.client.records.*
 import androidx.health.connect.client.records.metadata.DataOrigin
 import androidx.health.connect.client.records.metadata.Device
-import androidx.health.connect.client.records.metadata.Metadata
 import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
@@ -12,14 +11,9 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.records.*
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZoneOffset
-import java.time.Duration
-import java.time.Period
+import java.time.*
 import kotlin.reflect.KClass
+import kotlin.text.toLong
 
 fun <T : Record> convertReactRequestOptionsFromJS(
   recordType: KClass<T>, options: ReadableMap
@@ -224,131 +218,6 @@ fun convertDeviceToJSMap(device: Device?): WritableNativeMap? {
     putString("model", device.model)
   }
 }
-
-val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
-  "ActiveCaloriesBurned" to ActiveCaloriesBurnedRecord::class,
-  "BasalBodyTemperature" to BasalBodyTemperatureRecord::class,
-  "BasalMetabolicRate" to BasalMetabolicRateRecord::class,
-  "BloodGlucose" to BloodGlucoseRecord::class,
-  "BloodPressure" to BloodPressureRecord::class,
-  "BodyFat" to BodyFatRecord::class,
-  "BodyTemperature" to BodyTemperatureRecord::class,
-  "BodyWaterMass" to BodyWaterMassRecord::class,
-  "BoneMass" to BoneMassRecord::class,
-  "CervicalMucus" to CervicalMucusRecord::class,
-  "CyclingPedalingCadence" to CyclingPedalingCadenceRecord::class,
-  "Distance" to DistanceRecord::class,
-  "ElevationGained" to ElevationGainedRecord::class,
-  "ExerciseSession" to ExerciseSessionRecord::class,
-  "FloorsClimbed" to FloorsClimbedRecord::class,
-  "HeartRate" to HeartRateRecord::class,
-  "HeartRateVariabilityRmssd" to HeartRateVariabilityRmssdRecord::class,
-  "Height" to HeightRecord::class,
-  "Hydration" to HydrationRecord::class,
-  "LeanBodyMass" to LeanBodyMassRecord::class,
-  "MenstruationFlow" to MenstruationFlowRecord::class,
-  "Nutrition" to NutritionRecord::class,
-  "OvulationTest" to OvulationTestRecord::class,
-  "OxygenSaturation" to OxygenSaturationRecord::class,
-  "Power" to PowerRecord::class,
-  "RespiratoryRate" to RespiratoryRateRecord::class,
-  "RestingHeartRate" to RestingHeartRateRecord::class,
-  "SexualActivity" to SexualActivityRecord::class,
-  "SleepSession" to SleepSessionRecord::class,
-  "Speed" to SpeedRecord::class,
-  "StepsCadence" to StepsCadenceRecord::class,
-  "Steps" to StepsRecord::class,
-  "TotalCaloriesBurned" to TotalCaloriesBurnedRecord::class,
-  "Vo2Max" to Vo2MaxRecord::class,
-  "Weight" to WeightRecord::class,
-  "WheelchairPushes" to WheelchairPushesRecord::class,
-  "IntermenstrualBleeding" to IntermenstrualBleedingRecord::class,
-  "MenstruationPeriod" to MenstruationPeriodRecord::class
-)
-
-val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<*>>> = mapOf(
-  "ActiveCaloriesBurned" to ReactActiveCaloriesBurnedRecord::class.java,
-  "BasalBodyTemperature" to ReactBasalBodyTemperatureRecord::class.java,
-  "BasalMetabolicRate" to ReactBasalMetabolicRateRecord::class.java,
-  "BloodGlucose" to ReactBloodGlucoseRecord::class.java,
-  "BloodPressure" to ReactBloodPressureRecord::class.java,
-  "BodyFat" to ReactBodyFatRecord::class.java,
-  "BodyTemperature" to ReactBodyTemperatureRecord::class.java,
-  "BodyWaterMass" to ReactBodyWaterMassRecord::class.java,
-  "BoneMass" to ReactBoneMassRecord::class.java,
-  "CervicalMucus" to ReactCervicalMucusRecord::class.java,
-  "CyclingPedalingCadence" to ReactCyclingPedalingCadenceRecord::class.java,
-  "Distance" to ReactDistanceRecord::class.java,
-  "ElevationGained" to ReactElevationGainedRecord::class.java,
-  "ExerciseSession" to ReactExerciseSessionRecord::class.java,
-  "FloorsClimbed" to ReactFloorsClimbedRecord::class.java,
-  "HeartRate" to ReactHeartRateRecord::class.java,
-  "HeartRateVariabilityRmssd" to ReactHeartRateVariabilityRmssdRecord::class.java,
-  "Height" to ReactHeightRecord::class.java,
-  "Hydration" to ReactHydrationRecord::class.java,
-  "LeanBodyMass" to ReactLeanBodyMassRecord::class.java,
-  "MenstruationFlow" to ReactMenstruationFlowRecord::class.java,
-  "Nutrition" to ReactNutritionRecord::class.java,
-  "OvulationTest" to ReactOvulationTestRecord::class.java,
-  "OxygenSaturation" to ReactOxygenSaturationRecord::class.java,
-  "Power" to ReactPowerRecord::class.java,
-  "RespiratoryRate" to ReactRespiratoryRateRecord::class.java,
-  "RestingHeartRate" to ReactRestingHeartRateRecord::class.java,
-  "SexualActivity" to ReactSexualActivityRecord::class.java,
-  "SleepSession" to ReactSleepSessionRecord::class.java,
-  "Speed" to ReactSpeedRecord::class.java,
-  "StepsCadence" to ReactStepsCadenceRecord::class.java,
-  "Steps" to ReactStepsRecord::class.java,
-  "TotalCaloriesBurned" to ReactTotalCaloriesBurnedRecord::class.java,
-  "Vo2Max" to ReactVo2MaxRecord::class.java,
-  "Weight" to ReactWeightRecord::class.java,
-  "WheelchairPushes" to ReactWheelchairPushesRecord::class.java,
-  "IntermenstrualBleeding" to ReactIntermenstrualBleedingRecord::class.java,
-  "MenstruationPeriod" to ReactMenstruationPeriodRecord::class.java
-)
-
-val reactClassToReactTypeMap = reactRecordTypeToReactClassMap.entries.associateBy({ it.value }) { it.key }
-
-val healthConnectClassToReactClassMap = mapOf(
-  ActiveCaloriesBurnedRecord::class.java to ReactActiveCaloriesBurnedRecord::class.java,
-  BasalBodyTemperatureRecord::class.java to ReactBasalBodyTemperatureRecord::class.java,
-  BasalMetabolicRateRecord::class.java to ReactBasalMetabolicRateRecord::class.java,
-  BloodGlucoseRecord::class.java to ReactBloodGlucoseRecord::class.java,
-  BloodPressureRecord::class.java to ReactBloodPressureRecord::class.java,
-  BodyFatRecord::class.java to ReactBodyFatRecord::class.java,
-  BodyTemperatureRecord::class.java to ReactBodyTemperatureRecord::class.java,
-  BodyWaterMassRecord::class.java to ReactBodyWaterMassRecord::class.java,
-  BoneMassRecord::class.java to ReactBoneMassRecord::class.java,
-  CervicalMucusRecord::class.java to ReactCervicalMucusRecord::class.java,
-  CyclingPedalingCadenceRecord::class.java to ReactCyclingPedalingCadenceRecord::class.java,
-  DistanceRecord::class.java to ReactDistanceRecord::class.java,
-  ElevationGainedRecord::class.java to ReactElevationGainedRecord::class.java,
-  ExerciseSessionRecord::class.java to ReactExerciseSessionRecord::class.java,
-  FloorsClimbedRecord::class.java to ReactFloorsClimbedRecord::class.java,
-  HeartRateRecord::class.java to ReactHeartRateRecord::class.java,
-  HeartRateVariabilityRmssdRecord::class.java to ReactHeartRateVariabilityRmssdRecord::class.java,
-  HeightRecord::class.java to ReactHeightRecord::class.java,
-  HydrationRecord::class.java to ReactHydrationRecord::class.java,
-  LeanBodyMassRecord::class.java to ReactLeanBodyMassRecord::class.java,
-  MenstruationFlowRecord::class.java to ReactMenstruationFlowRecord::class.java,
-  NutritionRecord::class.java to ReactNutritionRecord::class.java,
-  OvulationTestRecord::class.java to ReactOvulationTestRecord::class.java,
-  OxygenSaturationRecord::class.java to ReactOxygenSaturationRecord::class.java,
-  PowerRecord::class.java to ReactPowerRecord::class.java,
-  RespiratoryRateRecord::class.java to ReactRespiratoryRateRecord::class.java,
-  RestingHeartRateRecord::class.java to ReactRestingHeartRateRecord::class.java,
-  SexualActivityRecord::class.java to ReactSexualActivityRecord::class.java,
-  SleepSessionRecord::class.java to ReactSleepSessionRecord::class.java,
-  SpeedRecord::class.java to ReactSpeedRecord::class.java,
-  StepsCadenceRecord::class.java to ReactStepsCadenceRecord::class.java,
-  StepsRecord::class.java to ReactStepsRecord::class.java,
-  TotalCaloriesBurnedRecord::class.java to ReactTotalCaloriesBurnedRecord::class.java,
-  Vo2MaxRecord::class.java to ReactVo2MaxRecord::class.java,
-  WeightRecord::class.java to ReactWeightRecord::class.java,
-  WheelchairPushesRecord::class.java to ReactWheelchairPushesRecord::class.java,
-  IntermenstrualBleedingRecord::class.java to ReactIntermenstrualBleedingRecord::class.java,
-  MenstruationPeriodRecord::class.java to ReactMenstruationPeriodRecord::class.java
-)
 
 fun massToJsMap(mass: Mass?): WritableNativeMap {
   return WritableNativeMap().apply {

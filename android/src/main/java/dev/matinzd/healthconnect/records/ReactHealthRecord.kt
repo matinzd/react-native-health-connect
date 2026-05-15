@@ -1,12 +1,11 @@
 package dev.matinzd.healthconnect.records
 
 import androidx.health.connect.client.aggregate.AggregationResult
-import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.aggregate.AggregationResultGroupedByDuration
-import androidx.health.connect.client.records.Record
-import androidx.health.connect.client.request.AggregateRequest
-import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
+import androidx.health.connect.client.aggregate.AggregationResultGroupedByPeriod
 import androidx.health.connect.client.request.AggregateGroupByDurationRequest
+import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.response.InsertRecordsResponse
 import androidx.health.connect.client.response.ReadRecordResponse
@@ -15,40 +14,36 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.utils.InvalidRecordType
-import dev.matinzd.healthconnect.utils.convertReactRequestOptionsFromJS
-import dev.matinzd.healthconnect.utils.healthConnectClassToReactClassMap
-import dev.matinzd.healthconnect.utils.reactClassToReactTypeMap
-import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
-import dev.matinzd.healthconnect.utils.reactRecordTypeToReactClassMap
+import dev.matinzd.healthconnect.utils.*
 import kotlin.reflect.KClass
 
 class ReactHealthRecord {
   companion object {
-    private fun <T : Record> createReactHealthRecordInstance(recordType: String?): ReactHealthRecordImpl<T> {
-      if (!reactRecordTypeToReactClassMap.containsKey(recordType)) {
-        throw InvalidRecordType()
-      }
+    private val instanceByReactClass =
+      mutableMapOf<Class<out ReactHealthRecordImpl<*>>, ReactHealthRecordImpl<out Record>>()
 
-      val reactClass = reactRecordTypeToReactClassMap[recordType]
-      return reactClass?.newInstance() as ReactHealthRecordImpl<T>
+    private fun createOrGetCachedInstance(
+      reactClass: Class<out ReactHealthRecordImpl<*>>
+    ): ReactHealthRecordImpl<out Record> {
+      return instanceByReactClass.getOrPut(reactClass) {
+        reactClass.getDeclaredConstructor().newInstance() as ReactHealthRecordImpl<out Record>
+      }
+    }
+
+    private fun <T : Record> createReactHealthRecordInstance(recordType: String?): ReactHealthRecordImpl<T> {
+      val reactClass = reactRecordTypeToReactClassMap[recordType] ?: throw InvalidRecordType()
+      @Suppress("UNCHECKED_CAST")
+      return createOrGetCachedInstance(reactClass) as ReactHealthRecordImpl<T>
     }
 
     private fun <T : Record> createReactHealthRecordInstance(recordClass: Class<out Record>): ReactHealthRecordImpl<T> {
-      if (!healthConnectClassToReactClassMap.containsKey(recordClass)) {
-        throw InvalidRecordType()
-      }
-
-      val reactClass = healthConnectClassToReactClassMap[recordClass]
-      return reactClass?.newInstance() as ReactHealthRecordImpl<T>
+      val reactClass = healthConnectClassToReactClassMap[recordClass] ?: throw InvalidRecordType()
+      @Suppress("UNCHECKED_CAST")
+      return createOrGetCachedInstance(reactClass) as ReactHealthRecordImpl<T>
     }
 
     fun getRecordByType(recordType: String): KClass<out Record> {
-      if (!reactRecordTypeToClassMap.containsKey(recordType)) {
-        throw InvalidRecordType()
-      }
-
-      return reactRecordTypeToClassMap[recordType]!!
+      return reactRecordTypeToClassMap[recordType] ?: throw InvalidRecordType()
     }
 
     fun parseWriteRecords(reactRecords: ReadableArray): List<Record> {

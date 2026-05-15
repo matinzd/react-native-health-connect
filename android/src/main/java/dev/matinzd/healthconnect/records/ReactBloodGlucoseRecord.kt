@@ -43,13 +43,15 @@ class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
 
   override fun parseRecord(record: BloodGlucoseRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putMap("level", bloodGlucoseToJsMap(record.level))
       putInt("specimenSource", record.specimenSource)
       putInt("mealType", record.mealType)
       putInt("relationToMeal", record.relationToMeal)
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 

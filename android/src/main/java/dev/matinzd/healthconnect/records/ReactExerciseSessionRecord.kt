@@ -11,11 +11,7 @@ import androidx.health.connect.client.records.ExerciseSessionRecord
 import androidx.health.connect.client.request.AggregateGroupByDurationRequest
 import androidx.health.connect.client.request.AggregateGroupByPeriodRequest
 import androidx.health.connect.client.request.AggregateRequest
-import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.ReadableNativeArray
-import com.facebook.react.bridge.WritableNativeArray
-import com.facebook.react.bridge.WritableNativeMap
+import com.facebook.react.bridge.*
 import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
@@ -76,10 +72,12 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
 
   override fun parseRecord(record: ExerciseSessionRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("startTime", record.startTime.toString())
-      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
-      putString("endTime", record.endTime.toString())
-      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
+      putIntervalRecordTime(
+        startTime = record.startTime,
+        endTime = record.endTime,
+        startZoneOffset = record.startZoneOffset,
+        endZoneOffset = record.endZoneOffset
+      )
       putString("notes", record.notes)
       putString("title", record.title)
       putInt("exerciseType", record.exerciseType)
@@ -125,33 +123,28 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
       }
       putMap("exerciseRoute", exerciseRouteMap)
 
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 
   override fun getAggregateRequest(record: ReadableMap): AggregateRequest {
-    return AggregateRequest(
-      metrics = aggregateMetrics,
-      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
-      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    return createAggregateRequest(
+      record = record,
+      aggregateMetrics = aggregateMetrics
     )
   }
 
   override fun getAggregateGroupByDurationRequest(record: ReadableMap): AggregateGroupByDurationRequest {
-    return AggregateGroupByDurationRequest(
-      metrics = aggregateMetrics,
-      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
-      timeRangeSlicer = mapJsDurationToDuration(record.getMap("timeRangeSlicer")),
-      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    return createAggregateGroupByDurationRequest(
+      record = record,
+      aggregateMetrics = aggregateMetrics
     )
   }
 
   override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
-    return AggregateGroupByPeriodRequest(
-      metrics = aggregateMetrics,
-      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
-      timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
-      dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
+    return createAggregateGroupByPeriodRequest(
+      record = record,
+      aggregateMetrics = aggregateMetrics
     )
   }
 

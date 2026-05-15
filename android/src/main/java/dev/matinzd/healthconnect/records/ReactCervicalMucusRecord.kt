@@ -34,11 +34,13 @@ class ReactCervicalMucusRecord : ReactHealthRecordImpl<CervicalMucusRecord> {
 
   override fun parseRecord(record: CervicalMucusRecord): WritableNativeMap {
     return WritableNativeMap().apply {
-      putString("time", record.time.toString())
-      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
+      putInstantRecordTime(
+        time = record.time,
+        zoneOffset = record.zoneOffset
+      )
       putInt("appearance", record.appearance)
       putInt("sensation", record.sensation)
-      putMap("metadata", convertMetadataToJSMap(record.metadata))
+      putMetadata(record.metadata)
     }
   }
 
