@@ -9,6 +9,9 @@ abstract class HealthConnectSpec internal constructor(context: ReactApplicationC
   abstract fun getSdkStatus(providerPackageName: String, promise: Promise)
 
   @ReactMethod
+  abstract fun isFeatureAvailable(feature: String, promise: Promise)
+
+  @ReactMethod
   abstract fun initialize(providerPackageName: String, promise: Promise);
 
   @ReactMethod

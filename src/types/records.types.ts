@@ -27,6 +27,11 @@ export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
   energy: Energy;
 }
 
+export interface ActivityIntensityRecord extends IntervalRecord {
+  recordType: 'ActivityIntensity';
+  activityIntensityType: number;
+}
+
 export interface BasalBodyTemperatureRecord extends InstantaneousRecord {
   recordType: 'BasalBodyTemperature';
   temperature: Temperature;
@@ -332,6 +337,7 @@ export interface PowerRecord extends IntervalRecord {
 
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
+  | ActivityIntensityRecord
   | BasalBodyTemperatureRecord
   | BasalMetabolicRateRecord
   | BloodGlucoseRecord
