@@ -14,6 +14,8 @@ import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
 import dev.matinzd.healthconnect.records.*
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.Duration
 import java.time.Period
@@ -97,6 +99,51 @@ fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
 
   val endTime =
     if (timeRangeFilter.hasKey("endTime")) Instant.parse(timeRangeFilter.getString("endTime")) else null
+
+  when (operator) {
+    "between" -> {
+      if (startTime == null || endTime == null) {
+        throw Exception("Start time and end time should be provided")
+      }
+
+      return TimeRangeFilter.between(startTime, endTime)
+    }
+    "after" -> {
+      if (startTime == null) {
+        throw Exception("Start time should be provided")
+      }
+
+      return TimeRangeFilter.after(startTime)
+    }
+    "before" -> {
+      if (endTime == null) {
+        throw Exception("End time should be provided")
+      }
+
+      return TimeRangeFilter.before(endTime)
+    }
+    else -> {
+      if (startTime == null || endTime == null) {
+        throw Exception("Start time and end time should be provided")
+      }
+
+      return TimeRangeFilter.between(startTime, endTime)
+    }
+  }
+}
+
+fun ReadableMap.getTimeRangeFilterLocal(key: String? = null): TimeRangeFilter {
+  val timeRangeFilter = if (key != null) this.getMap(key)
+    ?: throw Exception("Time range filter should be provided") else this
+
+  val operator = timeRangeFilter.getString("operator")
+  val zone = ZoneId.systemDefault()
+
+  val startTime: LocalDateTime? =
+    if (timeRangeFilter.hasKey("startTime")) Instant.parse(timeRangeFilter.getString("startTime")).atZone(zone).toLocalDateTime() else null
+
+  val endTime: LocalDateTime? =
+    if (timeRangeFilter.hasKey("endTime")) Instant.parse(timeRangeFilter.getString("endTime")).atZone(zone).toLocalDateTime() else null
 
   when (operator) {
     "between" -> {
