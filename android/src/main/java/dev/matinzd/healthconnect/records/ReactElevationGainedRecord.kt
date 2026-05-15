@@ -34,6 +34,8 @@ class ReactElevationGainedRecord : ReactHealthRecordImpl<ElevationGainedRecord> 
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putMap("elevation", lengthToJsMap(record.elevation))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

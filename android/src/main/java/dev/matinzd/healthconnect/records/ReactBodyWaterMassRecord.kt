@@ -29,6 +29,7 @@ class ReactBodyWaterMassRecord : ReactHealthRecordImpl<BodyWaterMassRecord> {
   override fun parseRecord(record: BodyWaterMassRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putMap("mass", massToJsMap(record.mass))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

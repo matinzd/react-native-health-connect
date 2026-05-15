@@ -34,6 +34,8 @@ class ReactStepsRecord : ReactHealthRecordImpl<StepsRecord> {
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putDouble("count", record.count.toDouble())
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

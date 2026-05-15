@@ -34,6 +34,8 @@ class ReactHydrationRecord : ReactHealthRecordImpl<HydrationRecord> {
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putMap("volume", volumeToJsMap(record.volume))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

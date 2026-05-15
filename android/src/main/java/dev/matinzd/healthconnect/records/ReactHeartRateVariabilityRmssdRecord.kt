@@ -15,6 +15,7 @@ import dev.matinzd.healthconnect.utils.AggregationNotSupported
 import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactHeartRateVariabilityRmssdRecord :
@@ -33,6 +34,7 @@ class ReactHeartRateVariabilityRmssdRecord :
   override fun parseRecord(record: HeartRateVariabilityRmssdRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putDouble("heartRateVariabilityMillis", record.heartRateVariabilityMillis)
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

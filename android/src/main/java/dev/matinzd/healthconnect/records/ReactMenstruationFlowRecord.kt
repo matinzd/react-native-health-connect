@@ -16,6 +16,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactMenstruationFlowRecord : ReactHealthRecordImpl<MenstruationFlowRecord> {
@@ -33,6 +34,7 @@ class ReactMenstruationFlowRecord : ReactHealthRecordImpl<MenstruationFlowRecord
   override fun parseRecord(record: MenstruationFlowRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putInt("flow", record.flow)
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

@@ -16,6 +16,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactVo2MaxRecord : ReactHealthRecordImpl<Vo2MaxRecord> {
@@ -37,6 +38,7 @@ class ReactVo2MaxRecord : ReactHealthRecordImpl<Vo2MaxRecord> {
   override fun parseRecord(record: Vo2MaxRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putDouble("vo2MillilitersPerMinuteKilogram", record.vo2MillilitersPerMinuteKilogram)
       putInt("measurementMethod", record.measurementMethod)
       putMap("metadata", convertMetadataToJSMap(record.metadata))

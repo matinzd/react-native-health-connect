@@ -35,6 +35,7 @@ class ReactWeightRecord : ReactHealthRecordImpl<WeightRecord> {
   override fun parseRecord(record: WeightRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putMap("weight", massToJsMap(record.weight))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

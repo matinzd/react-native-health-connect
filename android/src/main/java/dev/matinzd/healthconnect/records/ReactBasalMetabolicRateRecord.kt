@@ -21,6 +21,7 @@ import dev.matinzd.healthconnect.utils.getTimeRangeFilter
 import dev.matinzd.healthconnect.utils.mapJsDurationToDuration
 import dev.matinzd.healthconnect.utils.mapJsPeriodToPeriod
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRecord> {
@@ -40,6 +41,7 @@ class ReactBasalMetabolicRateRecord : ReactHealthRecordImpl<BasalMetabolicRateRe
   override fun parseRecord(record: BasalMetabolicRateRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putMap("basalMetabolicRate", powerToJsMap(record.basalMetabolicRate))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
