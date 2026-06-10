@@ -17,6 +17,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getMassFromJsMap
 import dev.matinzd.healthconnect.utils.massToJsMap
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactBoneMassRecord : ReactHealthRecordImpl<BoneMassRecord> {
@@ -34,6 +35,7 @@ class ReactBoneMassRecord : ReactHealthRecordImpl<BoneMassRecord> {
   override fun parseRecord(record: BoneMassRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putMap("mass", massToJsMap(record.mass))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

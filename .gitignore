@@ -39,6 +39,7 @@ project.xcworkspace
 .settings
 local.properties
 android.iml
+.kotlin/
 
 # Cocoapods
 #
@@ -73,4 +74,11 @@ lib/
 *.keystore
 !debug.keystore
 
-.yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+coverage/

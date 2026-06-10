@@ -23,8 +23,11 @@ class PermissionUtils {
           return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_HISTORY
         }
 
-        val recordClass = reactRecordTypeToClassMap[recordType]
-          ?: throw InvalidRecordType()
+        if (accessType == "read" && recordType == "BackgroundAccessPermission") {
+          return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
+        }
+
+        val recordClass = reactRecordTypeToClassMap[recordType] ?: throw InvalidRecordType()
 
         when (accessType) {
           "write" -> HealthPermission.getWritePermission(recordClass)
@@ -40,7 +43,7 @@ class PermissionUtils {
 
     fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
       return WritableNativeArray().apply {
-        // Add read and write permissions for all record types
+        // Handle regular permissions
         for ((recordType, recordClass) in reactRecordTypeToClassMap) {
           val readPermissionForRecord = HealthPermission.getReadPermission(recordClass)
           val writePermissionForRecord = HealthPermission.getWritePermission(recordClass)
@@ -54,12 +57,16 @@ class PermissionUtils {
           }
         }
 
-        // ExerciseRoute isn't a record type, so we need to add it manually
+        // Handle special permissions
         if (grantedPermissions.contains(HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE)) {
           pushMap(ReactPermission(AccessType.WRITE, "ExerciseRoute").toReadableMap())
         }
+
+        if (grantedPermissions.contains(HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND)
+        ) {
+          pushMap(ReactPermission(AccessType.READ, "BackgroundAccessPermission").toReadableMap())
+        }
       }
     }
-
   }
 }

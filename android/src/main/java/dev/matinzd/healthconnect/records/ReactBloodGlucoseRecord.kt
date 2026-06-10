@@ -19,6 +19,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
@@ -43,6 +44,7 @@ class ReactBloodGlucoseRecord : ReactHealthRecordImpl<BloodGlucoseRecord> {
   override fun parseRecord(record: BloodGlucoseRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putMap("level", bloodGlucoseToJsMap(record.level))
       putInt("specimenSource", record.specimenSource)
       putInt("mealType", record.mealType)

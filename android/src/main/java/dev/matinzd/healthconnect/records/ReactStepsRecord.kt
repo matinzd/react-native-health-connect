@@ -34,6 +34,8 @@ class ReactStepsRecord : ReactHealthRecordImpl<StepsRecord> {
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putDouble("count", record.count.toDouble())
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
@@ -50,7 +52,7 @@ class ReactStepsRecord : ReactHealthRecordImpl<StepsRecord> {
   override fun getAggregateGroupByDurationRequest(record: ReadableMap): AggregateGroupByDurationRequest {
     return AggregateGroupByDurationRequest(
       metrics = aggregateMetrics,
-      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeFilter = record.getTimeRangeFilterLocal("timeRangeFilter"),
       timeRangeSlicer = mapJsDurationToDuration(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
@@ -59,7 +61,7 @@ class ReactStepsRecord : ReactHealthRecordImpl<StepsRecord> {
   override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
     return AggregateGroupByPeriodRequest(
       metrics = aggregateMetrics,
-      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeFilter = record.getTimeRangeFilterLocal("timeRangeFilter"),
       timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )

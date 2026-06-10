@@ -15,6 +15,7 @@ import dev.matinzd.healthconnect.utils.AggregationNotSupported
 import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactMenstruationPeriodRecord : ReactHealthRecordImpl<MenstruationPeriodRecord> {
@@ -34,6 +35,8 @@ class ReactMenstruationPeriodRecord : ReactHealthRecordImpl<MenstruationPeriodRe
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
   }

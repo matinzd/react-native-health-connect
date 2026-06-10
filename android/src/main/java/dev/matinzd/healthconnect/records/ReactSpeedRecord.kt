@@ -43,6 +43,8 @@ class ReactSpeedRecord : ReactHealthRecordImpl<SpeedRecord> {
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       val array = WritableNativeArray().apply {
         record.samples.map {
           val map = WritableNativeMap()

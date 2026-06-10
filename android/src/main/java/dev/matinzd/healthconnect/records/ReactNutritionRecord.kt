@@ -119,6 +119,8 @@ class ReactNutritionRecord : ReactHealthRecordImpl<NutritionRecord> {
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putMap("biotin", massToJsMap(record.biotin))
       putMap("caffeine", massToJsMap(record.caffeine))
       putMap("calcium", massToJsMap(record.calcium))
