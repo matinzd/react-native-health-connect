@@ -175,6 +175,15 @@ export const MenstruationFlow = {
   HEAVY: 3,
 } as const;
 
+export const MindfulnessSessionType = {
+  UNKNOWN: 0,
+  MEDITATION: 1,
+  BREATHING: 2,
+  MUSIC: 3,
+  MOVEMENT: 4,
+  UNGUIDED: 5,
+} as const;
+
 export const SleepStageType = {
   UNKNOWN: 0,
   AWAKE: 1,
