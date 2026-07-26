@@ -17,8 +17,12 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.Duration
 import java.time.Period
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import java.time.temporal.TemporalAccessor
 import kotlin.reflect.KClass
 
 fun <T : Record> convertReactRequestOptionsFromJS(
@@ -88,6 +92,54 @@ fun ReadableMap.getSafeDouble(key: String, default: Double): Double {
   return if (this.hasKey(key)) this.getDouble(key) else default
 }
 
+/**
+ * Parses an ISO-8601 date-time that may or may not carry an offset.
+ *
+ * `aggregateGroupByPeriod` returns its bucket boundaries as local date-times
+ * (`2024-09-03T15:00`), and the documented examples use that shape as input, but
+ * every time range filter went through `Instant.parse`, which rejects a string
+ * without an offset with a `DateTimeParseException` at index 19. Accepting both
+ * shapes lets a bucket boundary be fed straight back into a query.
+ */
+private fun parseDateTime(value: String?, field: String): TemporalAccessor {
+  if (value == null) {
+    throw IllegalArgumentException("$field should be provided as a date-time string")
+  }
+
+  return try {
+    DateTimeFormatter.ISO_DATE_TIME.parseBest(value, ZonedDateTime::from, LocalDateTime::from)
+  } catch (e: DateTimeParseException) {
+    throw IllegalArgumentException(
+      "$field must be an ISO-8601 date-time, either local (2024-09-03T15:00:00) or " +
+        "with an offset (2024-09-03T15:00:00Z). Received: $value",
+      e
+    )
+  }
+}
+
+/**
+ * A local date-time is taken at face value, since Health Connect resolves local
+ * filters against the device zone itself. An offset is converted into the device
+ * zone, which is what this filter did before.
+ */
+private fun parseLocalDateTime(value: String?, field: String): LocalDateTime {
+  return when (val parsed = parseDateTime(value, field)) {
+    is ZonedDateTime -> parsed.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+    else -> parsed as LocalDateTime
+  }
+}
+
+/**
+ * A local date-time has no offset of its own, so it is resolved against the
+ * device zone to get an instant.
+ */
+private fun parseInstant(value: String?, field: String): Instant {
+  return when (val parsed = parseDateTime(value, field)) {
+    is ZonedDateTime -> parsed.toInstant()
+    else -> (parsed as LocalDateTime).atZone(ZoneId.systemDefault()).toInstant()
+  }
+}
+
 fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
   val timeRangeFilter = if (key != null) this.getMap(key)
     ?: throw Exception("Time range filter should be provided") else this
@@ -95,10 +147,10 @@ fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
   val operator = timeRangeFilter.getString("operator")
 
   val startTime =
-    if (timeRangeFilter.hasKey("startTime")) Instant.parse(timeRangeFilter.getString("startTime")) else null
+    if (timeRangeFilter.hasKey("startTime")) parseInstant(timeRangeFilter.getString("startTime"), "startTime") else null
 
   val endTime =
-    if (timeRangeFilter.hasKey("endTime")) Instant.parse(timeRangeFilter.getString("endTime")) else null
+    if (timeRangeFilter.hasKey("endTime")) parseInstant(timeRangeFilter.getString("endTime"), "endTime") else null
 
   when (operator) {
     "between" -> {
@@ -137,13 +189,12 @@ fun ReadableMap.getTimeRangeFilterLocal(key: String? = null): TimeRangeFilter {
     ?: throw Exception("Time range filter should be provided") else this
 
   val operator = timeRangeFilter.getString("operator")
-  val zone = ZoneId.systemDefault()
 
   val startTime: LocalDateTime? =
-    if (timeRangeFilter.hasKey("startTime")) Instant.parse(timeRangeFilter.getString("startTime")).atZone(zone).toLocalDateTime() else null
+    if (timeRangeFilter.hasKey("startTime")) parseLocalDateTime(timeRangeFilter.getString("startTime"), "startTime") else null
 
   val endTime: LocalDateTime? =
-    if (timeRangeFilter.hasKey("endTime")) Instant.parse(timeRangeFilter.getString("endTime")).atZone(zone).toLocalDateTime() else null
+    if (timeRangeFilter.hasKey("endTime")) parseLocalDateTime(timeRangeFilter.getString("endTime"), "endTime") else null
 
   when (operator) {
     "between" -> {
