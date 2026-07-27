@@ -73,61 +73,78 @@ You also need to setup permissions in your `AndroidManifest.xml` file. For more 
 
 ## Expo installation
 
-This package cannot be used in the [Expo Go](https://expo.io/client) app, but it can be used with custom managed apps.
-Just add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
-
-First install the package with yarn, npm, or [`expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install).
+This package cannot be used in the [Expo Go](https://expo.dev/go) app, but it works in a custom
+development build. It ships its own [config plugin](https://docs.expo.dev/config-plugins/introduction/),
+so installing the package is all you need:
 
 ```sh
-npm install expo-health-connect
-npm install expo-build-properties --save-dev
+npx expo install react-native-health-connect
 ```
 
-Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
+Add the plugin and the permissions your app reads to `app.json`:
 
 ```json
 {
   "expo": {
-    "plugins": ["expo-health-connect"]
+    "plugins": ["react-native-health-connect"],
+    "android": {
+      "permissions": [
+        "android.permission.health.READ_STEPS",
+        "android.permission.health.WRITE_STEPS"
+      ]
+    }
   }
 }
 ```
 
-- Edit your app.json again and add this
+Health Connect requires `minSdkVersion` 26. If your Expo SDK version does not already default to
+that, or to a `compileSdkVersion` of 36, override them with
+[`expo-build-properties`](https://docs.expo.dev/versions/latest/sdk/build-properties/):
 
 ```json
 {
   "expo": {
-    ...
     "plugins": [
+      "react-native-health-connect",
       [
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 35,
-            "targetSdkVersion": 35,
+            "compileSdkVersion": 36,
+            "targetSdkVersion": 36,
             "minSdkVersion": 26
-          },
+          }
         }
       ]
     ]
-   ...
   }
 }
 ```
 
+During [prebuild](https://expo.fyi/prebuilding) the plugin does the rest of the Android setup for
+you:
+
+- registers the permission delegate in `MainActivity`, without which `requestPermission()` throws
+  `UninitializedPropertyAccessException`
+- declares the permissions rationale intent filter Health Connect uses through Android 13
+- declares the `ViewPermissionUsageActivity` alias Android 14+ requires, without which
+  `requestPermission()` resolves with `[]` and no dialog is ever shown
+
+(The library's own AndroidManifest already declares the package query for
+`com.google.android.apps.healthdata`, so `getSdkStatus()` can see the standalone Health Connect
+app on Android 13 and below without any further setup.)
+
 Then rebuild the native app:
 
-- Run `expo prebuild`
-  - This will apply the config plugin using [prebuilding](https://expo.fyi/prebuilding).
-- Rebuild the app
-  - `yarn android` -- Build on Android.
+```sh
+npx expo prebuild
+npx expo run:android
+```
 
-> If the project doesn't build correctly with `yarn android`, please file an issue and try setting the project up manually.
+Or build with EAS: `eas build --profile development --platform android`.
 
-Finally create a new EAS development build
-
-`eas build --profile development --platform android`
+> `expo-health-connect` is a separate, older package that is no longer needed. The config plugin
+> bundled with `react-native-health-connect` replaces it.
 
 ## Example
 

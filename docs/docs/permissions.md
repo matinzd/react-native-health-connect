@@ -93,10 +93,23 @@ class PermissionsRationaleActivity: AppCompatActivity() {
 +    </activity-alias>
 ```
 
+:::warning
+The `ViewPermissionUsageActivity` alias is not optional on Android 14 and above. Without it the
+platform silently revokes every `android.permission.health.*` permission: `requestPermission()`
+resolves with an empty array, no dialog is shown, and your app never appears in the Health
+Connect app permissions list.
+:::
+
+The library's own AndroidManifest already declares the package query for
+`com.google.android.apps.healthdata`, so `getSdkStatus()` can see the standalone Health Connect
+app on Android 13 and below without any further setup. On Android 14+ Health Connect is part of
+the platform and the query is unused.
 
 ## Setting up permissions in Expo
 
-You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins](https://docs.expo.dev/config-plugins/introduction/) in your project.
+The [config plugin](./get-started.md#expo-installation) bundled with this package applies every
+manifest change described above during `npx expo prebuild`, so all you declare yourself are the
+permissions your app reads.
 
 - Edit `app.json` and add the permissions you need.
 
