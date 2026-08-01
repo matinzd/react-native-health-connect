@@ -76,8 +76,7 @@ export default function App() {
                 const status = await getSdkStatus();
                 return {
                   status,
-                  available:
-                    status === SdkAvailabilityStatus.SDK_AVAILABLE,
+                  available: status === SdkAvailabilityStatus.SDK_AVAILABLE,
                 };
               })
             }
@@ -89,7 +88,9 @@ export default function App() {
           <Button
             title="Request permissions"
             onPress={() =>
-              run('requestPermission', () => requestPermission([...PERMISSIONS]))
+              run('requestPermission', () =>
+                requestPermission([...PERMISSIONS])
+              )
             }
           />
           <Button
