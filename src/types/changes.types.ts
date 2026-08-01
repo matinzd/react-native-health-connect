@@ -1,4 +1,5 @@
-import type { RecordType, HealthConnectRecord } from './records.types';
+import type { RecordType } from './records.types';
+import type { HealthConnectRecordResult } from './results.types';
 
 export interface GetChangesRequest {
   changesToken?: string;
@@ -7,7 +8,7 @@ export interface GetChangesRequest {
 }
 
 export interface GetChangesResults {
-  upsertionChanges: Array<{ record: HealthConnectRecord }>;
+  upsertionChanges: Array<{ record: HealthConnectRecordResult }>;
   deletionChanges: Array<{ recordId: string }>;
   nextChangesToken: string;
   changesTokenExpired: boolean;
