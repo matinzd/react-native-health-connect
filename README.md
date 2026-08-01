@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://developer.android.com/static/guide/health-and-fitness/health-connect/images/health_connect_logo_192pxnew.png" />
+  <img src="https://developer.android.com/static/images/health-connect/health-connect.svg" />
   <div align="center">
     <h1>React Native Health Connect</h1>
   </div>
