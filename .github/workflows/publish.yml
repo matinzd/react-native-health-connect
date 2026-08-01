@@ -1,9 +1,12 @@
 name: Release & Publish To NPM
 
 on:
-  push:
+  workflow_run:
+    workflows: ['CI']
     branches:
       - main
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -15,6 +18,8 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # workflow_run fires for failed CI runs too; workflow_dispatch has no conclusion.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
