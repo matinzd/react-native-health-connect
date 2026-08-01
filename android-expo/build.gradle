@@ -1,5 +1,11 @@
 apply plugin: 'com.android.library'
 
+// Read from package.json so it tracks the library and cannot drift. Without this,
+// Expo autolinking reports the module as "react-native-health-connect-expo
+// (unspecified)" in its module list.
+group = 'expo.modules.healthconnect'
+version = new groovy.json.JsonSlurper().parseText(file('../package.json').text).version
+
 // This project is only ever included by Expo autolinking. Bare React Native projects
 // never add it to their settings.gradle, so `expo-modules-core` is guaranteed to be
 // on the classpath whenever this file is evaluated.
