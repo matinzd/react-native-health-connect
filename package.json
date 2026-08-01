@@ -37,6 +37,7 @@
   "devDependencies": {
     "@commitlint/config-conventional": "^17.4.2",
     "@evilmartians/lefthook": "^1.2.8",
+    "@expo/config-plugins": "~57.0.6",
     "@react-native-community/eslint-config": "^3.0.2",
     "@react-native/babel-preset": "0.86.2",
     "@react-native/jest-preset": "0.86.2",
