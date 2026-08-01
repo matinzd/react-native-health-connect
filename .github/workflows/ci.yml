@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -53,23 +53,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: .nvmrc
+      # Installs the ROOT dependencies, which this job genuinely needs: example-expo
+      # reaches the library through a symlink to the repo root, so app.plugin.js
+      # resolves @expo/config-plugins from the root node_modules.
+      - name: Setup
+        uses: ./.github/actions/setup
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
 
-      # Required: example-expo reaches the library through a symlink to the repo root,
-      # so app.plugin.js resolves @expo/config-plugins from the ROOT node_modules.
-      # Without this the plugin fails to load during prebuild.
-      - name: Install root
-        run: yarn install --immutable
-
+      # Kept separate and unconditional rather than folded into the composite: its
+      # install is skipped on a cache hit, and the lint/test/build jobs share the same
+      # cache key without ever populating example-expo/node_modules.
+      #
       # example-expo is its own yarn project rather than a workspace: yarn will not
       # materialise a link:/portal: symlink pointing at an ancestor directory, and
       # Expo autolinking needs a real node_modules entry to discover android-expo/.
