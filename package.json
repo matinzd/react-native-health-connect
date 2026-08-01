@@ -65,8 +65,11 @@
     "src",
     "lib",
     "android",
+    "android-expo",
+    "expo-module.config.json",
     "!lib/typescript/example",
     "!android/build",
+    "!android-expo/build",
     "!android/gradle",
     "!android/gradlew",
     "!android/gradlew.bat",
@@ -82,8 +85,17 @@
   },
   "peerDependencies": {
     "@expo/config-plugins": ">= 6.0.2",
+    "expo": "*",
     "react": "*",
     "react-native": "*"
+  },
+  "peerDependenciesMeta": {
+    "@expo/config-plugins": {
+      "optional": true
+    },
+    "expo": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">= 16.0.0"

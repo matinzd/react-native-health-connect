@@ -1,0 +1,47 @@
+apply plugin: 'com.android.library'
+
+// This project is only ever included by Expo autolinking. Bare React Native projects
+// never add it to their settings.gradle, so `expo-modules-core` is guaranteed to be
+// on the classpath whenever this file is evaluated.
+def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
+apply from: expoModulesCorePlugin
+applyKotlinExpoModulesCorePlugin()
+useCoreDependencies()
+
+// If you want to use the managed Android SDK versions from expo-modules-core, set this to true.
+def useManagedAndroidSdkVersions = false
+if (useManagedAndroidSdkVersions) {
+  useDefaultAndroidSdkVersions()
+} else {
+  buildscript {
+    // Simple helper that allows the root project to override versions declared by this library.
+    ext.safeExtGet = { prop, fallback ->
+      rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+    }
+  }
+  project.android {
+    compileSdkVersion safeExtGet("compileSdkVersion", 35)
+    defaultConfig {
+      minSdkVersion safeExtGet("minSdkVersion", 26)
+      targetSdkVersion safeExtGet("targetSdkVersion", 35)
+    }
+  }
+}
+
+android {
+  namespace "expo.modules.healthconnect"
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  implementation project(':expo-modules-core')
+  // Provides dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate.
+  // Linked into the same settings.gradle by React Native autolinking.
+  implementation project(':react-native-health-connect')
+
+  //noinspection GradleDynamicVersion
+  implementation 'com.facebook.react:react-native:+'
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:${safeExtGet('kotlinVersion', '1.8.10')}"
+}

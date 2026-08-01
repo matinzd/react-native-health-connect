@@ -1,0 +1,8 @@
+{
+  "platforms": ["android"],
+  "android": {
+    "name": "react-native-health-connect-expo",
+    "path": "android-expo",
+    "gradlePath": "android-expo/build.gradle"
+  }
+}

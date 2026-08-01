@@ -74,32 +74,26 @@ You also need to setup permissions in your `AndroidManifest.xml` file. For more 
 ## Expo installation
 
 This package cannot be used in the [Expo Go](https://expo.io/client) app, but it can be used with custom managed apps.
-Just add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
 
-First install the package with yarn, npm, or [`expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install).
+> **As of v4, the Expo integration ships inside `react-native-health-connect`.** There is no longer
+> a separate `expo-health-connect` package to install — see [Migrating from
+> `expo-health-connect`](#migrating-from-expo-health-connect).
+
+Install the package with yarn, npm, or [`expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install):
 
 ```sh
-npm install expo-health-connect
+npm install react-native-health-connect
 npm install expo-build-properties --save-dev
 ```
 
-Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
-
-```json
-{
-  "expo": {
-    "plugins": ["expo-health-connect"]
-  }
-}
-```
-
-- Edit your app.json again and add this
+Then add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
 
 ```json
 {
   "expo": {
     ...
     "plugins": [
+      "react-native-health-connect",
       [
         "expo-build-properties",
         {
@@ -107,7 +101,7 @@ Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins
             "compileSdkVersion": 35,
             "targetSdkVersion": 35,
             "minSdkVersion": 26
-          },
+          }
         }
       ]
     ]
@@ -115,6 +109,10 @@ Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins
   }
 }
 ```
+
+You do **not** need to touch `MainActivity` in an Expo project. The permission delegate shown in the
+React Native CLI section above is registered automatically by the Expo module bundled with this
+package.
 
 Then rebuild the native app:
 
@@ -128,6 +126,20 @@ Then rebuild the native app:
 Finally create a new EAS development build
 
 `eas build --profile development --platform android`
+
+A complete working Expo app lives in [`example-expo/`](./example-expo).
+
+### Migrating from `expo-health-connect`
+
+`expo-health-connect` is deprecated; everything it did is now part of this package.
+
+1. Remove it: `npm uninstall expo-health-connect`
+2. In your `app.json` `plugins` array, replace `"expo-health-connect"` with `"react-native-health-connect"`.
+3. Re-run `npx expo prebuild --clean`.
+
+If you leave `expo-health-connect` installed, the Android build fails with a duplicate
+`expo.modules.healthconnect.HealthConnectPackage` class — both packages contribute the same Kotlin
+class. Removing the old package resolves it.
 
 ## Example
 

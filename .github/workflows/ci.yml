@@ -46,3 +46,44 @@ jobs:
 
       - name: Build package
         run: yarn prepack
+
+  # Exercises the Expo autolinking path: android-expo/ must be linked here, and the
+  # regular react-native-health-connect project must STILL be linked alongside it.
+  expo-prebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # example-expo is intentionally NOT a yarn workspace: Expo SDK 57 pins
+      # react-native 0.86 while example/ is on 0.81, and hoisting both breaks Metro.
+      - name: Install example-expo
+        working-directory: example-expo
+        run: npm install
+
+      - name: Prebuild
+        working-directory: example-expo
+        run: npx expo prebuild --clean --platform android
+
+      - name: Assert both projects are linked
+        working-directory: example-expo
+        run: |
+          set -eux
+          grep -q "react-native-health-connect-expo" android/settings.gradle
+          grep -q "react-native-health-connect'" android/settings.gradle
+          grep -rq "expo.modules.healthconnect.HealthConnectPackage" \
+            android/app/build/generated/expo/ || \
+            grep -rq "expo.modules.healthconnect.HealthConnectPackage" android/
+
+      - name: Assemble
+        working-directory: example-expo/android
+        run: ./gradlew :app:assembleDebug --no-daemon
