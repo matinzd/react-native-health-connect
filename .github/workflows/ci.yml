@@ -64,6 +64,12 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      # Required: example-expo reaches the library through a symlink to the repo root,
+      # so app.plugin.js resolves @expo/config-plugins from the ROOT node_modules.
+      # Without this the plugin fails to load during prebuild.
+      - name: Install root
+        run: yarn install --immutable
+
       # example-expo is its own yarn project rather than a workspace: yarn will not
       # materialise a link:/portal: symlink pointing at an ancestor directory, and
       # Expo autolinking needs a real node_modules entry to discover android-expo/.
