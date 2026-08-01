@@ -9,23 +9,27 @@ runs:
       with:
         node-version-file: .nvmrc
 
-    # No restore-keys on purpose. A prefix fallback restores node_modules from an
-    # unrelated lockfile, and yarn's install state file can then treat that stale tree
-    # as already correct — which is how example/node_modules ended up without the
-    # react-native CLI that settings.gradle shells out to. Only an exact lockfile
-    # match may be reused.
-    - name: Cache dependencies
-      id: yarn-cache
+    - name: Resolve yarn cache folder
+      id: yarn-config
+      run: echo "cache-folder=$(yarn config get cacheFolder)" >> "$GITHUB_OUTPUT"
+      shell: bash
+
+    # Caches yarn's package downloads, NOT node_modules. Caching an installed
+    # node_modules tree is unsound: the restore lost the executable bit on
+    # node_modules/.bin targets, and because the tree already looked complete yarn's
+    # link step short-circuited and never restored it, so Gradle's autolinking call
+    # died with "sh: 1: rnc-cli: Permission denied" (exit 127).
+    #
+    # A download cache has no such hazard — restore-keys are safe here — and every run
+    # still performs a real install, which is what sets permissions and links binaries.
+    - name: Cache yarn downloads
       uses: actions/cache@v6
       with:
-        path: |
-          **/node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        path: ${{ steps.yarn-config.outputs.cache-folder }}
+        key: ${{ runner.os }}-yarn-downloads-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-downloads-
 
-    # Deliberately NOT gated on cache-hit. The cache is a download accelerator, not a
-    # substitute for installing: a restored **/node_modules can be stale or partial,
-    # which broke the Gradle jobs (settings.gradle shells out to the autolinking CLI
-    # and exited 127). With the cache warm this is a fast no-op.
     - name: Install dependencies
       run: yarn install --immutable
       shell: bash
