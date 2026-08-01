@@ -24,6 +24,7 @@ import {
   HealthConnectRecord,
   initialize,
   insertRecords,
+  MindfulnessSessionType,
   openHealthConnectDataManagement,
   openHealthConnectSettings,
   readRecord,
@@ -50,7 +51,8 @@ type DemoRecordType =
   | 'Hydration'
   | 'TotalCaloriesBurned'
   | 'ExerciseSession'
-  | 'SkinTemperature';
+  | 'SkinTemperature'
+  | 'MindfulnessSession';
 
 const DEMO_RECORD_TYPES: { type: DemoRecordType; label: string }[] = [
   { type: 'Steps', label: 'Steps' },
@@ -61,6 +63,7 @@ const DEMO_RECORD_TYPES: { type: DemoRecordType; label: string }[] = [
   { type: 'TotalCaloriesBurned', label: 'Calories' },
   { type: 'ExerciseSession', label: 'Exercise' },
   { type: 'SkinTemperature', label: 'Skin Temperature' },
+  { type: 'MindfulnessSession', label: 'Mindfulness' },
 ];
 
 const AGGREGATABLE_TYPES: AggregateResultRecordType[] = [
@@ -235,6 +238,16 @@ const createSampleRecord = (
         metadata: buildMetadata(),
       };
     }
+    case 'MindfulnessSession':
+      return {
+        recordType: 'MindfulnessSession',
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        mindfulnessSessionType: MindfulnessSessionType.MEDITATION,
+        title: `Sample Meditation ${Math.floor(Math.random() * 1000)}`,
+        notes: 'Inserted from the react-native-health-connect example app',
+        metadata: buildMetadata(),
+      };
   }
 };
 
@@ -274,6 +287,7 @@ export default function App() {
     TotalCaloriesBurned: [],
     ExerciseSession: [],
     SkinTemperature: [],
+    MindfulnessSession: [],
   });
 
   const selectedInsertedIds =

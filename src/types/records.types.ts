@@ -296,6 +296,16 @@ export interface MenstruationPeriodRecord extends InstantaneousRecord {
   recordType: 'MenstruationPeriod';
 }
 
+export interface MindfulnessSessionRecord extends IntervalRecord {
+  startZoneOffset?: ZoneOffset;
+  endZoneOffset?: ZoneOffset;
+  recordType: 'MindfulnessSession';
+  // Use MindfulnessSessionType constant
+  mindfulnessSessionType: number;
+  title?: string;
+  notes?: string;
+}
+
 export interface SleepSessionRecord extends IntervalRecord {
   recordType: 'SleepSession';
   stages?: SleepStage[];
@@ -373,6 +383,7 @@ export type HealthConnectRecord =
   | SpeedRecord
   | MenstruationFlowRecord
   | MenstruationPeriodRecord
+  | MindfulnessSessionRecord
   | SleepSessionRecord
   | RespiratoryRateRecord
   | WheelchairPushesRecord

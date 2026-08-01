@@ -34,6 +34,7 @@ import type {
   LeanBodyMassRecord,
   MenstruationFlowRecord,
   MenstruationPeriodRecord,
+  MindfulnessSessionRecord,
   OvulationTestRecord,
   OxygenSaturationRecord,
   PowerRecord,
@@ -267,6 +268,8 @@ interface MenstruationFlowRecordResult extends MenstruationFlowRecord {}
 
 interface MenstruationPeriodRecordResult extends MenstruationPeriodRecord {}
 
+interface MindfulnessSessionRecordResult extends MindfulnessSessionRecord {}
+
 interface SleepSessionRecordResult extends SleepSessionRecord {}
 
 interface RespiratoryRateRecordResult extends RespiratoryRateRecord {}
@@ -318,6 +321,7 @@ export type HealthConnectRecordResult =
   | SpeedRecordResult
   | MenstruationFlowRecordResult
   | MenstruationPeriodRecordResult
+  | MindfulnessSessionRecordResult
   | SleepSessionRecordResult
   | RespiratoryRateRecordResult
   | WheelchairPushesRecordResult
