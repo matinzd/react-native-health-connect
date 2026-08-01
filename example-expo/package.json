@@ -1,0 +1,29 @@
+{
+  "name": "example-expo",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "prebuild": "expo prebuild --clean",
+    "postinstall": "mkdir -p node_modules && ln -sfn ../.. node_modules/react-native-health-connect"
+  },
+  "dependencies": {
+    "expo": "~57.0.9",
+    "expo-build-properties": "~57.0.2",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-native": "0.86.2",
+    "react-native-health-connect": "link:..",
+    "react-native-safe-area-context": "~5.7.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@types/react": "~19.2.0",
+    "typescript": "~5.9.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
