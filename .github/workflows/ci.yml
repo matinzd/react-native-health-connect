@@ -116,3 +116,50 @@ jobs:
           strings /tmp/all.dex | grep -q "Lexpo/modules/healthconnect/HealthConnectPackage"
           strings /tmp/all.dex | grep -q "Ldev/matinzd/healthconnect/HealthConnectPackage"
           strings /tmp/all.dex | grep -q "HealthConnectPermissionReactActivityHandler"
+
+  # The mirror image of expo-prebuild: a bare React Native app must NEVER see
+  # android-expo/. It depends on expo-modules-core, which bare projects do not have,
+  # so if it ever gets linked here the build breaks for every non-Expo consumer.
+  bare-example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Assert android-expo is not linked
+        working-directory: example/android
+        run: |
+          set -eu
+          ./gradlew projects --no-daemon -q > projects.txt
+          grep -q "Project ':react-native-health-connect'" projects.txt
+          # NB: not `! grep ...` — set -e is ignored for commands preceded by `!`,
+          # so that form silently never fails.
+          if grep -q "react-native-health-connect-expo" projects.txt; then
+            echo "::error::android-expo was linked into the bare React Native example"
+            exit 1
+          fi
+
+      - name: Assemble
+        working-directory: example/android
+        run: ./gradlew :app:assembleDebug --no-daemon
+
+      # Nothing from expo.modules may end up in a bare app's APK.
+      - name: Assert no expo classes in the APK
+        working-directory: example/android
+        run: |
+          set -eu
+          mkdir -p /tmp/bare && unzip -o -q app/build/outputs/apk/debug/app-debug.apk -d /tmp/bare '*.dex'
+          cat /tmp/bare/*.dex > /tmp/bare.dex
+          strings /tmp/bare.dex | grep -q "Ldev/matinzd/healthconnect/HealthConnectPackage"
+          if strings /tmp/bare.dex | grep -q "expo/modules"; then
+            echo "::error::expo.modules classes leaked into the bare React Native APK"
+            exit 1
+          fi
