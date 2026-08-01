@@ -69,6 +69,15 @@ export function getSdkStatus(
 }
 
 /**
+ * Checks whether a Health Connect feature is available on the current device/provider.
+ * @param feature the feature key - check HealthConnectFeature constants
+ * @returns true when the feature is available at runtime
+ */
+export function isFeatureAvailable(feature: string): Promise<boolean> {
+  return HealthConnect.isFeatureAvailable(feature);
+}
+
+/**
  * Initializes the Health Connect SDK
  * @param providerPackageName the package name of the Health Connect provider
  * @returns true if the SDK was initialized successfully

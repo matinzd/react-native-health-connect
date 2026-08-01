@@ -12,6 +12,7 @@ import type {
 } from './base.types';
 import type {
   ActiveCaloriesBurnedRecord,
+  ActivityIntensityRecord,
   BasalBodyTemperatureRecord,
   BasalMetabolicRateRecord,
   BloodGlucoseRecord,
@@ -62,6 +63,8 @@ type Replace<T, K extends keyof T, TReplace> = Identity<
 
 interface ActiveCaloriesBurnedRecordResult
   extends Replace<ActiveCaloriesBurnedRecord, 'energy', EnergyResult> {}
+
+interface ActivityIntensityRecordResult extends ActivityIntensityRecord {}
 
 interface BasalBodyTemperatureRecordResult
   extends Replace<
@@ -287,6 +290,7 @@ interface PowerRecordResult
 
 export type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
+  | ActivityIntensityRecordResult
   | BasalBodyTemperatureRecordResult
   | BasalMetabolicRateRecordResult
   | BloodGlucoseRecordResult

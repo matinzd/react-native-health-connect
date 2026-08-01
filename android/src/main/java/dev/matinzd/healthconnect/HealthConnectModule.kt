@@ -17,6 +17,11 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
   }
 
   @ReactMethod
+  override fun isFeatureAvailable(feature: String, promise: Promise) {
+    return manager.isFeatureAvailable(feature, promise)
+  }
+
+  @ReactMethod
   override fun openHealthConnectSettings() {
     manager.openHealthConnectSettings()
   }
