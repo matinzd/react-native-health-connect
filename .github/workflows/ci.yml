@@ -61,20 +61,13 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      # The composite skips its install on a cache hit, and the cached **/node_modules
-      # can be stale or partial — which breaks Gradle, since settings.gradle shells out
-      # to the autolinking CLI. Reconcile against the lockfile before touching Gradle.
-      - name: Ensure dependencies match the lockfile
-        run: yarn install --immutable
-
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
 
-      # Kept separate and unconditional rather than folded into the composite: its
-      # install is skipped on a cache hit, and the lint/test/build jobs share the same
-      # cache key without ever populating example-expo/node_modules.
+      # Not covered by the composite: example-expo is not a workspace, so the root
+      # install does not reach it.
       #
       # example-expo is its own yarn project rather than a workspace: yarn will not
       # materialise a link:/portal: symlink pointing at an ancestor directory, and
@@ -134,11 +127,6 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
-
-      # See the note in expo-prebuild: the composite's install is cache-gated, and a
-      # stale node_modules makes settings.gradle's autolinking command exit 127.
-      - name: Ensure dependencies match the lockfile
-        run: yarn install --immutable
 
       - uses: actions/setup-java@v5
         with:
