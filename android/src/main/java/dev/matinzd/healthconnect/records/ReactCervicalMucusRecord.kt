@@ -16,6 +16,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactCervicalMucusRecord : ReactHealthRecordImpl<CervicalMucusRecord> {
@@ -34,6 +35,7 @@ class ReactCervicalMucusRecord : ReactHealthRecordImpl<CervicalMucusRecord> {
   override fun parseRecord(record: CervicalMucusRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putInt("appearance", record.appearance)
       putInt("sensation", record.sensation)
       putMap("metadata", convertMetadataToJSMap(record.metadata))

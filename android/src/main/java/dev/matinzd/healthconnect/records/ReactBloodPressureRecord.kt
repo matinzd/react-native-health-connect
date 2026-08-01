@@ -44,6 +44,7 @@ class ReactBloodPressureRecord : ReactHealthRecordImpl<BloodPressureRecord> {
   override fun parseRecord(record: BloodPressureRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putInt("measurementLocation", record.measurementLocation)
       putInt("bodyPosition", record.bodyPosition)
       putMap("systolic", bloodPressureToJsMap(record.systolic))

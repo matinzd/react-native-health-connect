@@ -21,6 +21,7 @@ import dev.matinzd.healthconnect.utils.getTimeRangeFilter
 import dev.matinzd.healthconnect.utils.toMapList
 import dev.matinzd.healthconnect.utils.mapJsDurationToDuration
 import dev.matinzd.healthconnect.utils.mapJsPeriodToPeriod
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurnedRecord> {
@@ -43,6 +44,8 @@ class ReactActiveCaloriesBurnedRecord : ReactHealthRecordImpl<ActiveCaloriesBurn
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putMap("energy", energyToJsMap(record.energy))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

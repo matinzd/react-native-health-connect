@@ -42,6 +42,8 @@ class ReactSleepSessionRecord : ReactHealthRecordImpl<SleepSessionRecord> {
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putString("title", record.title)
       putString("notes", record.notes)
       putArray("stages", WritableNativeArray().apply {

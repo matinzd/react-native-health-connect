@@ -5,7 +5,9 @@ import type {
   MassResult,
   PowerSampleResult,
   PressureResult,
+  SkinTemperatureDeltaResult,
   SpeedSampleResult,
+  TemperatureResult,
   VolumeResult,
 } from './base.types';
 import type {
@@ -40,6 +42,7 @@ import type {
   RespiratoryRateRecord,
   RestingHeartRateRecord,
   SexualActivityRecord,
+  SkinTemperatureRecord,
   SleepSessionRecord,
   SpeedRecord,
   StepsCadenceRecord,
@@ -152,6 +155,12 @@ interface HeartRateVariabilityRmssdRecordResult
   extends HeartRateVariabilityRmssdRecord {}
 
 interface SexualActivityRecordResult extends SexualActivityRecord {}
+
+interface SkinTemperatureRecordResult
+  extends Omit<SkinTemperatureRecord, 'baseline' | 'deltas'> {
+  baseline?: TemperatureResult;
+  deltas: SkinTemperatureDeltaResult[];
+}
 
 interface WeightRecordResult
   extends Replace<WeightRecord, 'weight', MassResult> {}
@@ -304,6 +313,7 @@ export type HealthConnectRecordResult =
   | HydrationRecordResult
   | HeartRateVariabilityRmssdRecordResult
   | SexualActivityRecordResult
+  | SkinTemperatureRecordResult
   | WeightRecordResult
   | WeightRecordResult
   | NutritionRecordResult

@@ -35,6 +35,8 @@ class ReactFloorsClimbedRecord : ReactHealthRecordImpl<FloorsClimbedRecord> {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
       putDouble("floors", record.floors)
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
   }

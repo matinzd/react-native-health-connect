@@ -35,6 +35,7 @@ class ReactRestingHeartRateRecord : ReactHealthRecordImpl<RestingHeartRateRecord
   override fun parseRecord(record: RestingHeartRateRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putDouble("beatsPerMinute", record.beatsPerMinute.toDouble())
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

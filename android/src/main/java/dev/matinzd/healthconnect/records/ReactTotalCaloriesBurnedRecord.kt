@@ -34,6 +34,8 @@ class ReactTotalCaloriesBurnedRecord : ReactHealthRecordImpl<TotalCaloriesBurned
     return WritableNativeMap().apply {
       putString("startTime", record.startTime.toString())
       putString("endTime", record.endTime.toString())
+      putMap("startZoneOffset", zoneOffsetToJsMap(record.startZoneOffset))
+      putMap("endZoneOffset", zoneOffsetToJsMap(record.endZoneOffset))
       putMap("energy", energyToJsMap(record.energy))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }

@@ -19,6 +19,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.*
 import java.time.Instant
 
 class ReactBodyTemperatureRecord : ReactHealthRecordImpl<BodyTemperatureRecord> {
@@ -40,6 +41,7 @@ class ReactBodyTemperatureRecord : ReactHealthRecordImpl<BodyTemperatureRecord> 
   override fun parseRecord(record: BodyTemperatureRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putInt("measurementLocation", record.measurementLocation)
       putMap("temperature", temperatureToJsMap(record.temperature))
       putMap("metadata", convertMetadataToJSMap(record.metadata))

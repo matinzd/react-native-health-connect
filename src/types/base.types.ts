@@ -88,6 +88,21 @@ export interface Temperature {
   unit: 'celsius' | 'fahrenheit';
 }
 
+export interface TemperatureResult {
+  inCelsius: number;
+  inFahrenheit: number;
+}
+
+export interface TemperatureDelta {
+  value: number;
+  unit: 'celsius' | 'fahrenheit';
+}
+
+export interface TemperatureDeltaResult {
+  inCelsius: number;
+  inFahrenheit: number;
+}
+
 export interface Pressure {
   value: number;
   unit: 'millimetersOfMercury';
@@ -175,6 +190,14 @@ export interface PowerSample extends BaseSample {
 
 export interface PowerSampleResult extends BaseSample {
   power: PowerResult;
+}
+
+export interface SkinTemperatureDelta extends BaseSample {
+  delta: TemperatureDelta;
+}
+
+export interface SkinTemperatureDeltaResult extends BaseSample {
+  delta: TemperatureDeltaResult;
 }
 
 export interface ExerciseSegment {
