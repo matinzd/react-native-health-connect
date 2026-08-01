@@ -23,7 +23,7 @@ Make sure you have React Native version 0.71 or higher **with the latest patch**
 
 - [Health Connect](https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata&hl=en&gl=US) needs to be installed on the user's device. Starting from Android 14 (Upside Down Cake), Health Connect is part of the Android Framework. Read more [here](https://developer.android.com/health-and-fitness/guides/health-connect/develop/get-started#step-1).
 - Health Connect API requires `minSdkVersion=26` (Android Oreo / 8.0).
-- If you are planning to release your app on Google Play, you will need to submit a [declaration form](https://docs.google.com/forms/d/1LFjbq1MOCZySpP5eIVkoyzXTanpcGTYQH26lKcrQUJo/viewform?edit_requested=true). Approval can take up to 7 days.
+- If you are planning to release your app on Google Play, you must declare your Health Connect data access. This is now done in the [Play Console](https://play.google.com/apps/publish/signup) — the standalone Google Form previously used for these requests is being retired on September 3rd, and all submissions go through the Play Console instead. See Google's [health apps declaration guidance](https://support.google.com/googleplay/android-developer/answer/14738291?hl=en), or [how to sign up for a Play Console developer account](https://support.google.com/googleplay/android-developer/answer/6112435?hl=en#zippy=%2Cstep-sign-up-for-a-play-console-developer-account) if you do not have one yet. Approval can take up to 7 days.
 - Approval does not grant you immediate access to Health Connect. A whitelist must propagate to the Health Connect servers, which take an additional 5-7 business days. The whitelist is updated every Monday according to Google Fit AHP support.
 
 ## Installation
