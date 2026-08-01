@@ -33,6 +33,7 @@ import {
   requestPermission,
   revokeAllPermissions,
   SdkAvailabilityStatus,
+  SkinTemperatureMeasurementLocation,
 } from 'react-native-health-connect';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { Location } from 'src/types/base.types';
@@ -48,7 +49,8 @@ type DemoRecordType =
   | 'Weight'
   | 'Hydration'
   | 'TotalCaloriesBurned'
-  | 'ExerciseSession';
+  | 'ExerciseSession'
+  | 'SkinTemperature';
 
 const DEMO_RECORD_TYPES: { type: DemoRecordType; label: string }[] = [
   { type: 'Steps', label: 'Steps' },
@@ -58,6 +60,7 @@ const DEMO_RECORD_TYPES: { type: DemoRecordType; label: string }[] = [
   { type: 'Hydration', label: 'Hydration' },
   { type: 'TotalCaloriesBurned', label: 'Calories' },
   { type: 'ExerciseSession', label: 'Exercise' },
+  { type: 'SkinTemperature', label: 'Skin Temperature' },
 ];
 
 const AGGREGATABLE_TYPES: AggregateResultRecordType[] = [
@@ -69,6 +72,11 @@ const AGGREGATABLE_TYPES: AggregateResultRecordType[] = [
   'TotalCaloriesBurned',
   'ExerciseSession',
 ];
+
+const isAggregatable = (
+  recordType: DemoRecordType
+): recordType is DemoRecordType & AggregateResultRecordType =>
+  (AGGREGATABLE_TYPES as string[]).includes(recordType);
 
 const generateExerciseRoute = (startTime: Date): Location[] => {
   const route: Location[] = [];
@@ -206,6 +214,27 @@ const createSampleRecord = (
         exerciseRoute: { route: generateExerciseRoute(startTime) },
         metadata: buildMetadata(),
       };
+    case 'SkinTemperature': {
+      const sampleCount = 5;
+      return {
+        recordType: 'SkinTemperature',
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        baseline: {
+          unit: 'celsius',
+          value: Number((36 + Math.random()).toFixed(2)),
+        },
+        deltas: Array.from({ length: sampleCount }, (_, i) => ({
+          time: new Date(startTime.getTime() + i * 5 * 60 * 1000).toISOString(),
+          delta: {
+            unit: 'celsius' as const,
+            value: Number((Math.random() * 0.5 - 0.25).toFixed(2)),
+          },
+        })),
+        measurementLocation: SkinTemperatureMeasurementLocation.WRIST,
+        metadata: buildMetadata(),
+      };
+    }
   }
 };
 
@@ -244,6 +273,7 @@ export default function App() {
     Hydration: [],
     TotalCaloriesBurned: [],
     ExerciseSession: [],
+    SkinTemperature: [],
   });
 
   const selectedInsertedIds =
@@ -373,7 +403,7 @@ export default function App() {
 
   const aggregateSampleData = async () => {
     await runAction('aggregateRecord', async () => {
-      if (!AGGREGATABLE_TYPES.includes(selectedRecordType)) {
+      if (!isAggregatable(selectedRecordType)) {
         Alert.alert(
           'Not supported',
           `${selectedRecordType} does not support aggregateRecord`
@@ -393,7 +423,7 @@ export default function App() {
 
   const aggregateSampleGroupByDuration = async () => {
     await runAction('aggregateGroupByDuration', async () => {
-      if (!AGGREGATABLE_TYPES.includes(selectedRecordType)) {
+      if (!isAggregatable(selectedRecordType)) {
         Alert.alert(
           'Not supported',
           `${selectedRecordType} does not support aggregateGroupByDuration`
@@ -417,7 +447,7 @@ export default function App() {
 
   const aggregateSampleGroupByPeriod = async () => {
     await runAction('aggregateGroupByPeriod', async () => {
-      if (!AGGREGATABLE_TYPES.includes(selectedRecordType)) {
+      if (!isAggregatable(selectedRecordType)) {
         Alert.alert(
           'Not supported',
           `${selectedRecordType} does not support aggregateGroupByPeriod`
