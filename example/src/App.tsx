@@ -19,6 +19,7 @@ import {
   AggregateResultRecordType,
   DeviceType,
   ExerciseType,
+  getChanges,
   getGrantedPermissions,
   getSdkStatus,
   HealthConnectRecord,
@@ -278,6 +279,8 @@ export default function App() {
   );
   const [isBusy, setIsBusy] = React.useState(false);
 
+  const changesTokenRef = React.useRef<string | undefined>(undefined);
+
   const insertedIdsByTypeRef = React.useRef<Record<DemoRecordType, string[]>>({
     Steps: [],
     Distance: [],
@@ -501,6 +504,36 @@ export default function App() {
     });
   };
 
+  const readChanges = async () => {
+    await runAction('getChanges', async () => {
+      const result = await getChanges({
+        recordTypes: [selectedRecordType],
+        changesToken: changesTokenRef.current,
+      });
+
+      // Keep the token so the next run only reports what changed since now.
+      changesTokenRef.current = result.nextChangesToken;
+
+      // Upserted records are serialized exactly like `readRecords` results, so
+      // unit-bearing fields are the `*Result` variants: a Weight comes back as
+      // `{ inKilograms, inGrams, ... }`, not `{ value, unit }`.
+      const weightsInKilograms = result.upsertionChanges.flatMap(({ record }) =>
+        record.recordType === 'Weight' ? [record.weight.inKilograms] : []
+      );
+
+      const payload = {
+        selectedRecordType,
+        usedToken: result.changesTokenExpired ? 'expired' : 'ok',
+        upsertions: result.upsertionChanges.length,
+        deletions: result.deletionChanges.length,
+        hasMore: result.hasMore,
+        weightsInKilograms,
+        result,
+      };
+      setResultText(formatObject(payload));
+    });
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle={'dark-content'} />
@@ -626,6 +659,11 @@ export default function App() {
             <Button
               title="Read latest exercise route"
               onPress={readExerciseRoute}
+            />
+            <View style={styles.buttonGap} />
+            <Button
+              title={`Get changes (${selectedRecordType})`}
+              onPress={readChanges}
             />
           </View>
 
