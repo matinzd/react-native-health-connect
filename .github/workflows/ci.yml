@@ -133,11 +133,23 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      # settings.gradle runs `npx @react-native-community/cli config` from example/.
+      # Run it directly first so a failure surfaces its own output instead of being
+      # reported by Gradle as an opaque "exit value 127".
+      - name: Check the autolinking CLI resolves
+        working-directory: example
+        run: |
+          node -v
+          npm -v
+          command -v npx
+          ls node_modules/.bin | grep -iE "react-native|rnc" || echo "(no matching bins)"
+          npx @react-native-community/cli config > /dev/null
+
       - name: Assert android-expo is not linked
         working-directory: example/android
         run: |
           set -eu
-          ./gradlew projects --no-daemon -q > projects.txt
+          ./gradlew projects --no-daemon | tee projects.txt
           grep -q "Project ':react-native-health-connect'" projects.txt
           # NB: not `! grep ...` — set -e is ignored for commands preceded by `!`,
           # so that form silently never fails.

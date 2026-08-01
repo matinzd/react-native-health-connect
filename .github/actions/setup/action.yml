@@ -9,6 +9,11 @@ runs:
       with:
         node-version-file: .nvmrc
 
+    # No restore-keys on purpose. A prefix fallback restores node_modules from an
+    # unrelated lockfile, and yarn's install state file can then treat that stale tree
+    # as already correct — which is how example/node_modules ended up without the
+    # react-native CLI that settings.gradle shells out to. Only an exact lockfile
+    # match may be reused.
     - name: Cache dependencies
       id: yarn-cache
       uses: actions/cache@v6
@@ -16,8 +21,6 @@ runs:
         path: |
           **/node_modules
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
 
     # Deliberately NOT gated on cache-hit. The cache is a download accelerator, not a
     # substitute for installing: a restored **/node_modules can be stale or partial,
