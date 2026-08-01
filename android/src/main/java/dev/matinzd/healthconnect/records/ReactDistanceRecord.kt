@@ -63,7 +63,7 @@ class ReactDistanceRecord : ReactHealthRecordImpl<DistanceRecord> {
   override fun getAggregateGroupByPeriodRequest(record: ReadableMap): AggregateGroupByPeriodRequest {
     return AggregateGroupByPeriodRequest(
       metrics = aggregateMetrics,
-      timeRangeFilter = record.getTimeRangeFilter("timeRangeFilter"),
+      timeRangeFilter = record.getTimeRangeFilterLocal("timeRangeFilter"),
       timeRangeSlicer = mapJsPeriodToPeriod(record.getMap("timeRangeSlicer")),
       dataOriginFilter = convertJsToDataOriginSet(record.getArray("dataOriginFilter"))
     )
