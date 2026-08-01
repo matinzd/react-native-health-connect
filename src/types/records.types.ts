@@ -20,6 +20,7 @@ import type {
   SleepStage,
   ExerciseRoute,
   ZoneOffset,
+  SkinTemperatureDelta,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -162,6 +163,16 @@ export interface SexualActivityRecord extends InstantaneousRecord {
   recordType: 'SexualActivity';
   // Use ProtectionUsed constant
   protectionUsed: number;
+}
+
+export interface SkinTemperatureRecord extends IntervalRecord {
+  startZoneOffset?: ZoneOffset;
+  endZoneOffset?: ZoneOffset;
+  recordType: 'SkinTemperature';
+  baseline?: Temperature;
+  deltas: SkinTemperatureDelta[];
+  // Use SkinTemperatureMeasurementLocation constant
+  measurementLocation?: number;
 }
 
 export interface WeightRecord extends InstantaneousRecord {
@@ -354,6 +365,7 @@ export type HealthConnectRecord =
   | HydrationRecord
   | HeartRateVariabilityRmssdRecord
   | SexualActivityRecord
+  | SkinTemperatureRecord
   | WeightRecord
   | NutritionRecord
   | LeanBodyMassRecord

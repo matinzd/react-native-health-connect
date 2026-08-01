@@ -82,3 +82,6 @@ lib/
 !.yarn/versions
 
 coverage/
+
+# example-expo is its own yarn project
+example-expo/.yarn/

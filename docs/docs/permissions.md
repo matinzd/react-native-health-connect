@@ -148,6 +148,7 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | RespiratoryRate        | android.permission.health.READ_RESPIRATORY_RATE       | android.permission.health.WRITE_RESPIRATORY_RATE       |
 | RestingHeartRate       | android.permission.health.READ_RESTING_HEART_RATE     | android.permission.health.WRITE_RESTING_HEART_RATE     |
 | SexualActivity         | android.permission.health.READ_SEXUAL_ACTIVITY        | android.permission.health.WRITE_SEXUAL_ACTIVITY        |
+| SkinTemperature        | android.permission.health.READ_SKIN_TEMPERATURE       | android.permission.health.WRITE_SKIN_TEMPERATURE       |
 | SleepSession           | android.permission.health.READ_SLEEP                  | android.permission.health.WRITE_SLEEP                  |
 | Speed                  | android.permission.health.READ_SPEED                  | android.permission.health.WRITE_SPEED                  |
 | StepsCadence           | android.permission.health.READ_STEPS                  | android.permission.health.WRITE_STEPS                  |

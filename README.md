@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://developer.android.com/static/guide/health-and-fitness/health-connect/images/health_connect_logo_192pxnew.png" />
+  <img src="https://developer.android.com/static/images/health-connect/health-connect.svg" />
   <div align="center">
     <h1>React Native Health Connect</h1>
   </div>
@@ -23,7 +23,7 @@ Make sure you have React Native version 0.71 or higher **with the latest patch**
 
 - [Health Connect](https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata&hl=en&gl=US) needs to be installed on the user's device. Starting from Android 14 (Upside Down Cake), Health Connect is part of the Android Framework. Read more [here](https://developer.android.com/health-and-fitness/guides/health-connect/develop/get-started#step-1).
 - Health Connect API requires `minSdkVersion=26` (Android Oreo / 8.0).
-- If you are planning to release your app on Google Play, you will need to submit a [declaration form](https://docs.google.com/forms/d/1LFjbq1MOCZySpP5eIVkoyzXTanpcGTYQH26lKcrQUJo/viewform?edit_requested=true). Approval can take up to 7 days.
+- If you are planning to release your app on Google Play, you must declare your Health Connect data access. This is now done in the [Play Console](https://play.google.com/apps/publish/signup) — the standalone Google Form previously used for these requests is being retired on September 3rd, 2026, and all submissions go through the Play Console instead. See Google's [health apps declaration guidance](https://support.google.com/googleplay/android-developer/answer/14738291?hl=en), or [how to sign up for a Play Console developer account](https://support.google.com/googleplay/android-developer/answer/6112435?hl=en#zippy=%2Cstep-sign-up-for-a-play-console-developer-account) if you do not have one yet. Approval can take up to 7 days.
 - Approval does not grant you immediate access to Health Connect. A whitelist must propagate to the Health Connect servers, which take an additional 5-7 business days. The whitelist is updated every Monday according to Google Fit AHP support.
 
 ## Installation
@@ -74,40 +74,34 @@ You also need to setup permissions in your `AndroidManifest.xml` file. For more 
 ## Expo installation
 
 This package cannot be used in the [Expo Go](https://expo.io/client) app, but it can be used with custom managed apps.
-Just add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
 
-First install the package with yarn, npm, or [`expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install).
+> **As of v4, the Expo integration ships inside `react-native-health-connect`.** There is no longer
+> a separate `expo-health-connect` package to install — see [Migrating from
+> `expo-health-connect`](#migrating-from-expo-health-connect).
+
+Install the package with yarn, npm, or [`expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install):
 
 ```sh
-npm install expo-health-connect
+npm install react-native-health-connect
 npm install expo-build-properties --save-dev
 ```
 
-Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
-
-```json
-{
-  "expo": {
-    "plugins": ["expo-health-connect"]
-  }
-}
-```
-
-- Edit your app.json again and add this
+Then add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
 
 ```json
 {
   "expo": {
     ...
     "plugins": [
+      "react-native-health-connect",
       [
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 35,
-            "targetSdkVersion": 35,
+            "compileSdkVersion": 36,
+            "targetSdkVersion": 36,
             "minSdkVersion": 26
-          },
+          }
         }
       ]
     ]
@@ -115,6 +109,10 @@ Then add the prebuild [config plugin](https://docs.expo.io/guides/config-plugins
   }
 }
 ```
+
+You do **not** need to touch `MainActivity` in an Expo project. The permission delegate shown in the
+React Native CLI section above is registered automatically by the Expo module bundled with this
+package.
 
 Then rebuild the native app:
 
@@ -128,6 +126,20 @@ Then rebuild the native app:
 Finally create a new EAS development build
 
 `eas build --profile development --platform android`
+
+A complete working Expo app lives in [`example-expo/`](./example-expo).
+
+### Migrating from `expo-health-connect`
+
+`expo-health-connect` is deprecated; everything it did is now part of this package.
+
+1. Remove it: `npm uninstall expo-health-connect`
+2. In your `app.json` `plugins` array, replace `"expo-health-connect"` with `"react-native-health-connect"`.
+3. Re-run `npx expo prebuild --clean`.
+
+If you leave `expo-health-connect` installed, the Android build fails with a duplicate
+`expo.modules.healthconnect.HealthConnectPackage` class — both packages contribute the same Kotlin
+class. Removing the old package resolves it.
 
 ## Example
 

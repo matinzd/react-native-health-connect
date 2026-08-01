@@ -17,6 +17,13 @@ export const TemperatureMeasurementLocation = {
   VAGINA: 10,
 } as const;
 
+export const SkinTemperatureMeasurementLocation = {
+  UNKNOWN: 0,
+  FINGER: 1,
+  TOE: 2,
+  WRIST: 3,
+} as const;
+
 export const MealType = {
   BREAKFAST: 1,
   DINNER: 3,
