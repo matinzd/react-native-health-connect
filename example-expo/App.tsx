@@ -11,8 +11,10 @@ import {
   getGrantedPermissions,
   getSdkStatus,
   initialize,
+  openHealthConnectDataManagement,
   readRecords,
   requestPermission,
+  revokeAllPermissions,
   SdkAvailabilityStatus,
 } from 'react-native-health-connect';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -100,6 +102,29 @@ export default function App() {
           <Button
             title="Read steps (last 7 days)"
             onPress={() => run('readRecords(Steps)', readSteps)}
+          />
+          <Button
+            title="Open data management"
+            onPress={() =>
+              // Synchronous and returns void, unlike the other calls here.
+              run('openHealthConnectDataManagement', async () => {
+                openHealthConnectDataManagement();
+                return 'Opened the Health Connect data management screen.';
+              })
+            }
+          />
+          <Button
+            title="Revoke all permissions"
+            onPress={() =>
+              run('revokeAllPermissions', async () => {
+                const result = await revokeAllPermissions();
+                // Resolves to void on older versions of the library.
+                return (
+                  result ??
+                  'Revoked. On Android 14+ this applies on next launch.'
+                );
+              })
+            }
           />
         </View>
         <ScrollView style={styles.output}>
