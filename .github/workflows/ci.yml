@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
@@ -39,10 +39,138 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Setup
         uses: ./.github/actions/setup
 
       - name: Build package
         run: yarn prepack
+
+  # Exercises the Expo autolinking path: android-expo/ must be linked here, and the
+  # regular react-native-health-connect project must STILL be linked alongside it.
+  expo-prebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Installs the ROOT dependencies, which this job genuinely needs: example-expo
+      # reaches the library through a symlink to the repo root, so app.plugin.js
+      # resolves @expo/config-plugins from the root node_modules.
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # Not covered by the composite: example-expo is not a workspace, so the root
+      # install does not reach it.
+      #
+      # example-expo is its own yarn project rather than a workspace: yarn will not
+      # materialise a link:/portal: symlink pointing at an ancestor directory, and
+      # Expo autolinking needs a real node_modules entry to discover android-expo/.
+      # Its postinstall creates that symlink.
+      - name: Install example-expo
+        working-directory: example-expo
+        run: yarn install --immutable
+
+      - name: Prebuild
+        working-directory: example-expo
+        run: npx expo prebuild --clean --platform android
+
+      # The config plugin must add both the rationale filter and the Android 14+ alias.
+      - name: Assert manifest was patched
+        working-directory: example-expo
+        run: |
+          set -eu
+          grep -q "androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" android/app/src/main/AndroidManifest.xml
+          grep -q "ViewPermissionUsageActivity" android/app/src/main/AndroidManifest.xml
+
+      # useExpoModules() includes projects at configuration time, so there is nothing
+      # to grep in settings.gradle — ask Gradle for the resolved project list instead.
+      # ':react-native-health-connect' must survive alongside the Expo project; if the
+      # gradlePath guard in expo-module.config.json regresses, it silently disappears.
+      - name: Assert both projects are linked
+        working-directory: example-expo/android
+        run: |
+          set -eu
+          ./gradlew projects --no-daemon -q > projects.txt
+          grep -q "Project ':react-native-health-connect'" projects.txt
+          grep -q "Project ':react-native-health-connect-expo'" projects.txt
+
+      - name: Assemble
+        working-directory: example-expo/android
+        run: ./gradlew :app:assembleDebug --no-daemon
+
+      # Proves the Expo module is actually packaged, not merely configured.
+      - name: Assert both packages are in the APK
+        working-directory: example-expo/android
+        run: |
+          set -eu
+          mkdir -p /tmp/apk && unzip -o -q app/build/outputs/apk/debug/app-debug.apk -d /tmp/apk '*.dex'
+          cat /tmp/apk/*.dex > /tmp/all.dex
+          strings /tmp/all.dex | grep -q "Lexpo/modules/healthconnect/HealthConnectPackage"
+          strings /tmp/all.dex | grep -q "Ldev/matinzd/healthconnect/HealthConnectPackage"
+          strings /tmp/all.dex | grep -q "HealthConnectPermissionReactActivityHandler"
+
+  # The mirror image of expo-prebuild: a bare React Native app must NEVER see
+  # android-expo/. It depends on expo-modules-core, which bare projects do not have,
+  # so if it ever gets linked here the build breaks for every non-Expo consumer.
+  bare-example:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # settings.gradle runs `npx @react-native-community/cli config` from example/.
+      # Run it directly first so a failure surfaces its own output instead of being
+      # reported by Gradle as an opaque "exit value 127".
+      - name: Check the autolinking CLI resolves
+        working-directory: example
+        run: |
+          node -v
+          npm -v
+          command -v npx
+          ls node_modules/.bin | grep -iE "react-native|rnc" || echo "(no matching bins)"
+          npx @react-native-community/cli config > /dev/null
+
+      - name: Assert android-expo is not linked
+        working-directory: example/android
+        run: |
+          set -eu
+          ./gradlew projects --no-daemon | tee projects.txt
+          grep -q "Project ':react-native-health-connect'" projects.txt
+          # NB: not `! grep ...` — set -e is ignored for commands preceded by `!`,
+          # so that form silently never fails.
+          if grep -q "react-native-health-connect-expo" projects.txt; then
+            echo "::error::android-expo was linked into the bare React Native example"
+            exit 1
+          fi
+
+      - name: Assemble
+        working-directory: example/android
+        run: ./gradlew :app:assembleDebug --no-daemon
+
+      # Nothing from expo.modules may end up in a bare app's APK.
+      - name: Assert no expo classes in the APK
+        working-directory: example/android
+        run: |
+          set -eu
+          mkdir -p /tmp/bare && unzip -o -q app/build/outputs/apk/debug/app-debug.apk -d /tmp/bare '*.dex'
+          cat /tmp/bare/*.dex > /tmp/bare.dex
+          strings /tmp/bare.dex | grep -q "Ldev/matinzd/healthconnect/HealthConnectPackage"
+          if strings /tmp/bare.dex | grep -q "expo/modules"; then
+            echo "::error::expo.modules classes leaked into the bare React Native APK"
+            exit 1
+          fi

@@ -25,5 +25,7 @@
     "strict": true,
     "target": "esnext"
   },
-  "exclude": ["docs"]
+  // example-expo is not a workspace and installs its own dependencies; it is
+  // typechecked by its own tsconfig, not this one.
+  "exclude": ["docs", "example-expo"]
 }
