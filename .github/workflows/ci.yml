@@ -76,16 +76,37 @@ jobs:
         working-directory: example-expo
         run: npx expo prebuild --clean --platform android
 
-      - name: Assert both projects are linked
+      # The config plugin must add both the rationale filter and the Android 14+ alias.
+      - name: Assert manifest was patched
         working-directory: example-expo
         run: |
-          set -eux
-          grep -q "react-native-health-connect-expo" android/settings.gradle
-          grep -q "react-native-health-connect'" android/settings.gradle
-          grep -rq "expo.modules.healthconnect.HealthConnectPackage" \
-            android/app/build/generated/expo/ || \
-            grep -rq "expo.modules.healthconnect.HealthConnectPackage" android/
+          set -eu
+          grep -q "androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" android/app/src/main/AndroidManifest.xml
+          grep -q "ViewPermissionUsageActivity" android/app/src/main/AndroidManifest.xml
+
+      # useExpoModules() includes projects at configuration time, so there is nothing
+      # to grep in settings.gradle — ask Gradle for the resolved project list instead.
+      # ':react-native-health-connect' must survive alongside the Expo project; if the
+      # gradlePath guard in expo-module.config.json regresses, it silently disappears.
+      - name: Assert both projects are linked
+        working-directory: example-expo/android
+        run: |
+          set -eu
+          ./gradlew projects --no-daemon -q > projects.txt
+          grep -q "Project ':react-native-health-connect'" projects.txt
+          grep -q "Project ':react-native-health-connect-expo'" projects.txt
 
       - name: Assemble
         working-directory: example-expo/android
         run: ./gradlew :app:assembleDebug --no-daemon
+
+      # Proves the Expo module is actually packaged, not merely configured.
+      - name: Assert both packages are in the APK
+        working-directory: example-expo/android
+        run: |
+          set -eu
+          mkdir -p /tmp/apk && unzip -o -q app/build/outputs/apk/debug/app-debug.apk -d /tmp/apk '*.dex'
+          cat /tmp/apk/*.dex > /tmp/all.dex
+          strings /tmp/all.dex | grep -q "Lexpo/modules/healthconnect/HealthConnectPackage"
+          strings /tmp/all.dex | grep -q "Ldev/matinzd/healthconnect/HealthConnectPackage"
+          strings /tmp/all.dex | grep -q "HealthConnectPermissionReactActivityHandler"
