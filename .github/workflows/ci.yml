@@ -61,6 +61,12 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      # The composite skips its install on a cache hit, and the cached **/node_modules
+      # can be stale or partial — which breaks Gradle, since settings.gradle shells out
+      # to the autolinking CLI. Reconcile against the lockfile before touching Gradle.
+      - name: Ensure dependencies match the lockfile
+        run: yarn install --immutable
+
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -128,6 +134,11 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
+
+      # See the note in expo-prebuild: the composite's install is cache-gated, and a
+      # stale node_modules makes settings.gradle's autolinking command exit 127.
+      - name: Ensure dependencies match the lockfile
+        run: yarn install --immutable
 
       - uses: actions/setup-java@v5
         with:
