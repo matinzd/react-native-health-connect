@@ -17,6 +17,13 @@ export const TemperatureMeasurementLocation = {
   VAGINA: 10,
 } as const;
 
+export const SkinTemperatureMeasurementLocation = {
+  UNKNOWN: 0,
+  FINGER: 1,
+  TOE: 2,
+  WRIST: 3,
+} as const;
+
 export const MealType = {
   BREAKFAST: 1,
   DINNER: 3,
@@ -173,6 +180,15 @@ export const MenstruationFlow = {
   LIGHT: 1,
   MEDIUM: 2,
   HEAVY: 3,
+} as const;
+
+export const MindfulnessSessionType = {
+  UNKNOWN: 0,
+  MEDITATION: 1,
+  BREATHING: 2,
+  MUSIC: 3,
+  MOVEMENT: 4,
+  UNGUIDED: 5,
 } as const;
 
 export const SleepStageType = {

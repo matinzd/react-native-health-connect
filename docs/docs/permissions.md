@@ -141,6 +141,7 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | LeanBodyMass           | android.permission.health.READ_LEAN_BODY_MASS         | android.permission.health.WRITE_LEAN_BODY_MASS         |
 | MenstruationFlow       | android.permission.health.READ_MENSTRUATION           | android.permission.health.WRITE_MENSTRUATION           |
 | MenstruationPeriod     | android.permission.health.READ_MENSTRUATION           | android.permission.health.WRITE_MENSTRUATION           |
+| MindfulnessSession \*  | android.permission.health.READ_MINDFULNESS            | android.permission.health.WRITE_MINDFULNESS            |
 | Nutrition              | android.permission.health.READ_NUTRITION              | android.permission.health.WRITE_NUTRITION              |
 | OvulationTest          | android.permission.health.READ_OVULATION_TEST         | android.permission.health.WRITE_OVULATION_TEST         |
 | OxygenSaturation       | android.permission.health.READ_OXYGEN_SATURATION      | android.permission.health.WRITE_OXYGEN_SATURATION      |
@@ -148,6 +149,7 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | RespiratoryRate        | android.permission.health.READ_RESPIRATORY_RATE       | android.permission.health.WRITE_RESPIRATORY_RATE       |
 | RestingHeartRate       | android.permission.health.READ_RESTING_HEART_RATE     | android.permission.health.WRITE_RESTING_HEART_RATE     |
 | SexualActivity         | android.permission.health.READ_SEXUAL_ACTIVITY        | android.permission.health.WRITE_SEXUAL_ACTIVITY        |
+| SkinTemperature        | android.permission.health.READ_SKIN_TEMPERATURE       | android.permission.health.WRITE_SKIN_TEMPERATURE       |
 | SleepSession           | android.permission.health.READ_SLEEP                  | android.permission.health.WRITE_SLEEP                  |
 | Speed                  | android.permission.health.READ_SPEED                  | android.permission.health.WRITE_SPEED                  |
 | StepsCadence           | android.permission.health.READ_STEPS                  | android.permission.health.WRITE_STEPS                  |
@@ -159,6 +161,15 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | WriteExerciseRoute       | android.permission.health.WRITE_EXERCISE_ROUTE      | N/A      |
 
 You can read more about data types and permissions [here](https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/data-types).
+
+:::caution MindfulnessSession is experimental
+
+\* `MindfulnessSession` is still marked experimental by Health Connect — it is
+guarded by `ExperimentalMindfulnessSessionApi` as of `connect-client:1.1.0`. Its
+permissions, fields and session types may change in a future Health Connect
+release, and it may not be available on every device or Health Connect version.
+
+:::
 
 ## Special Permissions
 

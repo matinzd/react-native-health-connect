@@ -1,3 +1,5 @@
+@file:OptIn(androidx.health.connect.client.feature.ExperimentalMindfulnessSessionApi::class)
+
 package dev.matinzd.healthconnect.utils
 
 import androidx.health.connect.client.records.*
@@ -179,24 +181,38 @@ fun ReadableMap.getTimeRangeFilterLocal(key: String? = null): TimeRangeFilter {
 
 fun convertMetadataFromJSMap(meta: ReadableMap?): Metadata {
   if (meta == null) {
-    return Metadata()
+    return Metadata.unknownRecordingMethod()
   }
 
-  return Metadata(
-    id = meta.getSafeString("id", ""),
-    clientRecordId = meta.getString("clientRecordId"),
-    clientRecordVersion = meta.getSafeDouble("clientRecordVersion", 0.0).toLong(),
-    dataOrigin = DataOrigin(meta.getSafeString("dataOrigin", "")),
-    lastModifiedTime = Instant.parse(meta.getSafeString("lastModifiedTime", Instant.now().toString())),
-    device = meta.getMap("device")?.let {
-      Device(
-        type = it.getSafeInt("type", Device.TYPE_UNKNOWN),
-        manufacturer = it.getString("manufacturer"),
-        model = it.getString("model"),
-      )
-    },
-    recordingMethod = meta.getSafeInt("recordingMethod", Metadata.RECORDING_METHOD_UNKNOWN)
-  )
+  val clientRecordId = meta.getString("clientRecordId")
+  val clientRecordVersion = meta.getSafeDouble("clientRecordVersion", 0.0).toLong()
+  val device = meta.getMap("device")?.let {
+    Device(
+      type = it.getSafeInt("type", Device.TYPE_UNKNOWN),
+      manufacturer = it.getString("manufacturer"),
+      model = it.getString("model"),
+    )
+  } ?: Device(type = Device.TYPE_UNKNOWN)
+
+  // beta02 made the Metadata constructor internal; build via the recording-method
+  // factories. id / dataOrigin / lastModifiedTime are assigned by Health Connect on write.
+  return when (meta.getSafeInt("recordingMethod", Metadata.RECORDING_METHOD_UNKNOWN)) {
+    Metadata.RECORDING_METHOD_ACTIVELY_RECORDED ->
+      if (clientRecordId != null) Metadata.activelyRecorded(device, clientRecordId, clientRecordVersion)
+      else Metadata.activelyRecorded(device)
+
+    Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED ->
+      if (clientRecordId != null) Metadata.autoRecorded(device, clientRecordId, clientRecordVersion)
+      else Metadata.autoRecorded(device)
+
+    Metadata.RECORDING_METHOD_MANUAL_ENTRY ->
+      if (clientRecordId != null) Metadata.manualEntry(clientRecordId, clientRecordVersion, device)
+      else Metadata.manualEntry(device)
+
+    else ->
+      if (clientRecordId != null) Metadata.unknownRecordingMethod(clientRecordId, clientRecordVersion, device)
+      else Metadata.unknownRecordingMethod(device)
+  }
 }
 
 fun convertMetadataToJSMap(meta: Metadata): WritableNativeMap {
@@ -247,6 +263,7 @@ val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "Hydration" to HydrationRecord::class,
   "LeanBodyMass" to LeanBodyMassRecord::class,
   "MenstruationFlow" to MenstruationFlowRecord::class,
+  "MindfulnessSession" to MindfulnessSessionRecord::class,
   "Nutrition" to NutritionRecord::class,
   "OvulationTest" to OvulationTestRecord::class,
   "OxygenSaturation" to OxygenSaturationRecord::class,
@@ -254,6 +271,7 @@ val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "RespiratoryRate" to RespiratoryRateRecord::class,
   "RestingHeartRate" to RestingHeartRateRecord::class,
   "SexualActivity" to SexualActivityRecord::class,
+  "SkinTemperature" to SkinTemperatureRecord::class,
   "SleepSession" to SleepSessionRecord::class,
   "Speed" to SpeedRecord::class,
   "StepsCadence" to StepsCadenceRecord::class,
@@ -288,6 +306,7 @@ val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<
   "Hydration" to ReactHydrationRecord::class.java,
   "LeanBodyMass" to ReactLeanBodyMassRecord::class.java,
   "MenstruationFlow" to ReactMenstruationFlowRecord::class.java,
+  "MindfulnessSession" to ReactMindfulnessSessionRecord::class.java,
   "Nutrition" to ReactNutritionRecord::class.java,
   "OvulationTest" to ReactOvulationTestRecord::class.java,
   "OxygenSaturation" to ReactOxygenSaturationRecord::class.java,
@@ -295,6 +314,7 @@ val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<
   "RespiratoryRate" to ReactRespiratoryRateRecord::class.java,
   "RestingHeartRate" to ReactRestingHeartRateRecord::class.java,
   "SexualActivity" to ReactSexualActivityRecord::class.java,
+  "SkinTemperature" to ReactSkinTemperatureRecord::class.java,
   "SleepSession" to ReactSleepSessionRecord::class.java,
   "Speed" to ReactSpeedRecord::class.java,
   "StepsCadence" to ReactStepsCadenceRecord::class.java,
@@ -331,6 +351,7 @@ val healthConnectClassToReactClassMap = mapOf(
   HydrationRecord::class.java to ReactHydrationRecord::class.java,
   LeanBodyMassRecord::class.java to ReactLeanBodyMassRecord::class.java,
   MenstruationFlowRecord::class.java to ReactMenstruationFlowRecord::class.java,
+  MindfulnessSessionRecord::class.java to ReactMindfulnessSessionRecord::class.java,
   NutritionRecord::class.java to ReactNutritionRecord::class.java,
   OvulationTestRecord::class.java to ReactOvulationTestRecord::class.java,
   OxygenSaturationRecord::class.java to ReactOxygenSaturationRecord::class.java,
@@ -338,6 +359,7 @@ val healthConnectClassToReactClassMap = mapOf(
   RespiratoryRateRecord::class.java to ReactRespiratoryRateRecord::class.java,
   RestingHeartRateRecord::class.java to ReactRestingHeartRateRecord::class.java,
   SexualActivityRecord::class.java to ReactSexualActivityRecord::class.java,
+  SkinTemperatureRecord::class.java to ReactSkinTemperatureRecord::class.java,
   SleepSessionRecord::class.java to ReactSleepSessionRecord::class.java,
   SpeedRecord::class.java to ReactSpeedRecord::class.java,
   StepsCadenceRecord::class.java to ReactStepsCadenceRecord::class.java,

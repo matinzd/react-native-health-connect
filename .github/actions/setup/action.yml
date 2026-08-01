@@ -5,23 +5,31 @@ runs:
   using: composite
   steps:
     - name: Setup Node.js
-      uses: actions/setup-node@v5
+      uses: actions/setup-node@v7
       with:
         node-version-file: .nvmrc
 
-    - name: Cache dependencies
-      id: yarn-cache
-      uses: actions/cache@v4
+    - name: Resolve yarn cache folder
+      id: yarn-config
+      run: echo "cache-folder=$(yarn config get cacheFolder)" >> "$GITHUB_OUTPUT"
+      shell: bash
+
+    # Caches yarn's package downloads, NOT node_modules. Caching an installed
+    # node_modules tree is unsound: the restore lost the executable bit on
+    # node_modules/.bin targets, and because the tree already looked complete yarn's
+    # link step short-circuited and never restored it, so Gradle's autolinking call
+    # died with "sh: 1: rnc-cli: Permission denied" (exit 127).
+    #
+    # A download cache has no such hazard — restore-keys are safe here — and every run
+    # still performs a real install, which is what sets permissions and links binaries.
+    - name: Cache yarn downloads
+      uses: actions/cache@v6
       with:
-        path: |
-          **/node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        path: ${{ steps.yarn-config.outputs.cache-folder }}
+        key: ${{ runner.os }}-yarn-downloads-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
+          ${{ runner.os }}-yarn-downloads-
 
     - name: Install dependencies
-      if: steps.yarn-cache.outputs.cache-hit != 'true'
-      run: |
-        yarn install --cwd example
-        yarn install
+      run: yarn install --immutable
       shell: bash

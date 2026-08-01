@@ -20,6 +20,7 @@ import type {
   SleepStage,
   ExerciseRoute,
   ZoneOffset,
+  SkinTemperatureDelta,
 } from './base.types';
 
 export interface ActiveCaloriesBurnedRecord extends IntervalRecord {
@@ -164,6 +165,16 @@ export interface SexualActivityRecord extends InstantaneousRecord {
   protectionUsed: number;
 }
 
+export interface SkinTemperatureRecord extends IntervalRecord {
+  startZoneOffset?: ZoneOffset;
+  endZoneOffset?: ZoneOffset;
+  recordType: 'SkinTemperature';
+  baseline?: Temperature;
+  deltas: SkinTemperatureDelta[];
+  // Use SkinTemperatureMeasurementLocation constant
+  measurementLocation?: number;
+}
+
 export interface WeightRecord extends InstantaneousRecord {
   recordType: 'Weight';
   weight: Mass;
@@ -285,6 +296,16 @@ export interface MenstruationPeriodRecord extends InstantaneousRecord {
   recordType: 'MenstruationPeriod';
 }
 
+export interface MindfulnessSessionRecord extends IntervalRecord {
+  startZoneOffset?: ZoneOffset;
+  endZoneOffset?: ZoneOffset;
+  recordType: 'MindfulnessSession';
+  // Use MindfulnessSessionType constant
+  mindfulnessSessionType: number;
+  title?: string;
+  notes?: string;
+}
+
 export interface SleepSessionRecord extends IntervalRecord {
   recordType: 'SleepSession';
   stages?: SleepStage[];
@@ -354,6 +375,7 @@ export type HealthConnectRecord =
   | HydrationRecord
   | HeartRateVariabilityRmssdRecord
   | SexualActivityRecord
+  | SkinTemperatureRecord
   | WeightRecord
   | NutritionRecord
   | LeanBodyMassRecord
@@ -361,6 +383,7 @@ export type HealthConnectRecord =
   | SpeedRecord
   | MenstruationFlowRecord
   | MenstruationPeriodRecord
+  | MindfulnessSessionRecord
   | SleepSessionRecord
   | RespiratoryRateRecord
   | WheelchairPushesRecord

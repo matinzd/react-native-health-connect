@@ -11,7 +11,11 @@ const config = {
   url: 'https://matinzd.github.io',
   baseUrl: '/react-native-health-connect/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
   favicon: 'img/favicon.ico',
   projectName: 'react-native-health-connect',
   i18n: {
