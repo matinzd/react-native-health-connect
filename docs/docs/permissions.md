@@ -141,6 +141,7 @@ You will need to use [EAS Build](https://docs.expo.dev/eas/) and [Config plugins
 | LeanBodyMass           | android.permission.health.READ_LEAN_BODY_MASS         | android.permission.health.WRITE_LEAN_BODY_MASS         |
 | MenstruationFlow       | android.permission.health.READ_MENSTRUATION           | android.permission.health.WRITE_MENSTRUATION           |
 | MenstruationPeriod     | android.permission.health.READ_MENSTRUATION           | android.permission.health.WRITE_MENSTRUATION           |
+| MindfulnessSession     | android.permission.health.READ_MINDFULNESS            | android.permission.health.WRITE_MINDFULNESS            |
 | Nutrition              | android.permission.health.READ_NUTRITION              | android.permission.health.WRITE_NUTRITION              |
 | OvulationTest          | android.permission.health.READ_OVULATION_TEST         | android.permission.health.WRITE_OVULATION_TEST         |
 | OxygenSaturation       | android.permission.health.READ_OXYGEN_SATURATION      | android.permission.health.WRITE_OXYGEN_SATURATION      |
