@@ -57,18 +57,20 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
 
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      # example-expo is intentionally NOT a yarn workspace: Expo SDK 57 pins
-      # react-native 0.86 while example/ is on 0.81, and hoisting both breaks Metro.
+      # example-expo is its own yarn project rather than a workspace: yarn will not
+      # materialise a link:/portal: symlink pointing at an ancestor directory, and
+      # Expo autolinking needs a real node_modules entry to discover android-expo/.
+      # Its postinstall creates that symlink.
       - name: Install example-expo
         working-directory: example-expo
-        run: npm install
+        run: yarn install --immutable
 
       - name: Prebuild
         working-directory: example-expo

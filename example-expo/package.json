@@ -6,7 +6,8 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "prebuild": "expo prebuild --clean"
+    "prebuild": "expo prebuild --clean",
+    "postinstall": "mkdir -p node_modules && ln -sfn ../.. node_modules/react-native-health-connect"
   },
   "dependencies": {
     "expo": "~57.0.9",

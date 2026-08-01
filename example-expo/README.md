@@ -10,13 +10,15 @@ module stops being autolinked, `requestPermission` fails with
 
 ## Running
 
-This example is deliberately **not** a Yarn workspace. Expo SDK 57 pins React Native 0.86 while
-the bare `../example` is on 0.81, and hoisting both into one tree breaks Metro and Gradle. Install
-it on its own:
+This example is its own Yarn project rather than a workspace of the root. Yarn refuses to
+materialise a `link:`/`portal:` symlink whose target is an *ancestor* of the project, and Expo
+autolinking needs a real `node_modules` entry to discover `../android-expo` — unlike React Native
+CLI autolinking, it does not read `react-native.config.js`. The `postinstall` script here creates
+that symlink after the link step.
 
 ```sh
 cd example-expo
-npm install
+yarn install
 npx expo prebuild --clean --platform android
 npx expo run:android
 ```
