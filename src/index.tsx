@@ -125,6 +125,10 @@ export function requestExerciseRoute(recordId: string): Promise<Location[]> {
 /**
  * Returns a set of all health permissions granted by the user to the calling app.
  * This includes regular permissions as well as special permissions like WriteExerciseRoutePermission and BackgroundAccessPermission.
+ *
+ * If your app called {@link revokeAllPermissions}, this keeps returning the revoked permissions
+ * until the app process restarts. See {@link revokeAllPermissions} for details.
+ *
  * @returns A promise that resolves to an array of granted permissions
  */
 export function getGrantedPermissions(): Promise<
@@ -135,7 +139,18 @@ export function getGrantedPermissions(): Promise<
 
 /**
  * Revokes all previously granted permissions by the user to the calling app.
- * On Android 14+, permissions are not immediately revoked. They will be revoked when the app restarts.
+ *
+ * The revocation does not take effect until the app process restarts. This is a documented
+ * Health Connect platform limitation, not a bug in this library. Until the restart:
+ * - {@link getGrantedPermissions} keeps returning the revoked permissions.
+ * - Reads and writes keep succeeding, and written data really is persisted.
+ *
+ * Because of this, do not use this as the mechanism behind an in-app "disconnect from Health
+ * Connect" toggle. Prefer sending the user to Health Connect via {@link openHealthConnectSettings},
+ * track the disconnected state in your own app and stop syncing yourself, and if you do call this,
+ * tell the user the change takes effect after restarting the app.
+ *
+ * @see https://developer.android.com/health-and-fitness/health-connect/ui/permissions#sync-with-health-connect
  * @returns A promise that resolves to a RevokeAllPermissionsResponse object containing information about the revocation status,
  * or void for backward compatibility with older versions
  */
