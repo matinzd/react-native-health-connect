@@ -114,7 +114,7 @@ jobs:
           cat /tmp/apk/*.dex > /tmp/all.dex
           strings /tmp/all.dex | grep -q "Lexpo/modules/healthconnect/HealthConnectPackage"
           strings /tmp/all.dex | grep -q "Ldev/matinzd/healthconnect/HealthConnectPackage"
-          strings /tmp/all.dex | grep -q "HealthConnectPermissionReactActivityHandler"
+          strings /tmp/all.dex | grep -q "Ldev/matinzd/healthconnect/permissions/HealthConnectPermissionActivity"
 
   # The mirror image of expo-prebuild: a bare React Native app must NEVER see
   # android-expo/. It depends on expo-modules-core, which bare projects do not have,

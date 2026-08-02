@@ -1,11 +1,10 @@
 package expo.modules.healthconnect
 
-import android.content.Context
 import expo.modules.core.interfaces.Package
-import expo.modules.core.interfaces.ReactActivityLifecycleListener
 
-class HealthConnectPackage : Package {
-  override fun createReactActivityLifecycleListeners(activityContext: Context?): MutableList<out ReactActivityLifecycleListener> {
-    return mutableListOf(HealthConnectPermissionReactActivityHandler())
-  }
-}
+/**
+ * The Expo package used to register a ReactActivityLifecycleListener that set up the
+ * permission delegate. Permission dialogs no longer need anything registered on the
+ * activity, so nothing is contributed here anymore.
+ */
+class HealthConnectPackage : Package

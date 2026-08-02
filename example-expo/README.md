@@ -1,12 +1,12 @@
 # Expo example (SDK 57)
 
 Exercises the Expo path of `react-native-health-connect`: the bundled config plugin and the
-bundled Expo module in [`../android-expo`](../android-expo), which registers
-`HealthConnectPermissionDelegate` from a `ReactActivityLifecycleListener`.
+bundled Expo module in [`../android-expo`](../android-expo).
 
-Note there is **no `MainActivity` edit anywhere in this app** — that is the point. If the Expo
-module stops being autolinked, `requestPermission` fails with
-`UninitializedPropertyAccessException`.
+Note there is **no `MainActivity` edit anywhere in this app**. That is no longer Expo-specific —
+permission dialogs are hosted by an activity the library declares in its own manifest, so bare
+React Native apps need no edit either. The Expo module now only exists for the config plugin's
+autolinking path.
 
 ## Running
 

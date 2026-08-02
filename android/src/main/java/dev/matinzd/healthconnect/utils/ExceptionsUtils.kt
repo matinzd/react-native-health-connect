@@ -16,6 +16,8 @@ class InvalidBloodPressure : Exception("Blood pressure is not valid")
 class InvalidMass : Exception("Mass is not valid")
 class InvalidLength : Exception("Length is not valid")
 class AggregationNotSupported : Exception("Aggregation is not supported for this record")
+class ActivityNotAvailable : Exception("No activity is currently available to launch the dialog")
+class RequestAlreadyInProgress : Exception("A similar request is already in progress")
 
 fun Promise.rejectWithException(exception: Exception) {
   val code = when (exception) {
@@ -34,6 +36,8 @@ fun Promise.rejectWithException(exception: Exception) {
     is InvalidBloodPressure -> "INVALID_BLOOD_PRESSURE"
     is InvalidMass -> "INVALID_MASS"
     is AggregationNotSupported -> "AGGREGATION_NOT_SUPPORTED"
+    is ActivityNotAvailable -> "ACTIVITY_NOT_AVAILABLE"
+    is RequestAlreadyInProgress -> "REQUEST_ALREADY_IN_PROGRESS"
     else -> "UNKNOWN_ERROR"
   }
 

@@ -28,75 +28,13 @@ To install react-native-health-connect, use the following command:
 npm install react-native-health-connect
 ```
 
-If you are using React Native CLI template, for version 2 onwards, please add the following code into your `MainActivity.kt` within the `onCreate` method:
+No `MainActivity` changes are required. Permission dialogs are handled entirely inside the library.
 
-```diff
-package com.healthconnectexample
-
-+ import android.os.Bundle
-import com.facebook.react.ReactActivity
-import com.facebook.react.ReactActivityDelegate
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
-import com.facebook.react.defaults.DefaultReactActivityDelegate
-+ import dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate
-
-class MainActivity : ReactActivity() {
-  /**
-   * Returns the name of the main component registered from JavaScript. This is used to schedule
-   * rendering of the component.
-   */
-  override fun getMainComponentName(): String = "HealthConnectExample"
-
-+ override fun onCreate(savedInstanceState: Bundle?) {
-+   super.onCreate(savedInstanceState)
-+   // In order to handle permission contract results, we need to set the permission delegate.
-+   HealthConnectPermissionDelegate.setPermissionDelegate(this)
-+ }
-
-  /**
-   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
-   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
-   */
-  override fun createReactActivityDelegate(): ReactActivityDelegate =
-    DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
-}
-
-```
-
-If you are using a Java based react native project, please add the following code into your `MainActivity.java` within the `onCreate` method:
-
-```diff
-package com.healthconnectexample
-
-+ import android.os.Bundle
-import com.facebook.react.ReactActivity
-import com.facebook.react.ReactActivityDelegate
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
-import com.facebook.react.defaults.DefaultReactActivityDelegate
-+ import dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate
-
-class MainActivity : ReactActivity() {
-  /**
-   * Returns the name of the main component registered from JavaScript. This is used to schedule
-   * rendering of the component.
-   */
-  override fun getMainComponentName(): String = "HealthConnectExample"
-
-+ override fun onCreate(savedInstanceState: Bundle?) {
-+   super.onCreate(savedInstanceState)
-+   // In order to handle permission contract results, we need to set the permission delegate.
-+   HealthConnectPermissionDelegate.INSTANCE.setPermissionDelegate(this, "com.google.android.apps.healthdata");
-+ }
-
-  /**
-   * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
-   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
-   */
-  override fun createReactActivityDelegate(): ReactActivityDelegate =
-    DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
-}
-
-```
+:::note
+If you are upgrading from an earlier version, you can now remove the
+`HealthConnectPermissionDelegate.setPermissionDelegate(this)` call from your `MainActivity`. It is
+deprecated and does nothing.
+:::
 
 You also need to setup permissions in your `AndroidManifest.xml` file. For more information, check [here](https://matinzd.github.io/react-native-health-connect/docs/permissions).
 
@@ -140,10 +78,6 @@ Then add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the
   }
 }
 ```
-
-You do **not** need to touch `MainActivity` in an Expo project. The permission delegate shown in the
-React Native CLI section above is registered automatically by the Expo module bundled with this
-package.
 
 Then rebuild the native app:
 
