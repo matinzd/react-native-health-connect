@@ -100,6 +100,32 @@ changes from consumers.
 - The pending deferred is static and in-memory, so it does not survive process death mid-dialog —
   same as the old `Channel`-based delegate, so no regression.
 
+## Rejected alternative, kept as the fallback: auto-registering the delegate
+
+Keep the delegate, but register it from the library instead of from `MainActivity`. Declare an
+`androidx.startup` `Initializer` (or a stub `ContentProvider` — the classic zero-config init trick)
+in the library manifest; it runs before any activity exists and calls
+`application.registerActivityLifecycleCallbacks(...)`. In `onActivityCreated`, cast to
+`ComponentActivity` and perform the `registerForActivityResult` calls `setPermissionDelegate` used
+to do.
+
+The timing works in principle: `onActivityCreated` fires during the host activity's `onCreate`,
+still before STARTED, which is the only hard constraint. It also needs no consumer changes, via the
+same manifest merge.
+
+Rejected because:
+
+- It keeps the global mutable singleton and its `lateinit` launchers, so any failure surfaces as
+  `UninitializedPropertyAccessException` rather than something diagnosable.
+- The registry ends up holding a reference to the most recently created activity, including ones
+  unrelated to Health Connect. In multi-activity apps, and across activity recreation, "which
+  activity owns the launcher" is ambiguous, and it is leak-prone.
+- It pays registration cost on every activity in the app, for a dialog most apps open once.
+
+**Never tested** — rejected on design grounds, not measurement. If the transparent activity turns
+out to be problematic, this is the fallback, and the `onActivityCreated` timing should be verified
+on device first.
+
 ## Verification status
 
 Done on an API 36 emulator with the bare example (no `setPermissionDelegate` anywhere):
