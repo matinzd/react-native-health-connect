@@ -104,9 +104,9 @@ A complete working Expo app lives in [`example-expo/`](./example-expo).
 2. In your `app.json` `plugins` array, replace `"expo-health-connect"` with `"react-native-health-connect"`.
 3. Re-run `npx expo prebuild --clean`.
 
-If you leave `expo-health-connect` installed, the Android build fails with a duplicate
-`expo.modules.healthconnect.HealthConnectPackage` class — both packages contribute the same Kotlin
-class. Removing the old package resolves it.
+Leaving `expo-health-connect` installed is not supported: both packages apply a config plugin to
+the same manifest entries, and it still ships a native Expo module that this package no longer
+needs.
 
 ## Example
 
