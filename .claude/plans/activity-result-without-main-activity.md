@@ -46,6 +46,7 @@ changes from consumers.
 ### Files
 
 - **`android/src/main/java/dev/matinzd/healthconnect/permissions/HealthConnectPermissionActivity.kt`**
+
   - `ComponentActivity` that registers both contracts in `onCreate`
     (`PermissionController.createRequestPermissionResultContract(providerPackageName)` and
     `ExerciseRouteRequestContract()`) and launches immediately based on an intent extra.
@@ -59,12 +60,14 @@ changes from consumers.
     was delivered, so a dismissed or killed dialog can never leave the JS promise hanging.
 
 - **`.../permissions/HealthConnectPermissionLauncher.kt`**
+
   - Owned by `HealthConnectManager`. Exposes `suspend requestPermissions(providerPackageName, permissions)`
     and `suspend requestExerciseRoute(recordId)`.
   - Starts `HealthConnectPermissionActivity` from `reactContext.currentActivity` (so it stacks in
     the same task), guards against concurrent requests, and awaits the deferred.
 
 - **`android/src/main/AndroidManifest.xml`**
+
   ```xml
   <application>
     <activity
