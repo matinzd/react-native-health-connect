@@ -20,7 +20,7 @@ import type {
   BackgroundAccessPermission,
   RevokeAllPermissionsResponse,
 } from './types';
-import type { ExerciseRoute, TimeRangeFilter } from './types/base.types';
+import type { Location, TimeRangeFilter } from './types/base.types';
 
 const LINKING_ERROR =
   `The package 'react-native-health-connect' doesn't seem to be linked. Make sure: \n\n` +
@@ -118,7 +118,7 @@ export function requestPermission(
   return HealthConnect.requestPermission(permissions);
 }
 
-export function requestExerciseRoute(recordId: string): Promise<ExerciseRoute> {
+export function requestExerciseRoute(recordId: string): Promise<Location[]> {
   return HealthConnect.requestExerciseRoute(recordId);
 }
 

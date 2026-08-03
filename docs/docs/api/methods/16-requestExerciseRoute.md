@@ -21,7 +21,7 @@ android:name="android.permission.health.READ_EXERCISE" />
 # Method
 
 ```ts
-requestExerciseRoute(recordId: string): Promise<ExerciseRoute>
+requestExerciseRoute(recordId: string): Promise<Location[]>
 ```
 
 # Example
@@ -43,12 +43,8 @@ readRecord("ExerciseSession", recordId)
     if (
       exercise.exerciseRoute.type === ExerciseRouteResultType.CONSENT_REQUIRED
     ) {
-      requestExerciseRoute(recordId).then(({ route }) => {
-        if (route) {
-          console.log(JSON.stringify(route, null, 2));
-        } else {
-          console.log("User denied access");
-        }
+      requestExerciseRoute(recordId).then((route) => {
+        console.log(JSON.stringify(route, null, 2));
       });
     }
   })
