@@ -35,6 +35,7 @@ class ReactHeightRecord : ReactHealthRecordImpl<HeightRecord> {
   override fun parseRecord(record: HeightRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putMap("height", lengthToJsMap(record.height))
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
