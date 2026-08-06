@@ -11,6 +11,7 @@ export interface ZoneOffset {
 
 export interface InstantaneousRecord extends BaseRecord {
   time: string;
+  zoneOffset?: ZoneOffset;
 }
 
 export interface IntervalRecord extends BaseRecord {

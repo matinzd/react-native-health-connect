@@ -16,6 +16,7 @@ import dev.matinzd.healthconnect.utils.convertMetadataFromJSMap
 import dev.matinzd.healthconnect.utils.convertMetadataToJSMap
 import dev.matinzd.healthconnect.utils.getSafeInt
 import dev.matinzd.healthconnect.utils.toMapList
+import dev.matinzd.healthconnect.utils.zoneOffsetToJsMap
 import java.time.Instant
 
 class ReactOvulationTestRecord : ReactHealthRecordImpl<OvulationTestRecord> {
@@ -33,6 +34,7 @@ class ReactOvulationTestRecord : ReactHealthRecordImpl<OvulationTestRecord> {
   override fun parseRecord(record: OvulationTestRecord): WritableNativeMap {
     return WritableNativeMap().apply {
       putString("time", record.time.toString())
+      putMap("zoneOffset", zoneOffsetToJsMap(record.zoneOffset))
       putInt("result", record.result)
       putMap("metadata", convertMetadataToJSMap(record.metadata))
     }
