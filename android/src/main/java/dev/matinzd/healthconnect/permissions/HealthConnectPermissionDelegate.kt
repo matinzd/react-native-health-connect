@@ -1,53 +1,24 @@
 package dev.matinzd.healthconnect.permissions
 
 import androidx.activity.ComponentActivity
-import androidx.activity.result.ActivityResultLauncher
-import androidx.health.connect.client.PermissionController
-import androidx.health.connect.client.contracts.ExerciseRouteRequestContract
-import androidx.health.connect.client.records.ExerciseRoute
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
+import dev.matinzd.healthconnect.HealthConnectManager
 
+/**
+ * No longer required. Permission and exercise route dialogs are now launched through
+ * [HealthConnectPermissionLauncher], which does not need anything registered by the host
+ * activity. Kept as a no-op so existing MainActivity code keeps compiling; it will be
+ * removed in a future release.
+ */
+@Deprecated(
+  "No longer needed. Remove the setPermissionDelegate call from your MainActivity.",
+  level = DeprecationLevel.WARNING
+)
 object HealthConnectPermissionDelegate {
-  private val coroutineScope = CoroutineScope(Dispatchers.IO)
-  private val permissionsChannel = Channel<Set<String>>()
-  private val exerciseRouteChannel = Channel<ExerciseRoute?>()
-
-  private lateinit var requestPermission: ActivityResultLauncher<Set<String>>
-  private lateinit var requestRoutePermission: ActivityResultLauncher<String>
-
+  @Suppress("UNUSED_PARAMETER")
   fun setPermissionDelegate(
     activity: ComponentActivity,
-    providerPackageName: String = "com.google.android.apps.healthdata"
+    providerPackageName: String = HealthConnectManager.DEFAULT_PROVIDER_PACKAGE_NAME
   ) {
-    val contract = PermissionController.createRequestPermissionResultContract(providerPackageName)
-    val exerciseRouteRequestContract = ExerciseRouteRequestContract()
-
-    requestPermission = activity.registerForActivityResult(contract) {
-      coroutineScope.launch {
-        permissionsChannel.send(it)
-        coroutineContext.cancel()
-      }
-    }
-
-    requestRoutePermission = activity.registerForActivityResult(exerciseRouteRequestContract) {
-      coroutineScope.launch {
-        exerciseRouteChannel.send(it)
-        coroutineContext.cancel()
-      }
-    }
-  }
-
-  suspend fun launchPermissionsDialog(permissions: Set<String>): Set<String> {
-    requestPermission.launch(permissions)
-    return permissionsChannel.receive()
-  }
-
-  suspend fun launchExerciseRouteAccessRequestDialog(recordId: String): ExerciseRoute? {
-    requestRoutePermission.launch(recordId)
-    return exerciseRouteChannel.receive()
+    // no-op
   }
 }

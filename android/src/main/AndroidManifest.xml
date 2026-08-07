@@ -5,4 +5,12 @@
     <package android:name="com.google.android.apps.healthdata" />
   </queries>
 
+  <application>
+    <activity
+      android:name="dev.matinzd.healthconnect.permissions.HealthConnectPermissionActivity"
+      android:excludeFromRecents="true"
+      android:exported="false"
+      android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+  </application>
+
 </manifest>

@@ -10,7 +10,7 @@ import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.bridge.WritableNativeArray
 import com.facebook.react.bridge.WritableNativeMap
-import dev.matinzd.healthconnect.permissions.HealthConnectPermissionDelegate
+import dev.matinzd.healthconnect.permissions.HealthConnectPermissionLauncher
 import dev.matinzd.healthconnect.permissions.PermissionUtils
 import dev.matinzd.healthconnect.records.ReactExerciseSessionRecord
 import dev.matinzd.healthconnect.records.ReactHealthRecord
@@ -27,6 +27,8 @@ import kotlinx.coroutines.launch
 class HealthConnectManager(private val applicationContext: ReactApplicationContext) {
   private lateinit var healthConnectClient: HealthConnectClient
   private val coroutineScope = CoroutineScope(Dispatchers.IO)
+  private val permissionLauncher = HealthConnectPermissionLauncher(applicationContext)
+  private var providerPackageName = DEFAULT_PROVIDER_PACKAGE_NAME
 
   private val isInitialized get() = this::healthConnectClient.isInitialized
 
@@ -57,6 +59,7 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   fun initialize(providerPackageName: String, promise: Promise) {
     try {
       healthConnectClient = HealthConnectClient.getOrCreate(applicationContext, providerPackageName)
+      this.providerPackageName = providerPackageName
       promise.resolve(true)
     } catch (e: Exception) {
       promise.rejectWithException(e)
@@ -69,8 +72,14 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   ) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
-        val granted = HealthConnectPermissionDelegate.launchPermissionsDialog(PermissionUtils.parsePermissions(reactPermissions))
-        promise.resolve(PermissionUtils.mapPermissionResult(granted))
+        try {
+          val granted = permissionLauncher.requestPermissions(
+            providerPackageName, PermissionUtils.parsePermissions(reactPermissions)
+          )
+          promise.resolve(PermissionUtils.mapPermissionResult(granted))
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
+        }
       }
     }
   }
@@ -80,12 +89,15 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
   ) {
     throwUnlessClientIsAvailable(promise) {
       coroutineScope.launch {
-        val exerciseRoute = HealthConnectPermissionDelegate.launchExerciseRouteAccessRequestDialog(recordId)
-        if (exerciseRoute != null) {
-          promise.resolve(ReactExerciseSessionRecord.parseExerciseRoute(exerciseRoute))
-        }
-        else{
-          promise.rejectWithException(ExerciseRouteAccessDenied())
+        try {
+          val exerciseRoute = permissionLauncher.requestExerciseRoute(recordId)
+          if (exerciseRoute != null) {
+            promise.resolve(ReactExerciseSessionRecord.parseExerciseRoute(exerciseRoute))
+          } else {
+            promise.rejectWithException(ExerciseRouteAccessDenied())
+          }
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
         }
       }
     }
@@ -297,6 +309,10 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
         }
       }
     }
+  }
+
+  companion object {
+    const val DEFAULT_PROVIDER_PACKAGE_NAME = "com.google.android.apps.healthdata"
   }
 }
 
