@@ -1,13 +1,13 @@
 package dev.matinzd.healthconnect
 
-import com.facebook.react.TurboReactPackage
+import com.facebook.react.BaseReactPackage
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.NativeModule
 import com.facebook.react.module.model.ReactModuleInfoProvider
 import com.facebook.react.module.model.ReactModuleInfo
 import java.util.HashMap
 
-class HealthConnectPackage : TurboReactPackage() {
+class HealthConnectPackage : BaseReactPackage() {
   override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
     return if (name == HealthConnectModule.NAME) {
       HealthConnectModule(reactContext)
@@ -23,11 +23,10 @@ class HealthConnectPackage : TurboReactPackage() {
       moduleInfos[HealthConnectModule.NAME] = ReactModuleInfo(
         HealthConnectModule.NAME,
         HealthConnectModule.NAME,
-        false,  // canOverrideExistingModule
-        false,  // needsEagerInit
-        true,  // hasConstants
-        false,  // isCxxModule
-        isTurboModule // isTurboModule
+        canOverrideExistingModule = false,
+        needsEagerInit = false,
+        isCxxModule = false,
+        isTurboModule = isTurboModule
       )
       moduleInfos
     }
