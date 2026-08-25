@@ -62,6 +62,10 @@ class PermissionUtils {
           pushMap(ReactPermission(AccessType.WRITE, "ExerciseRoute").toReadableMap())
         }
 
+        if (grantedPermissions.contains(HealthPermission.PERMISSION_READ_HEALTH_DATA_HISTORY)) {
+          pushMap(ReactPermission(AccessType.READ, "ReadHealthDataHistory").toReadableMap())
+        }
+
         if (grantedPermissions.contains(HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND)
         ) {
           pushMap(ReactPermission(AccessType.READ, "BackgroundAccessPermission").toReadableMap())
