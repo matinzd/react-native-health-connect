@@ -132,7 +132,12 @@ export function requestExerciseRoute(recordId: string): Promise<Location[]> {
  * @returns A promise that resolves to an array of granted permissions
  */
 export function getGrantedPermissions(): Promise<
-  (Permission | WriteExerciseRoutePermission | BackgroundAccessPermission)[]
+  (
+    | Permission
+    | WriteExerciseRoutePermission
+    | ReadHealthDataHistoryPermission
+    | BackgroundAccessPermission
+  )[]
 > {
   return HealthConnect.getGrantedPermissions();
 }

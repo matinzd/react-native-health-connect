@@ -27,3 +27,4 @@ title: Overview
 | **Permission Type**        | **Description**                                                                                                                                                                                                                           |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | BackgroundAccessPermission | Allows your app to read health data in the background, even when your app is not in the foreground. |
+| ReadHealthDataHistory | Allows your app to read health data recorded before it was granted access, instead of only data written from the grant date forward. |

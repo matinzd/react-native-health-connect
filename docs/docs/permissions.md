@@ -202,6 +202,33 @@ Under the hood, this maps to `HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BA
 
 See the [Background Access Permission](./api/methods/17-backgroundAccessPermission.md) documentation for more details.
 
+### Read Health Data History Permission
+
+This permission allows your app to read health data recorded before it was granted access, instead of only data written from the grant date forward.
+
+First, add the health data history permission to your `AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.health.READ_HEALTH_DATA_HISTORY"/>
+```
+
+Then, request the permission in your app:
+
+```ts
+// Request health data history permission
+requestPermission([
+  {
+    accessType: 'read',
+    recordType: 'ReadHealthDataHistory',
+  },
+  // Other permissions...
+]);
+```
+
+Under the hood, this maps to `HealthPermission.PERMISSION_READ_HEALTH_DATA_HISTORY` in the Android Health Connect API.
+
+See the [Read Health Data History Permission](./api/methods/18-readHealthDataHistoryPermission.md) documentation for more details.
+
 ### Exercise Route Permission
 
 This special permission is required to write exercise routes:
