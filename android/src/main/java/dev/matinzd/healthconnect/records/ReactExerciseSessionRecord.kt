@@ -29,9 +29,9 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
           time = Instant.parse(sample.getString("time")),
           latitude = sample.getDouble("latitude"),
           longitude = sample.getDouble("longitude"),
-          horizontalAccuracy = getLengthFromJsMap(sample.getMap("horizontalAccuracy")),
-          verticalAccuracy = getLengthFromJsMap(sample.getMap("verticalAccuracy")),
-          altitude = getLengthFromJsMap(sample.getMap("altitude")),
+          horizontalAccuracy = sample.getMap("horizontalAccuracy")?.let { getLengthFromJsMap(it) },
+          verticalAccuracy = sample.getMap("verticalAccuracy")?.let { getLengthFromJsMap(it) },
+          altitude = sample.getMap("altitude")?.let { getLengthFromJsMap(it) },
         )
       } ?: emptyList()
 
@@ -203,9 +203,9 @@ class ReactExerciseSessionRecord : ReactHealthRecordImpl<ExerciseSessionRecord> 
             map.putString("time", it.time.toString())
             map.putDouble("latitude", it.latitude)
             map.putDouble("longitude", it.longitude)
-            map.putMap("horizontalAccuracy", lengthToJsMap(it.horizontalAccuracy))
-            map.putMap("verticalAccuracy", lengthToJsMap(it.verticalAccuracy))
-            map.putMap("altitude", lengthToJsMap(it.altitude))
+            it.horizontalAccuracy?.let { length -> map.putMap("horizontalAccuracy", lengthToJsMap(length)) }
+            it.verticalAccuracy?.let { length -> map.putMap("verticalAccuracy", lengthToJsMap(length)) }
+            it.altitude?.let { length -> map.putMap("altitude", lengthToJsMap(length)) }
             this.pushMap(map)
         }
       }
