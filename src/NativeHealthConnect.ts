@@ -6,7 +6,7 @@ import type {
   WriteExerciseRoutePermission,
   ReadHealthDataHistoryPermission,
 } from './types';
-import type { Location } from './types/base.types';
+import type { LocationResult } from './types/base.types';
 
 type ReadRecordsOptions = {
   startTime: string;
@@ -30,7 +30,7 @@ export interface Spec extends TurboModule {
       | ReadHealthDataHistoryPermission
     )[]
   ): Promise<Permission[]>;
-  requestExerciseRoute(recordId: string): Promise<Location[]>;
+  requestExerciseRoute(recordId: string): Promise<LocationResult[]>;
   getGrantedPermissions(): Promise<Permission[]>;
   revokeAllPermissions(): Promise<void>;
   insertRecords(records: HealthConnectRecord[]): Promise<string[]>;

@@ -215,6 +215,12 @@ export interface ExerciseLap {
   length: Length;
 }
 
+export interface ExerciseLapResult {
+  startTime: string;
+  endTime: string;
+  length: LengthResult;
+}
+
 export interface SleepStage {
   startTime: string;
   endTime: string;
@@ -231,6 +237,15 @@ export interface Location {
   altitude?: Length;
 }
 
+export interface LocationResult {
+  time: string;
+  latitude: number;
+  longitude: number;
+  horizontalAccuracy?: LengthResult;
+  verticalAccuracy?: LengthResult;
+  altitude?: LengthResult;
+}
+
 export enum ExerciseRouteResultType {
   DATA,
   NO_DATA,
@@ -238,6 +253,13 @@ export enum ExerciseRouteResultType {
 }
 
 export interface ExerciseRoute {
-  type?: ExerciseRouteResultType; // ReadRecord(s) will always populate this, write and readExerciseRoute will not
+  // type is unused on write; insertRecords only sends `route`
+  type?: ExerciseRouteResultType;
   route: Location[];
+}
+
+export interface ExerciseRouteResult {
+  // ReadRecord(s) always populate this via putString ("DATA" | "NO_DATA" | "CONSENT_REQUIRED")
+  type: 'DATA' | 'NO_DATA' | 'CONSENT_REQUIRED';
+  route: LocationResult[];
 }

@@ -1,5 +1,7 @@
 import type {
   EnergyResult,
+  ExerciseLapResult,
+  ExerciseRouteResult,
   IntervalRecord,
   LengthResult,
   MassResult,
@@ -128,7 +130,11 @@ interface ElevationGainedRecordResult
   elevation: LengthResult;
 }
 
-interface ExerciseSessionRecordResult extends ExerciseSessionRecord {}
+interface ExerciseSessionRecordResult
+  extends Omit<ExerciseSessionRecord, 'laps' | 'exerciseRoute'> {
+  laps?: ExerciseLapResult[];
+  exerciseRoute?: ExerciseRouteResult;
+}
 
 interface FloorsClimbedRecordResult extends FloorsClimbedRecord {}
 
